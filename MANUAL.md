@@ -10,7 +10,7 @@ Om deel te nemen, moet jouw dataset aan de volgende criteria voldoen:
 4. **Gebruik van RDA**: Jouw dataset maakt gebruik van het [RDA datamodel](https://www.podiumkunst.net/kennisbank/metadata). 
 5. **Terminologiebronnen**: Maak zoveel mogelijk gebruik van termen uit het [Termennetwerk](https://termennetwerk.netwerkdigitaalerfgoed.nl/), bijvoorbeeld voor personen of instellingen.
 
-Je kunt de URL naar de dataset dan naar Podiumkunst.net [sturen](mailto: mirjam@podiumkunst.net). Heb je vragen? Aarzel dan niet om [contact op te nemen](mailto: mirjam@podiumkunst.net).
+Je kunt de URL naar de dataset dan naar Podiumkunst.net [sturen](https://widget.podiumkunst.net/). Heb je vragen? Aarzel dan niet om [contact op te nemen](https://widget.podiumkunst.net/).
 
 ## Goed om te weten
 
