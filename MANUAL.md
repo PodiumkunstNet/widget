@@ -35,7 +35,7 @@ De widget kan nu de volgende gegevens tonen:
 Maak zoveel mogelijk gebruik van termen uit het [Termennetwerk](https://termennetwerk.netwerkdigitaalerfgoed.nl/), bijvoorbeeld voor personen en instellingen. Enkele terminologiebronnen die passen bij podiumkunstcollecties zijn: 
 
 - Uitvoeringsmedium van Podiumkunst.net (oa instrumenten)
-- GTAA van Beeld & Geluid (dit zijn oa persoonsnamen, maar ook geografische locaties, genres, onderwerpen)
+- GTAA van Beeld & Geluid persoonsnamen, geografische locaties, genres, onderwerpen)
 - Muziekschatten van SOM (onderwerpen, personen, klassieke werken)
-- Muziek van Muziekweb (genres en personen)
+- Muziek van Muziekweb (genres, personen)
 - Nederlandse Thesaurus van Auteursnamen van de KB (auteurs)
