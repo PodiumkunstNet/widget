@@ -14,7 +14,8 @@ Je kunt de URL naar de dataset dan naar Podiumkunst.net [sturen](https://widget.
 
 ## Goed om te weten
 
-1. Op dit moment werkt de widget voor Werken. [Hier vind je een aantal voorbeelden.](https://widget.podiumkunst.net/)
+**Informatie in widget**
+Op dit moment werkt de widget voor Werken. [Hier vind je een aantal voorbeelden.](https://widget.podiumkunst.net/)
 De widget kan nu de volgende gegevens tonen: 
 
 - Titel van het werk ([rdaw:P10223](https://www.rdaregistry.info/Elements/w/#P10223) of [rdaw:P10088](https://www.rdaregistry.info/Elements/w/#P100883))
@@ -33,7 +34,8 @@ De widget kan nu de volgende gegevens tonen:
 
 Dit is uitbreidbaar, neem contact op wanneer je andere of meer gegevens wilt tonen in de widget. 
 
-2. Maak zoveel mogelijk gebruik van termen uit het [Termennetwerk](https://termennetwerk.netwerkdigitaalerfgoed.nl/), bijvoorbeeld voor personen en instellingen. Enkele terminologiebronnen die passen bij podiumkunstcollecties zijn: 
+**Terminologiebronnen**
+Maak zoveel mogelijk gebruik van termen uit het [Termennetwerk](https://termennetwerk.netwerkdigitaalerfgoed.nl/), bijvoorbeeld voor personen en instellingen. Enkele terminologiebronnen die passen bij podiumkunstcollecties zijn: 
 
 - Uitvoeringsmedium van Podiumkunst.net (oa instrumenten)
 - GTAA van Beeld & Geluid persoonsnamen, geografische locaties, genres, onderwerpen)
