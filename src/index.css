@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'EuclidTriangle';
+  src: url('/fonts/EuclidTriangle-Medium-WebS.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'GoodSans';
+  src: url('/fonts/GoodSans-Regular.ttf') format('truetype');
+}
+
+:root {
+	--color-blue: rgb(5, 53, 255);
+	--color-blue-rgb: 5, 53, 255;
+	--color-white: rgb(255, 255, 255);
+	--color-orange: rgb(199, 80, 0);
+	--color-orange-rgb: 199, 80, 0;
+	--color-black: rgb(34, 34, 34);
+	--font-serif: 'GoodSans', sans-serif;
+	--font-sans: 'EuclidTriangle', sans-serif;
+}
+
+.font-euclid {
+  font-family: 'EuclidTriangle', sans-serif;
+}
+
+.font-goodsans {
+  font-family: 'GoodSans', sans-serif;
+}
+
+.bg-primary-blue {
+	--tw-bg-opacity: 1;
+	background-color: rgb(5 53 255 / var(--tw-bg-opacity, 1));
+}
+
+.text-primary-blue {
+	--tw-text-opacity: 1;
+	color: rgb(5 53 255 / var(--tw-text-opacity, 1));
+}
+
+.bg-primary-white {
+	--tw-bg-opacity: 1;
+	background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.text-primary-white {
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-text-primary {
+	--tw-text-opacity: 1;
+	color: rgb(34 34 34 / var(--tw-text-opacity, 1));
+}
+
+.bg-primary-orange {
+	--tw-bg-opacity: 1;
+	background-color: rgb(199 80 0 / var(--tw-bg-opacity, 1));
+}
+
+.text-primary-orange {
+	--tw-text-opacity: 1;
+	color: rgb(199 80 0 / var(--tw-text-opacity, 1));
+}
+
+::view-transition-old(root) {
+  animation: fade-out 0.4s ease-in 1 forwards;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.4s ease-in 1 forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
