@@ -1,10 +1,10 @@
 import {
   MainWidgetType,
-  MappedWidgetItemType,
   MappedWidgetType,
-  WIDGET_SUB_TYPES,
+  WidgetSubType,
 } from '../types/mainWidgetData';
-import { AgentCategory, GridCategory } from '../types/categories';
+import { AgentCategory } from '../types/categories';
+import { GridCategory, GridItem } from '../types/grid';
 import { AGENT_FIELD_LABELS } from '../constants/fieldLabels';
 
 const keysToExclude = ['manifestation', 'work'];
@@ -17,7 +17,7 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
     };
   }
 
-  const items: MappedWidgetItemType[] = [];
+  const items: GridItem[] = [];
   Object.keys(data).forEach((key) => {
     if (!data[key]) {
       return;
@@ -88,14 +88,14 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
       key: 'Meer werk van',
       value: data?.title,
       type: GridCategory.More,
-      subType: WIDGET_SUB_TYPES.worksForAgent,
+      subType: WidgetSubType.WorksForAgent,
       id: data?.agent || '',
     });
   }
 
   const filteredResults = items.filter(
     (item) => item !== null
-  ) as MappedWidgetItemType[];
+  ) as GridItem[];
 
   return {
     mappedData: {

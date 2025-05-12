@@ -1,22 +1,10 @@
-import { Logo } from "../Logo"
-import { ariaLabels } from "../../constants/ariaLables"
-import { cn } from "../../utils/cn"
-import ArrowBack from "../../../public/visuals/icons/arrow-back.svg?react"
+import classes from "./index.module.css"
 
-import classes from "./AboutSection.module.css"
-
-interface Props {
-	isSubCategoryView: boolean
-	handleBack: () => void
-}
-
-export function AboutSection({ isSubCategoryView, handleBack }: Props) {
+export function AboutPage() {
 	return (
-		<section className={cn(classes.section, { isSubCategoryView })}>
-			<header>
-				<Logo aria-hidden={true} aria-label={ariaLabels.logo} />
-			</header>
+		<section className={classes.section}>
 			<div>
+				<h2>Over ons</h2>
 				<p>
 					<PodiumkunstLink /> verbindt de schatkamers van de Nederlandse
 					podiumkunsten en stelt deze open voor makers, onderzoekers en
@@ -33,14 +21,6 @@ export function AboutSection({ isSubCategoryView, handleBack }: Props) {
 					collectiehoudende instellingen die deelnemen aan .
 				</p>
 			</div>
-			<footer>
-				<div className={classes.buttonWrapper}>
-					<button onClick={handleBack}>
-						<ArrowBack />
-						Terug
-					</button>
-				</div>
-			</footer>
 		</section>
 	)
 }

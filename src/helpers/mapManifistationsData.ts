@@ -1,6 +1,5 @@
-import { GridCategory } from '../types/categories';
+import { GridCategory, GridItem } from '../types/grid';
 import {
-  MappedWidgetItemType,
   MappedWidgetType,
 } from '../types/mainWidgetData';
 
@@ -21,7 +20,7 @@ export function mapManifistationsData(
     };
   }
 
-  const items: MappedWidgetItemType[] = [];
+  const items: GridItem[] = [];
   data.forEach((item) => {
     const key =
       item.type && item.date

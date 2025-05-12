@@ -1,8 +1,7 @@
-import { GridCategory } from '../types/categories';
+import { GridCategory, GridItem } from '../types/grid';
 import {
-  MappedWidgetItemType,
   MappedWidgetType,
-  WIDGET_SUB_TYPES,
+  WidgetSubType,
 } from '../types/mainWidgetData';
 
 export type CategoryType = {
@@ -20,13 +19,13 @@ export function mapCategoriesData(data: CategoryType[]): MappedWidgetType {
     };
   }
 
-  const items: MappedWidgetItemType[] = [];
+  const items: GridItem[] = [];
   data.forEach((item) => {
     items.push({
       key: '',
       value: item.worktitle,
       type: GridCategory.More,
-      subType: WIDGET_SUB_TYPES.work,
+      subType: WidgetSubType.Work,
       id: item.work,
     });
   });

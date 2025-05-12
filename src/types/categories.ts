@@ -1,10 +1,3 @@
-export enum GridCategory {
-  Information = 'information',
-  Website = 'website',
-  More = 'more',
-  Static = 'static'
-}
-
 // export type GridCategory =
 //   (typeof GridCategories)[keyof typeof GridCategories];
 

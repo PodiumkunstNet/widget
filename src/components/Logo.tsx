@@ -1,22 +1,28 @@
-import { cn } from '../utils/cn';
+// import { cn } from '../utils/cn';
 
-const LogoSrc = '/public/PodiumkunstLogo-Large.png'
-const LogoBlackSrc = '/public/PodiumkunstLogo-Large-Black.png'
-const LogoSmallSrc = '/public/PodiumkunstLogo-Small.png'
-const LogoSmallBlackSrc = '/public/PodiumkunstLogo-Small-Black.png'
+const LogoSrc = '/PodiumkunstLogo-Large.png'
+const LogoBlackSrc = '/PodiumkunstLogo-Large-Black.png'
+// const LogoSmallSrc = '/public/PodiumkunstLogo-Small.png'
+// const LogoSmallBlackSrc = '/public/PodiumkunstLogo-Small-Black.png'
 
 interface LogoProps {
   dark?: boolean;
   large?: boolean;
+  onClick: () => void;
 }
 
 // TODO do we want/need the `dark` and `large` prop, solve with 
 // 	responsive CSS and/or SVG?
 
-export function Logo({ dark = false, large = false }: LogoProps) {
+export function Logo({
+	dark = false,
+	large = false,
+	onClick
+}: LogoProps) {
+	large
   return (
     <>
-      <div
+      {/* <div
         className={cn(
           large ? 'hidden md:block lg:block' : 'hidden',
           'min-w-[153px]'
@@ -28,14 +34,9 @@ export function Logo({ dark = false, large = false }: LogoProps) {
           width={153}
           height={56}
         />
-      </div>
+      </div> */}
 
-      <div
-        className={cn(
-          large ? 'block  md:hidden lg:hidden' : 'hidden md:block lg:block',
-          'min-w-[89px]'
-        )}
-      >
+      <div onClick={onClick} className="cursor-pointer">
         <img
           src={dark ? LogoBlackSrc : LogoSrc}
           alt="Podiumkunst.net logo"
@@ -43,7 +44,7 @@ export function Logo({ dark = false, large = false }: LogoProps) {
           height={32}
         />
       </div>
-      <div
+      {/* <div
         className={cn(
           large ? 'hidden  md:hidden lg:hidden' : 'block md:hidden lg:hidden',
           'min-w-[66px]'
@@ -55,7 +56,7 @@ export function Logo({ dark = false, large = false }: LogoProps) {
           width={66}
           height={24}
         />
-      </div>
+      </div> */}
 
       {/* Remove this code when the svgs are ready or when we decide to use pngs as permanent solution */}
       {/* <LogoSvg width={89} height={32} className={'hidden md:block lg:block'} />

@@ -1,10 +1,9 @@
 import {
   MainWidgetType,
-  MappedWidgetItemType,
   MappedWidgetType,
-  WIDGET_SUB_TYPES,
+  WidgetSubType,
 } from '../types/mainWidgetData';
-import { GridCategory } from '../types/categories';
+import { GridCategory, GridItem } from '../types/grid';
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 import {
   FIELD_LABELS,
@@ -34,7 +33,7 @@ export function mapMainSectionWidgetData(
     };
   }
 
-  const items: MappedWidgetItemType[] = [];
+  const items: GridItem[] = [];
   Object.keys(data).forEach((key) => {
     if (!data[key]) {
       return;
@@ -56,7 +55,7 @@ export function mapMainSectionWidgetData(
         value: data[`${key}name`],
         type: GridCategory.More,
         id: data[key as (typeof keyToGetName)[number]] || '',
-        subType: WIDGET_SUB_TYPES.agent,
+        subType: WidgetSubType.Agent,
       });
 
       items.push({
@@ -66,7 +65,7 @@ export function mapMainSectionWidgetData(
         ),
         value: data[`${key}name`],
         type: GridCategory.More,
-        subType: WIDGET_SUB_TYPES.worksForAgent,
+        subType: WidgetSubType.WorksForAgent,
         id: data[key as (typeof keyToGetName)[number]] || '',
       });
 
@@ -79,7 +78,7 @@ export function mapMainSectionWidgetData(
         value: capitalizeFirstLetter(data?.categoryname ?? ''),
         type: GridCategory.More,
         id: data['category'] || '',
-        subType: WIDGET_SUB_TYPES.category,
+        subType: WidgetSubType.Category,
       });
       return;
     }
@@ -91,7 +90,7 @@ export function mapMainSectionWidgetData(
           value: 'Gebaseerd op dit werk',
           type: GridCategory.More,
           id: data['work'] || '',
-          subType: WIDGET_SUB_TYPES.manifestation,
+          subType: WidgetSubType.Manifestation,
         });
       }
 
@@ -119,7 +118,7 @@ export function mapMainSectionWidgetData(
 
   const filteredResults = items.filter(
     (item) => item !== null
-  ) as MappedWidgetItemType[];
+  ) as GridItem[];
 
   return {
     mappedData: {

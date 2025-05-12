@@ -1,49 +1,59 @@
-import { GridCategory } from './categories';
+import { mapAgentWidgetData } from "../helpers/mapAgentWidgeData"
+import { mapCategoriesData } from "../helpers/mapCategoriesData"
+import { mapMainSectionWidgetData } from "../helpers/mapMainSectionWidgetData"
+import { mapManifistationsData } from "../helpers/mapManifistationsData"
+import { mapWorkForAgentData } from "../helpers/mapWorksForAgentData"
+import { MappedData } from "../state"
 
 export type MainWidgetType = {
-  work: string;
-  title?: string | null;
-  alttitle?: string | null;
-  date?: string | null;
-  note?: string | null;
-  category?: string | null;
-  categoryname?: string | null;
-  manifestation?: string | null;
-  composer?: string | null;
-  composername?: string | null;
-  librettist?: string | null;
-  librettistname?: string | null;
-  choreographer?: string | null;
-  choreographername?: string | null;
-  [key: string]: string | null | undefined;
-};
+	work: string
+	title?: string | null
+	alttitle?: string | null
+	date?: string | null
+	note?: string | null
+	category?: string | null
+	categoryname?: string | null
+	manifestation?: string | null
+	composer?: string | null
+	composername?: string | null
+	librettist?: string | null
+	librettistname?: string | null
+	choreographer?: string | null
+	choreographername?: string | null
+	[key: string]: string | null | undefined
+}
 
 export type MappedWidgetType = {
-  mappedData: {
-    title: string;
-    items: MappedWidgetItemType[];
-  } | null;
-  error: boolean;
-};
+	mappedData: MappedData | null
+	error: boolean
+}
 
-export type MappedWidgetItemType = {
-  key: string;
-  value: string | undefined | null;
-  type: GridCategory;
-  id?: string;
-  url?: string;
-  note?: string | undefined | null;
-  subType?: string;
-};
+export enum WidgetSubType {
+	Agent = "agent",
+	Work = "work",
+	WorksForAgent = "worksForAgent",
+	Category = "category",
+	Manifestation = "manifestations",
+}
 
-//TODO - maybe change name
-export const WIDGET_SUB_TYPES = {
-  agent: 'agent',
-  work: 'work',
-  worksForAgent: 'worksForAgent',
-  category: 'category',
-  manifestation: 'manifestations',
-} as const;
+export const endpointsBySubType: Record<
+	WidgetSubType,
+	(iri: string) => string
+> = {
+	[WidgetSubType.Work]: (iri) => `/works/run?work=${iri}`,
+	[WidgetSubType.Category]: (iri) => `/categories/run?category=${iri}`,
+	[WidgetSubType.WorksForAgent]: (iri) => `/works-for-agents/run?agent=${iri}`,
+	[WidgetSubType.Agent]: (iri) => `/agents/run?agent=${iri}`,
+	[WidgetSubType.Manifestation]: (iri) => `/manifestations/run?work=${iri}`,
+}
 
-export type WidgetSubType =
-  (typeof WIDGET_SUB_TYPES)[keyof typeof WIDGET_SUB_TYPES];
+export const mappingFunctionBySubType: Record<
+	WidgetSubType,
+	(data: any[]) => MappedWidgetType
+> = {
+	[WidgetSubType.Work]: (data) => mapMainSectionWidgetData(data?.[0]),
+	[WidgetSubType.Category]: (data) => mapCategoriesData(data),
+	[WidgetSubType.WorksForAgent]: (data) => mapWorkForAgentData(data),
+	[WidgetSubType.Agent]: (data) => mapAgentWidgetData(data?.[0]),
+	[WidgetSubType.Manifestation]: (data) => mapManifistationsData(data),
+}

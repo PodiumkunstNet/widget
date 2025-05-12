@@ -1,11 +1,11 @@
 import { Text } from '../Text';
 import { cn } from '../../utils/cn';
-import { GridItemType } from '../GridSection/GridSection';
+import { GridItem } from '../../types/grid';
 
-type Props = {
-  item: GridItemType;
-  isSubCategoryView?: boolean;
-};
+interface Props {
+  item: GridItem
+  isSubCategoryView?: boolean
+}
 
 const InfoSection = ({ isSubCategoryView, item }: Props) => {
   return (

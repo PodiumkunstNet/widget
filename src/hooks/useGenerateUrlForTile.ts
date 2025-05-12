@@ -1,10 +1,9 @@
-import { GridCategory } from "../types/categories"
+import { GridCategory, type GridItem } from "../types/grid"
 import { useParams } from "react-router-dom"
-import { GridItemType } from "../components/GridSection/GridSection"
 
 export function useURL(
 	isSubCategoryView: boolean | undefined,
-	item?: GridItemType,
+	item?: GridItem,
 ) {
 	const params = useParams()
 

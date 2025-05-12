@@ -1,7 +1,10 @@
 .gridSection {
+	--border-width: 2px;
+	border: var(--border-width) solid rgba(0, 0, 0, 0);
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-auto-rows: 1fr;
+	grid-gap: var(--border-width);
 	height: 100%;
 	width: 100%;
 }
