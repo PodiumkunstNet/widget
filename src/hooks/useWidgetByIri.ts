@@ -1,7 +1,7 @@
 import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
 import { endpointsBySubType, mappingFunctionBySubType, WidgetSubType } from "../types/mainWidgetData"
-import { defaultMappedData } from "../state"
+import { defaultMappedData, GridDataState } from "../state"
 
 const MAX_ITEMS = 12
 
@@ -16,8 +16,8 @@ export async function queryWidgetByIri(iri: string, type: WidgetSubType) {
 }
 
 export function useWidgetByIri(
-	iri: string | null,
-	type: WidgetSubType | null
+	iri: GridDataState["id"],
+	type: GridDataState["type"]
 ) {
 	return useQuery({
 		...getUseQueryProps(iri, type),
@@ -27,8 +27,8 @@ export function useWidgetByIri(
 }
 
 export function getUseQueryProps(
-	iri: string | null,
-	type: WidgetSubType | null
+	iri: GridDataState["id"],
+	type: GridDataState["type"]
 ) {
 	const queryFn = async () => {
 		if (!iri || !type) return Promise.resolve({ title: "", items: [] })

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { CSSProperties } from "react"
-import useAnimatedRouter from "../hooks/useAnimatedRouter"
+import { useTransitionNavigate } from "../hooks/useTransitionNavigate"
 import { Link } from "react-router-dom"
 
 type Props = {
@@ -18,7 +18,7 @@ export default function AnimatedLink({
 	handleClick,
 	style,
 }: Props) {
-	const { navigate } = useAnimatedRouter()
+	const { navigate } = useTransitionNavigate()
 	return (
 		<Link
 			className={classes}

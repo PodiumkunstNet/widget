@@ -3,8 +3,9 @@ import { InfoSection } from "../../components/InfoSection"
 import Loader from "../../components/Loader/Loader"
 import ErrorPreview from "../../components/Preview/ErrorPreview"
 
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { GridDataContext, StateContext } from "../../state"
+import { sessionStore } from "../../hooks/useSessionStorage"
 
 type Props = {
 	isSubCategoryView: boolean
@@ -12,7 +13,20 @@ type Props = {
 
 export const Grid = ({ isSubCategoryView }: Props) => {
 	const { infoItem } = useContext(StateContext)
-	const { items, isLoading, isError } = useContext(GridDataContext)
+	const {
+		items,
+		isLoading,
+		isError,
+		id,
+		type
+	} = useContext(GridDataContext)
+
+	useEffect(() => {
+		if (!isSubCategoryView) {
+			sessionStore.clearAll();
+			sessionStore.setHomeURL(id, type);
+		}
+	}, [isSubCategoryView, id, type])
 
 	if (!isSubCategoryView && isLoading) {
 		return <Loader />	

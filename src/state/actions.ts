@@ -1,7 +1,7 @@
 import { GridItem } from "../types/grid"
 
 export enum Actions {
-	SetInfoItem,
+	SetInfoItem = "SET_INFO_ITEM",
 }
 
 export type Action =

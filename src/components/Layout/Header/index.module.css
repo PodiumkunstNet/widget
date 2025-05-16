@@ -24,6 +24,8 @@
 	font-weight: bold;
 	padding: .5rem 0 .6rem 0;
 	text-transform: uppercase;
+	transform: translateX(-.4rem);
+	width: calc(100% + 0.4rem);
 }
 
 .h2Top {
@@ -58,7 +60,12 @@
 
 .top nav {
 	color: var(--color-white);
+	/* display: flex; */
+}
+
+.top nav ul {
 	display: flex;
+	gap: 1rem;
 }
 
 .buttonWrapper {
@@ -75,6 +82,10 @@
 	font-size: .875rem;
 	font-weight: bold;
 	gap: .5rem;
+}
+
+.top nav button.backButton {
+	gap: 0.25rem;
 }
 
 .buttonWrapper:hover {

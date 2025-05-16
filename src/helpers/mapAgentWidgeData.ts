@@ -53,7 +53,7 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 	if (data[AgentCategory.Agent]) {
 		items.push({
 			key: "Meer werk van",
-			value: data?.title,
+			value: data?.title ?? undefined,
 			type: GridCategory.More,
 			subType: WidgetSubType.WorksForAgent,
 			id: data?.agent || "",

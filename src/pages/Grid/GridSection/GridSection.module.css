@@ -6,5 +6,6 @@
 	grid-auto-rows: 1fr;
 	grid-gap: var(--border-width);
 	height: 100%;
+	position: relative;
 	width: 100%;
 }

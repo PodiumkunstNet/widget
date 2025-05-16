@@ -22,15 +22,17 @@
 
 .container main {
 	height: 100%;
-	view-transition-name: main;
+	/* view-transition-name: main; */
 }
 
-::view-transition-old(main) {
+::view-transition-old(root) {
+/* ::view-transition-old(main) { */
   animation: fade-out .4s ease-in 1 forwards;
   height: 100%;
 }
 
-::view-transition-new(main) {
+::view-transition-new(root) {
+/* ::view-transition-new(main) { */
   animation: fade-in .4s ease-in 1 forwards;
   height: 100%;
 }

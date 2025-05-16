@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useSearchParams } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 import { Grid } from "./pages/Grid"
 import { AboutPage } from "./pages/About"
@@ -14,7 +14,6 @@ import {
 import { ReactNode, useReducer } from "react"
 import { stateReducer } from "./state/reducer"
 import { useGridData } from "./pages/useGridData"
-import { WidgetSubType } from "./types/mainWidgetData"
 
 function App() {
 	return (
@@ -41,19 +40,8 @@ function App() {
 }
 
 function Providers({ children }: { children: ReactNode }) {
-	const [params] = useSearchParams()
-
-	const id = params.get("id")
-	const type = params.get("type") as WidgetSubType
-
-	const gridData = useGridData(id, type)
+	const gridData = useGridData()
 	const [state, dispatch] = useReducer(stateReducer, initialState)
-
-	// TODO store the home URL in the state
-	// useEffect(() => {
-
-	// }, [gridData.title])
-
 
 	return (
 		<DispatchContext.Provider value={dispatch}>

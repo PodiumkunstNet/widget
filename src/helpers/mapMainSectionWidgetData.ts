@@ -52,7 +52,7 @@ export function mapMainSectionWidgetData(
           key as (typeof keyToGetName)[number],
           SameFieldPurpose.moreInfo
         ),
-        value: data[`${key}name`],
+        value: data[`${key}name`] ?? undefined,
         type: GridCategory.More,
         id: data[key as (typeof keyToGetName)[number]] || '',
         subType: WidgetSubType.Agent,
@@ -63,7 +63,7 @@ export function mapMainSectionWidgetData(
           key as (typeof keyToGetName)[number],
           SameFieldPurpose.otherWorks
         ),
-        value: data[`${key}name`],
+        value: data[`${key}name`] ?? undefined,
         type: GridCategory.More,
         subType: WidgetSubType.WorksForAgent,
         id: data[key as (typeof keyToGetName)[number]] || '',

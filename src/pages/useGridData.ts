@@ -1,10 +1,17 @@
-import { getUseQueryProps, useWidgetByIri } from "../hooks/useWidgetByIri"
-import { WidgetSubType } from "../types/mainWidgetData"
 import { useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { GridItem } from "../types/grid"
 
-export function useGridData(id: string | null, type: WidgetSubType | null) {
+import { getUseQueryProps, useWidgetByIri } from "../hooks/useWidgetByIri"
+import { GridItem } from "../types/grid"
+import { GridDataState } from "../state"
+
+export function useGridData() {
+	const [params] = useSearchParams()
+
+	const id = params.get("id") ?? undefined
+	const type = (params.get("type") as GridDataState['type']) ?? undefined
+
 	const queryClient = useQueryClient()
 	const { data, isLoading, isError } = useWidgetByIri(id, type)
 
@@ -26,5 +33,7 @@ export function useGridData(id: string | null, type: WidgetSubType | null) {
 		isError,
 		title: data?.title ?? '',
 		items: data?.items ?? [],
+		id,
+		type
 	}
 }

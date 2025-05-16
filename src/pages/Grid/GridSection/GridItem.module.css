@@ -1,11 +1,11 @@
 .gridItem {
 	background: var(--color-white);
+	cursor: pointer;
 	line-height: 1.25rem;
 	transition: all 300ms ease-in;
 }
 
-.gridItem,
-.gridItem a {
+.gridItem {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
@@ -31,8 +31,8 @@
 	text-align: center;
 }
 
-.gridItem.isInformation {
-	cursor: pointer;
+.gridItem.isStatic {
+	cursor: default;
 }
 
 .gridItem:hover {
@@ -45,11 +45,11 @@
 	color: var(--color-white);
 }
 
-	/**
-	 * The background of the grid is the primary color. We can use color-mix
-	 * or a transparent white to create a similar effect.
-	 * background-color: color-mix(in srgb, white, var(--color-primary) 15%);
-	 */
+/**
+* The background of the grid is the primary color. We can use color-mix
+* or a transparent white to create a similar effect.
+* background-color: color-mix(in srgb, white, var(--color-primary) 15%);
+*/
 .gridItem.isStatic:hover {
 	background-color: rgba(255, 255, 255, 0.85);
 }

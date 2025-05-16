@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../constants/mainConstants';
+
+export const API_BASE_URL =
+  'https://api.podiumkunst.triply.cc/queries/Podiumkunstnet';
 
 const axiosClient = axios.create({
   baseURL: API_BASE_URL,

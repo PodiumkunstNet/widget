@@ -1,13 +1,23 @@
+import { useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 
 export interface ExtendedDocument extends Document {
 	startViewTransition: any
 }
 
-export default function useAnimatedRouter() {
+/**
+ * Utilise the new View Transition API to animate page transitions. 
+ * 
+ * To use the View Transition API, we can't use React Router Link,
+ * but have to rely on this `navigate` wrapper function.
+ * 
+ * See components/Layout/index.module.css for root and main transition
+ * styles.
+ */
+export function useTransitionNavigate() {
 	const reactRouterNavigate = useNavigate()
 
-	function navigate(url: string) {
+	const navigate = useCallback((url: string) => {
 		const extendedDocument = document as ExtendedDocument
 		if (!extendedDocument.startViewTransition) {
 			reactRouterNavigate(url)
@@ -16,9 +26,9 @@ export default function useAnimatedRouter() {
 				reactRouterNavigate(url)
 			})
 		}
-	}
+	}, [])
 
-	function back() {
+	const back = useCallback(() => {
 		const extendedDocument = document as ExtendedDocument
 		if (!extendedDocument.startViewTransition) {
 			reactRouterNavigate(-1)
@@ -27,7 +37,7 @@ export default function useAnimatedRouter() {
 				reactRouterNavigate(-1)
 			})
 		}
-	}
+	}, [])
 
 	return { navigate, back }
 }

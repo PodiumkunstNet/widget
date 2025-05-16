@@ -10,7 +10,7 @@ export enum GridCategory {
 
 export interface GridItem {
 	key: string
-	value?: string | null
+	value?: string
 	type: GridCategory
 	id?: string
 	note?: string | null

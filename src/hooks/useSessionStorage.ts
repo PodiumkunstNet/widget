@@ -1,50 +1,38 @@
-'use client';
-import { HOME_URL } from '../constants/mainConstants';
+"use client"
+import { GridDataState } from "../state"
 
-function useSessionStorageManager() {
-  const setHomeUrl = (newHomeUrl: string) => {
-    sessionStorage.setItem(HOME_URL, newHomeUrl);
-  };
+export const HOME_URL = 'WidgetHomeURL';
 
-  const setTitle = (uniqueId: string, title: string | undefined | null) => {
-    sessionStorage.setItem(uniqueId, title ?? '');
-  };
+type ID = GridDataState["id"]
+type Type = GridDataState["type"]
 
-  const getTitle = (url: string) => {
-    if (typeof window !== 'undefined') {
-      return sessionStorage?.getItem(url) || '';
-    }
-    return '';
-  };
-
-  const removeTitle = (url: string) => {
-    sessionStorage?.removeItem(url);
-  };
-
-  const getHomeUrl = () => {
-    if (typeof window !== 'undefined') {
-      return sessionStorage.getItem(HOME_URL);
-    }
-    return '/widget';
-  };
-
-  const removeHomeUrl = () => {
-    sessionStorage.removeItem(HOME_URL);
-  };
-
-  const clearAll = () => {
-    sessionStorage.clear();
-  };
-
-  return {
-    getTitle,
-    getHomeUrl,
-    setTitle,
-    setHomeUrl,
-    removeTitle,
-    removeHomeUrl,
-    clearAll,
-  };
+function createUniqueID(id: ID, type: Type) {
+	return `${id}-${type}`
 }
 
-export default useSessionStorageManager;
+class SessionStorageManager {
+	setHomeURL(id: ID, type: Type) {
+		const url = `/widget?id=${id}&type=${type}`
+		console.log("Setting home URL in sessionStorage:", url)
+		sessionStorage.setItem(HOME_URL, url)
+	}
+
+	getHomeURL(): string | null {
+		return sessionStorage.getItem(HOME_URL)
+	}
+
+	setTitle(id: ID, type: Type, title: string | undefined) {
+		console.log("Setting title in sessionStorage:", id, title)
+		sessionStorage.setItem(createUniqueID(id, type), title ?? "")
+	}
+
+	getTitle(id: ID, type: Type) {
+		return sessionStorage?.getItem(createUniqueID(id, type)) ?? ""
+	}
+
+	clearAll() {
+		sessionStorage.clear()
+	}
+}
+
+export const sessionStore = new SessionStorageManager()
