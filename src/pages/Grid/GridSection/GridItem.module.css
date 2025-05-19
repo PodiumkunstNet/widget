@@ -33,6 +33,10 @@
 	cursor: default;
 }
 
+.gridItem.more {
+	position: relative;
+}
+
 .gridItem.more:hover {
 	background: var(--color-primary);
 	transition: all 300ms ease-out;
@@ -55,4 +59,136 @@
 .gridItem.static:hover .key,
 .gridItem.static:hover .value {
 	color: var(--color-black);
+}
+
+
+
+
+/**
+ * Page flip animation effect 
+ *
+ * See https://codepen.io/Gijsjan/pen/ZYYNOwX for page flip
+ */ 
+
+.dog-ear-wrapper,
+.dog-ear {
+	transition: transform 1s ease-in-out;
+	transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Dog-ear base */
+.dog-ear-wrapper {
+	background: rgba(15, 120, 120, 0);
+	height: 200%;
+	overflow: hidden;
+	pointer-events: none;
+	position: absolute;
+	transform: rotate(-20deg) translateX(-22%);
+	width: 200%;
+	z-index: 2;
+}
+
+.dog-ear-shadow {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	right: 0;
+	z-index: 1;
+}
+
+.dog-ear {
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 0, 0, .5);
+	top: 0;
+	right: 0;
+	width: 50%;
+	height: 50%;
+	position: absolute;
+	transform: rotate(-45deg) translateX(66%) translatey(116%);
+	transition: transform 1s ease-in-out;
+	transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+	pointer-events: all;
+}
+
+.backside {
+	background-color: color-mix(in srgb, white, var(--color-primary) 15%);
+}
+
+.gridItem.flip {
+	overflow: hidden;
+}
+
+.gridItem.flip:hover {
+	overflow: visible;
+}
+
+.gridItem.flip:hover .dog-ear-wrapper {
+	transform: rotate(0) translateX(-75%) translateY(25%);
+	z-index: 3;
+}
+
+.gridItem.flip:hover .dog-ear {
+	transform: rotate(0deg) translateX(0);
+}
+
+
+/**
+ * Turn animation effect
+ */
+
+.gridItem.static {
+	padding: 0;
+}
+
+.gridItem.static:hover,
+.gridItem.static {
+	background: var(--color-primary);
+}
+
+.turn-wrapper {
+	perspective: 1000px;
+}
+
+/* flip the pane when hovered */
+.turn-wrapper:hover .turner,
+.turn-wrapper.hover .turner {
+	transform: rotateY(180deg);
+}
+
+.turn-wrapper, .turn-front, .turn-back {
+	width: 100%;
+	height: 100%;
+}
+
+/* flip speed goes here */
+.turner {
+	transition: 1.2s;
+	transform-style: preserve-3d;
+	position: relative;
+	height: 100%;
+}
+
+/* hide back of pane during swap */
+.turn-front, .turn-back {
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: var(--color-white);
+}
+
+/* front pane, placed above back */
+.turn-front {
+	z-index: 2;
+	transform: rotateY(0deg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+/* back, initially hidden pane */
+.turn-back {
+	transform: rotateY(180deg);
+	background: yellow;
 }

@@ -7,6 +7,7 @@ import { Props as GridSectionProps } from "./GridSection"
 import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
 import { ReactNode } from "react"
+import { Page } from "../../../components/Page"
 
 type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 	item: GridItem
@@ -22,10 +23,7 @@ export function GridItem({ item, isSubCategoryView }: Props) {
 	}
 
 	return (
-		<GridItemWrapper
-			item={item}
-			onClick={onClick}
-		>
+		<GridItemWrapper item={item} onClick={onClick}>
 			<span className={classes.key}>{item.key}</span>
 			<span className={classes.value}>{item.value}</span>
 		</GridItemWrapper>
@@ -36,7 +34,7 @@ export function GridItemWrapper({
 	children,
 	className,
 	item,
-	onClick
+	onClick,
 }: {
 	children?: ReactNode
 	className?: string
@@ -45,7 +43,10 @@ export function GridItemWrapper({
 }) {
 	return (
 		<li
-			className={cn(classes.gridItem, classes[item.type], className)}
+			className={cn(classes.gridItem, classes[item.type], className, {
+				[classes["flip"]]: item.type === GridCategory.More,
+				[classes["turn"]]: item.type === GridCategory.Static,
+			})}
 			onClick={() => {
 				const title = item.key ? `${item.key} ${item.value}` : item.value
 				sessionStore.setTitle(item?.id, item.subType, title)
@@ -53,7 +54,34 @@ export function GridItemWrapper({
 				if (onClick) onClick()
 			}}
 		>
-			{children}
+			{item.type === GridCategory.More && (
+				<div className={classes["dog-ear-wrapper"]}>
+					<div className={classes["dog-ear-shadow"]} />
+					<div className={classes["dog-ear"]}>
+						<Page className={classes.backside}>
+							<img src="/oostpool.png" />
+						</Page>
+					</div>
+				</div>
+			)}
+			{
+			item.type === GridCategory.Static
+				? (
+					<div className={classes["turn-wrapper"]}>
+						<div className={classes["turner"]}>
+							<div className={classes["turn-front"]}>
+								{children}
+							</div>
+							<div className={classes["turn-back"]}>
+								<Page className={classes.backside}>
+									<img src="/oostpool.png" />
+								</Page>
+							</div>
+						</div>
+					</div>
+				)
+				: children
+			}
 		</li>
 	)
 }
