@@ -11,7 +11,7 @@ import { Actions } from "../../../state/actions"
 import { Logo } from "../../Logo"
 
 import classes from './index.module.css'
-import { IconCaretLeftFilled } from "@tabler/icons-react"
+import { IconCaretLeftFilled, IconX } from "@tabler/icons-react"
 import { useLocation } from "react-router-dom"
 
 type Props = {
@@ -90,9 +90,17 @@ export function Header({
 										back()
 									}}
 								>
-									{/* <ArrowBack /> */}
-									<IconCaretLeftFilled size={18} />
-									Terug
+									{
+										infoItem == null
+										? <>
+											Terug
+											<IconCaretLeftFilled size={18} />
+										</>
+										: <>
+											Sluiten
+											<IconX size={18} />
+										</>
+									}
 								</button>
 							</li>
 						}
