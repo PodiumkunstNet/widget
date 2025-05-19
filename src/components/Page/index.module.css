@@ -1,0 +1,22 @@
+.page {
+	background: var(--color-white);
+	padding: 1rem 3rem;
+	text-align: center;
+	color: var(--color-black);
+	font-family: var(--font-serif);
+	display: grid;
+	grid-template-rows: 1fr 3fr;
+	height: 100%;
+}
+
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+} 
+
+.page h2 {
+	font-family: var(--font-serif);
+	font-size: 1.25rem;
+	font-weight: bold;
+}

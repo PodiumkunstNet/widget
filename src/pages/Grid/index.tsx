@@ -1,10 +1,9 @@
 import { GridSection } from "./GridSection/GridSection"
-import { InfoSection } from "../../components/InfoSection"
 import Loader from "../../components/Loader/Loader"
 import ErrorPreview from "../../components/Preview/ErrorPreview"
 
 import { useContext, useEffect } from "react"
-import { GridDataContext, StateContext } from "../../state"
+import { GridDataContext } from "../../state"
 import { sessionStore } from "../../hooks/useSessionStorage"
 
 type Props = {
@@ -12,7 +11,6 @@ type Props = {
 }
 
 export const Grid = ({ isSubCategoryView }: Props) => {
-	const { infoItem } = useContext(StateContext)
 	const {
 		items,
 		isLoading,
@@ -38,12 +36,6 @@ export const Grid = ({ isSubCategoryView }: Props) => {
 				error="Helaas is de widget op dit moment niet beschikbaar."
 				isSubCategoryView={isSubCategoryView}
 			/>
-		)
-	}
-
-	if (infoItem) {
-		return (
-			<InfoSection item={infoItem} />
 		)
 	}
 

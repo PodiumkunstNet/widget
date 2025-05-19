@@ -1,7 +1,8 @@
-import { type GridItem } from "../../../types/grid"
+import { GridCategory, type GridItem } from "../../../types/grid"
 import { GridItem as GridItemView } from "./GridItem"
 
 import classes from "./GridSection.module.css"
+import { InfoItemView } from "./InfoItem"
 
 export interface Props {
 	items: GridItem[]
@@ -15,7 +16,12 @@ export const GridSection = ({
 	return (
 		<ul className={classes.gridSection}>
 			{items.map((item, index) => (
-				<GridItemView
+				item.type === GridCategory.Information
+				? <InfoItemView
+					item={item}
+					key={index}
+				/>
+				: <GridItemView
 					item={item}
 					isSubCategoryView={isSubCategoryView}
 					key={index}

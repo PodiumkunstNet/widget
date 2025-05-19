@@ -1,16 +1,14 @@
 .gridItem {
+	align-items: center;
 	background: var(--color-white);
 	cursor: pointer;
-	line-height: 1.25rem;
-	transition: all 300ms ease-in;
-}
-
-.gridItem {
-	align-items: center;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	justify-content: center;
+	line-height: 1.25rem;
+	padding: 1rem;
+	transition: all 300ms ease-in;
 	width: 100%;
 }
 
@@ -31,17 +29,17 @@
 	text-align: center;
 }
 
-.gridItem.isStatic {
+.gridItem.static {
 	cursor: default;
 }
 
-.gridItem:hover {
+.gridItem.more:hover {
 	background: var(--color-primary);
 	transition: all 300ms ease-out;
 }
 
-.gridItem:hover .key,
-.gridItem:hover .value {
+.gridItem.more:hover .key,
+.gridItem.more:hover .value {
 	color: var(--color-white);
 }
 
@@ -50,11 +48,11 @@
 * or a transparent white to create a similar effect.
 * background-color: color-mix(in srgb, white, var(--color-primary) 15%);
 */
-.gridItem.isStatic:hover {
+.gridItem.static:hover {
 	background-color: rgba(255, 255, 255, 0.85);
 }
 
-.gridItem.isStatic:hover .key,
-.gridItem.isStatic:hover .value {
+.gridItem.static:hover .key,
+.gridItem.static:hover .value {
 	color: var(--color-black);
 }

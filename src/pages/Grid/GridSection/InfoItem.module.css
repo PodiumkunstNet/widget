@@ -1,0 +1,40 @@
+.isInformation .infoItem {
+	height: auto;
+	width: auto;
+}
+
+.isInformation .page {
+	display: grid;
+	grid-template-rows: 1fr 0fr;
+	width: 100%;
+	height: 100%;
+	transition: all .4s ease-in-out;
+}
+
+.keyValueContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+
+.isInformation :global(.detached) {
+	border: 1px solid var(--color-primary);
+	box-shadow: 0 0 6px var(--color-primary);
+}
+
+.isInformation :global(.full-screen) .page {
+	grid-template-rows: 1fr 3fr;
+}
+
+.isInformation :global(.full-screen) :global(.page-content) {
+	opacity: 1;
+}
+
+.isInformation :global(.page-content) {
+	overflow: hidden;
+	opacity: 0;
+	transition: all .4s ease-in-out;
+}
