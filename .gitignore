@@ -2,3 +2,5 @@
 OLD
 node_modules
 VRAGEN.md
+dist
+scripts
