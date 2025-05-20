@@ -12,9 +12,10 @@ export function Page({
 	className?: string
 	header?: ReactNode
 }) {
-	console.log(className, cx(classes.page, className))
 	return (
-		<section className={cx(classes.page, "page", className)}>
+		<section className={cx(classes.page, "page", className, {
+			[classes.noHeader]: !header,
+		})}>
 			{
 				header && (
 					<header className={cx(classes.header, "page-header")}>

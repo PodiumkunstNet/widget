@@ -9,6 +9,10 @@
 	height: 100%;
 }
 
+.noHeader {
+	grid-template-rows: 1fr;
+}
+
 .header {
 	display: flex;
 	justify-content: center;
@@ -19,4 +23,8 @@
 	font-family: var(--font-serif);
 	font-size: 1.25rem;
 	font-weight: bold;
+}
+
+.content {
+	min-height: 0;
 }

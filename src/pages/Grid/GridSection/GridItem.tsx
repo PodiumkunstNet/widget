@@ -6,8 +6,9 @@ import { Props as GridSectionProps } from "./GridSection"
 
 import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
-import { ReactNode } from "react"
+import { ReactNode, useRef, useState } from "react"
 import { Page } from "../../../components/Page"
+import { TileTurner } from "./TileTurner"
 
 type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 	item: GridItem
@@ -64,24 +65,18 @@ export function GridItemWrapper({
 					</div>
 				</div>
 			)}
-			{
-			item.type === GridCategory.Static
-				? (
-					<div className={classes["turn-wrapper"]}>
-						<div className={classes["turner"]}>
-							<div className={classes["turn-front"]}>
-								{children}
-							</div>
-							<div className={classes["turn-back"]}>
-								<Page className={classes.backside}>
-									<img src="/oostpool.png" />
-								</Page>
-							</div>
-						</div>
-					</div>
-				)
-				: children
-			}
+			{item.type === GridCategory.Static ? (
+				<TileTurner
+					back={
+						<Page className={classes.backside}>
+							<img src="/oostpool.png" style={{ maxHeight: '100%'}} />
+						</Page>
+					}
+					front={children}
+				/>
+			) : (
+				children
+			)}
 		</li>
 	)
 }

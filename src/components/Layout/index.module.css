@@ -4,8 +4,11 @@
 	background: var(--color-orange);
 	display: grid;
 	grid-template-columns: 1fr 2fr;
-	max-width: 900px;
-	min-height: 444px;
+	width: 100dvw;
+	height: 100dvh;
+
+	/* max-width: 900px;
+	min-height: 444px; */
 	margin: auto;
 	transition: grid-template-columns 0.4s ease-in;
 }

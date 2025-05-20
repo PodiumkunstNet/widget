@@ -61,8 +61,14 @@
 	color: var(--color-black);
 }
 
+.gridItem.static {
+	padding: 0;
+}
 
-
+.gridItem.static:hover,
+.gridItem.static {
+	background: var(--color-primary);
+}
 
 /**
  * Page flip animation effect 
@@ -136,23 +142,9 @@
  * Turn animation effect
  */
 
-.gridItem.static {
-	padding: 0;
-}
-
-.gridItem.static:hover,
-.gridItem.static {
-	background: var(--color-primary);
-}
 
 .turn-wrapper {
 	perspective: 1000px;
-}
-
-/* flip the pane when hovered */
-.turn-wrapper:hover .turner,
-.turn-wrapper.hover .turner {
-	transform: rotateY(180deg);
 }
 
 .turn-wrapper, .turn-front, .turn-back {
@@ -162,7 +154,6 @@
 
 /* flip speed goes here */
 .turner {
-	transition: 1.2s;
 	transform-style: preserve-3d;
 	position: relative;
 	height: 100%;
@@ -190,5 +181,4 @@
 /* back, initially hidden pane */
 .turn-back {
 	transform: rotateY(180deg);
-	background: yellow;
 }
