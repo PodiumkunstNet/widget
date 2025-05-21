@@ -1,0 +1,61 @@
+.container {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(180px, 240px)) 1fr;
+	grid-template-rows: fit-content(0) fit-content(0) 1fr;
+	grid-template-areas: 
+		"iriInput iriInput iriSelect preview"
+		"sizeSelect orientationSelect colorSelect preview"
+		"sourceCode sourceCode sourceCode preview";
+	height: 100%;
+	gap: 3rem;
+	row-gap: 4rem;
+}
+
+.iriInput {
+	grid-area: iriInput;
+}
+
+.iriSelect {
+	grid-area: iriSelect;
+}
+
+.sourceCode {
+	grid-area: sourceCode;
+	align-items: end;
+}
+
+.preview {
+	grid-area: preview;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(var(--color-orange-rgb), .05);
+	border: 1px solid rgba(var(--color-orange-rgb), .25);
+}
+
+/* .container {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: fit-content(0) fit-content(0) 1fr;
+	height: 100%;
+	gap: 3rem;
+}
+
+.iriInput {
+	grid-column: 1 / 4;
+}
+
+.iriSelect,
+.sourceCode
+ {
+	grid-column: 4 / -1;
+}
+
+.preview {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(var(--color-orange-rgb), .05);
+	border: 1px solid rgba(var(--color-orange-rgb), .25);
+} */

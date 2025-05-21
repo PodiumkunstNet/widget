@@ -19,6 +19,10 @@
 	--color-black: rgb(34, 34, 34);
 	--font-serif: 'GoodSans', sans-serif;
 	--font-sans: 'EuclidTriangle', sans-serif;
+	--color-primary: var(--color-orange);
+	--color-primary-rgb: var(--color-orange-rgb);
+	--color-secondary: var(--color-blue);
+	--color-secondary-rgb: var(--color-blue-rgb);
 }
 
 .font-euclid {

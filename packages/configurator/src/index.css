@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'EuclidTriangle';
+  src: url('/fonts/EuclidTriangle-Medium-WebS.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'GoodSans';
+  src: url('/fonts/GoodSans-Regular.ttf') format('truetype');
+}
+
+:root {
+	--color-blue: rgb(5, 53, 255);
+	--color-blue-rgb: 5, 53, 255;
+	--color-white: rgb(255, 255, 255);
+	--color-orange: rgb(199, 80, 0);
+	--color-orange-rgb: 199, 80, 0;
+	--color-black: rgb(34, 34, 34);
+	--font-serif: 'GoodSans', sans-serif;
+	--font-sans: 'EuclidTriangle', sans-serif;
+	--color-primary: var(--color-orange);
+}
+
+.font-euclid {
+  font-family: 'EuclidTriangle', sans-serif;
+}
+
+.font-goodsans {
+  font-family: 'GoodSans', sans-serif;
+}
+
+h2 {
+	font-size: 1rem;
+	color: var(--color-primary);
+}

@@ -5,15 +5,7 @@ import { AboutPage } from "./pages/About"
 
 import ReactQueryProvider from "./Providers/ReactQueryProvider"
 import { Layout } from "./components/Layout"
-import {
-	DispatchContext,
-	GridDataContext,
-	initialState,
-	StateContext,
-} from "./state"
-import { ReactNode, useReducer } from "react"
-import { stateReducer } from "./state/reducer"
-import { useGridData } from "./pages/useGridData"
+import { Providers } from "./Providers"
 
 function App() {
 	return (
@@ -36,21 +28,6 @@ function App() {
 				</Providers>
 			</Router>
 		</ReactQueryProvider>
-	)
-}
-
-function Providers({ children }: { children: ReactNode }) {
-	const gridData = useGridData()
-	const [state, dispatch] = useReducer(stateReducer, initialState)
-
-	return (
-		<DispatchContext.Provider value={dispatch}>
-			<StateContext.Provider value={state}>
-				<GridDataContext.Provider value={gridData}>
-					{children}
-				</GridDataContext.Provider>
-			</StateContext.Provider>
-		</DispatchContext.Provider>
 	)
 }
 

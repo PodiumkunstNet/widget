@@ -6,7 +6,7 @@ import { Props as GridSectionProps } from "./GridSection"
 
 import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
-import { ReactNode, useRef, useState } from "react"
+import { ReactNode } from "react"
 import { Page } from "../../../components/Page"
 import { TileTurner } from "./TileTurner"
 
@@ -46,7 +46,6 @@ export function GridItemWrapper({
 		<li
 			className={cn(classes.gridItem, classes[item.type], className, {
 				[classes["flip"]]: item.type === GridCategory.More,
-				[classes["turn"]]: item.type === GridCategory.Static,
 			})}
 			onClick={() => {
 				const title = item.key ? `${item.key} ${item.value}` : item.value
@@ -55,16 +54,6 @@ export function GridItemWrapper({
 				if (onClick) onClick()
 			}}
 		>
-			{item.type === GridCategory.More && (
-				<div className={classes["dog-ear-wrapper"]}>
-					<div className={classes["dog-ear-shadow"]} />
-					<div className={classes["dog-ear"]}>
-						<Page className={classes.backside}>
-							<img src="/oostpool.png" />
-						</Page>
-					</div>
-				</div>
-			)}
 			{item.type === GridCategory.Static ? (
 				<TileTurner
 					back={
@@ -80,3 +69,14 @@ export function GridItemWrapper({
 		</li>
 	)
 }
+
+			{/* {item.type === GridCategory.More && (
+				<div className={classes["dog-ear-wrapper"]}>
+					<div className={classes["dog-ear-shadow"]} />
+					<div className={classes["dog-ear"]}>
+						<Page className={classes.backside}>
+							<img src="/oostpool.png" />
+						</Page>
+					</div>
+				</div>
+			)} */}

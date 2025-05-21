@@ -1,22 +1,22 @@
 .container {
-	--color-primary: var(--color-orange);
-	--color-primary-rgb: var(--color-orange-rgb);
-	background: var(--color-orange);
+	background: var(--color-primary);
 	display: grid;
 	grid-template-columns: 1fr 2fr;
+
 	width: 100dvw;
 	height: 100dvh;
 
 	/* max-width: 900px;
 	min-height: 444px; */
+
 	margin: auto;
 	transition: grid-template-columns 0.4s ease-in;
 }
 
 .container.isSub {
-	--color-primary: var(--color-blue);
-	--color-primary-rgb: var(--color-blue-rgb);
-	background: var(--color-blue);
+	/* --color-primary: var(--color-blue);
+	--color-primary-rgb: var(--color-blue-rgb); */
+	background: var(--color-secondary);
 }
 
 /* .container.fullpage {

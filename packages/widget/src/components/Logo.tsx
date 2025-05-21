@@ -8,7 +8,7 @@ const LogoBlackSrc = '/PodiumkunstLogo-Large-Black.png'
 interface LogoProps {
   dark?: boolean;
   large?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 // TODO do we want/need the `dark` and `large` prop, solve with 
