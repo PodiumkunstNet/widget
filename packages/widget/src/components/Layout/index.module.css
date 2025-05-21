@@ -1,5 +1,7 @@
 .container {
-	background: var(--color-primary);
+	--color-current: var(--color-primary);
+	--color-current-rgb: var(--color-primary-rgb);
+	background: var(--color-current);
 	display: grid;
 	grid-template-columns: 1fr 2fr;
 
@@ -14,9 +16,11 @@
 }
 
 .container.isSub {
+	--color-current: var(--color-secondary);
+	--color-current-rgb: var(--color-secondary-rgb);
 	/* --color-primary: var(--color-blue);
 	--color-primary-rgb: var(--color-blue-rgb); */
-	background: var(--color-secondary);
+	/* background: var(--color-secondary); */
 }
 
 /* .container.fullpage {

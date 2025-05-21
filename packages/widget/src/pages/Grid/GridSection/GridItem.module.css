@@ -17,7 +17,7 @@
 }
 
 .key {
-	color: var(--color-primary);
+	color: var(--color-current);
 	font-size: .625rem
 }
 
@@ -38,7 +38,7 @@
 }
 
 .gridItem.more:hover {
-	background: var(--color-primary);
+	background: var(--color-current);
 	transition: all 300ms ease-out;
 }
 
@@ -67,7 +67,7 @@
 
 .gridItem.static:hover,
 .gridItem.static {
-	background: var(--color-primary);
+	background: var(--color-current);
 }
 
 /**

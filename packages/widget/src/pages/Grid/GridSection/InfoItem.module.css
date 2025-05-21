@@ -21,8 +21,8 @@
 }
 
 .isInformation :global(.detached) {
-	border: 1px solid var(--color-primary);
-	box-shadow: 0 0 6px var(--color-primary);
+	border: 1px solid var(--color-current);
+	box-shadow: 0 0 6px var(--color-current);
 	z-index: 10;
 }
 

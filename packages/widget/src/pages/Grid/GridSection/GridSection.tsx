@@ -1,3 +1,4 @@
+import cx from 'clsx'
 import { GridCategory, type GridItem } from "../../../types/grid"
 import { GridItem as GridItemView } from "./GridItem"
 
@@ -13,8 +14,11 @@ export const GridSection = ({
 	items,
 	isSubCategoryView,
 }: Props) => {
+	console.log(isSubCategoryView)
 	return (
-		<ul className={classes.gridSection}>
+		<ul className={cx(classes.gridSection, { 
+			[classes.isSub]: isSubCategoryView,
+		})}>
 			{items.map((item, index) => (
 				item.type === GridCategory.Information
 				? <InfoItemView

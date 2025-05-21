@@ -1,5 +1,6 @@
 .gridSection {
 	--border-width: 2px;
+	/* --color-current: var(--color-primary); */
 	border: var(--border-width) solid rgba(0, 0, 0, 0);
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -9,3 +10,7 @@
 	position: relative;
 	width: 100%;
 }
+
+/* .isSub {
+	--color-current: var(--color-secondary);
+} */

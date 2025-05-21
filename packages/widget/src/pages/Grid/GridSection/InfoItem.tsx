@@ -19,7 +19,7 @@ type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 const endState: Keyframe = {
 	inset: "4px",
 	position: "absolute",
-	borderColor: "rgba(var(--color-primary-rgb), 1)",
+	borderColor: "rgba(var(--color-current-rgb), 1)",
 }
 
 const animateOptions: KeyframeAnimationOptions = {
@@ -82,7 +82,7 @@ function useAnimation(item: GridItem, ref: React.RefObject<HTMLDivElement>) {
 				bottom: `${gridRect.bottom - itemRect.bottom - 2}px`,
 				right: `${gridRect.right - itemRect.right - 2}px`,
 				position: "absolute",
-				borderColor: "rgba(var(--color-primary-rgb), 0)",
+				borderColor: "rgba(var(--color-current-rgb), 0)",
 			}
 
 			setStartState(startState)

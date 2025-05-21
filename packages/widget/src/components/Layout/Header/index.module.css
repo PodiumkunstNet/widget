@@ -90,7 +90,7 @@
 
 .buttonWrapper:hover {
 	background-color: var(--color-white);
-	color: var(--color-primary);
+	color: var(--color-current);
 	padding-left: .5rem;
 	padding-right: .5rem;
 }

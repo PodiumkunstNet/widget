@@ -14,7 +14,7 @@ type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 	item: GridItem
 }
 
-export function GridItem({ item, isSubCategoryView }: Props) {
+export function GridItem({ item, isSubCategoryView = false }: Props) {
 	const url = useURL(isSubCategoryView, item)
 	const { navigate } = useTransitionNavigate()
 
@@ -44,9 +44,7 @@ export function GridItemWrapper({
 }) {
 	return (
 		<li
-			className={cn(classes.gridItem, classes[item.type], className, {
-				[classes["flip"]]: item.type === GridCategory.More,
-			})}
+			className={cn(classes.gridItem, classes[item.type], className)}
 			onClick={() => {
 				const title = item.key ? `${item.key} ${item.value}` : item.value
 				sessionStore.setTitle(item?.id, item.subType, title)
