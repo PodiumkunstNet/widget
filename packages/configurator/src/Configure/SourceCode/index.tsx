@@ -1,13 +1,15 @@
 import { Button, Stack, Textarea } from "@mantine/core"
 import { IconCheck, IconCopy } from "@tabler/icons-react"
+import { useEffect, useState } from "react"
 
 interface Props {
 	source: string
-	onCopy: () => void
-	copied: boolean
 	disabled?: boolean
 }
-export function SourceCode({ source, onCopy, copied, disabled }: Props) {
+export function SourceCode({ source, disabled }: Props) {
+	const [copied, setCopied] = useState(false)
+	useEffect(() => setCopied(false), [source])
+
 	return (
 		<Stack>
 			<Textarea id="embedCode" rows={4} readOnly value={source} />
@@ -16,7 +18,7 @@ export function SourceCode({ source, onCopy, copied, disabled }: Props) {
 				disabled={disabled}
 				onClick={() => {
 					navigator.clipboard.writeText(source)
-					onCopy()
+					setCopied(true)
 				}}
 				leftSection={copied ? <IconCheck /> : <IconCopy />}
 			>

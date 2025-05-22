@@ -37,7 +37,6 @@ export function Configure() {
 		primaryColor,
 		secondaryColor,
 	)
-	const [copied, setCopied] = useState(false)
 
 	return (
 		<div className={classes.container}>
@@ -48,7 +47,6 @@ export function Configure() {
 				placeholder="Voer een IRI in"
 				value={id}
 				onChange={(e) => {
-					setCopied(false)
 					setID(e.target.value)
 				}}
 			/>
@@ -76,7 +74,6 @@ export function Configure() {
 				]}
 				value={id}
 				onChange={(value) => {
-					setCopied(false)
 					setID(value || "")
 				}}
 			/>
@@ -95,7 +92,6 @@ export function Configure() {
 							label={option}
 							checked={option === size}
 							onChange={() => {
-								setCopied(false)
 								setSize(option)
 							}}
 						/>
@@ -111,7 +107,6 @@ export function Configure() {
 							label={option}
 							checked={option === orientation}
 							onChange={() => {
-								setCopied(false)
 								setOrientation(option)
 							}}
 						/>
@@ -143,9 +138,7 @@ export function Configure() {
 					<h2 className="mb-6">Embed code</h2>
 				</label>
 				<SourceCode
-					copied={copied}
 					disabled={!id}
-					onCopy={() => setCopied(true)}
 					source={source}
 				/>
 			</div>
