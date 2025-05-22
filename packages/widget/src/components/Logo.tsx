@@ -40,8 +40,8 @@ export function Logo({
         <img
           src={dark ? LogoBlackSrc : LogoSrc}
           alt="Podiumkunst.net logo"
-          width={89}
-          height={32}
+         //  width={89}
+         //  height={32}
         />
       </div>
       {/* <div

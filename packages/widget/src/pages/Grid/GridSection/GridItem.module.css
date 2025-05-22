@@ -7,6 +7,7 @@
 	height: 100%;
 	justify-content: center;
 	line-height: 1.25rem;
+	min-height: 0;
 	padding: 1rem;
 	transition: all 300ms ease-in;
 	width: 100%;
@@ -18,7 +19,8 @@
 
 .key {
 	color: var(--color-current);
-	font-size: .625rem
+	font-size: .625rem;
+	text-align: center;
 }
 
 .value {
@@ -85,4 +87,22 @@
 .gridItem.static:hover,
 .gridItem.static {
 	background: var(--color-current);
+}
+
+
+@media 
+	(orientation: portrait) and (max-height: 360px),
+	(orientation: landscape) and (max-width: 360px) {
+	.gridItem {
+		line-height: .666rem;
+		padding: .1rem;
+	}
+	.key {
+		/* font-size: .5rem; */
+		font-weight: normal;
+	}
+	.value {
+		font-size: .666rem;
+		font-weight: normal;
+	}
 }

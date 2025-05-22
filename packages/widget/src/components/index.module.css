@@ -1,3 +1,12 @@
 .Box {
 	padding: 1rem;
 }
+
+/* Media query for small varianhhcjkhciwjkt */
+@media	(orientation: portrait) and (max-height: 360px),
+			(orientation: landscape) and (max-width: 360px)
+{
+	.Box {
+		padding: 0.5rem;
+	}
+}
