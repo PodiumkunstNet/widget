@@ -33,6 +33,27 @@
 	border: 1px solid rgba(var(--color-orange-rgb), .25);
 }
 
+.radioLabel {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	width: 160px;
+
+}
+.radioLabel small {
+	color: #adb5bd;
+	font-size: 1em;
+	justify-self: end;
+}
+
+.radioLabel :global(.mantine-TextInput-root) {
+	padding-left: .5rem;
+}
+
+.radioLabel :global(.mantine-TextInput-input) {
+	padding-inline: .25rem;
+	text-align: end;
+}
+
 /* .container {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);

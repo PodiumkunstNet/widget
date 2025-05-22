@@ -5,6 +5,7 @@ export enum Actions {
 	SetIRI = "SET_IRI",
 	SetOrientation = "SET_ORIENTATION",
 	SetSize = "SET_SIZE",
+	SetCustomSize = "SET_CUSTOM_SIZE",
 }
 
 export type Action =
@@ -18,6 +19,13 @@ export type Action =
 		type: Actions.SetSize
 		payload: {
 			size: SizeValue
+		}
+	}
+	| {
+		type: Actions.SetCustomSize
+		payload: {
+			width?: string
+			height?: string
 		}
 	}
 	| {

@@ -2,10 +2,12 @@ import { SourceCode } from "./SourceCode"
 import { useReducer } from "react"
 import { ColorInput, Radio, Select, Stack, TextInput } from "@mantine/core"
 
-import classes from "./index.module.css"
 import { initialState, Orientation, SizeValue } from "../state"
 import { stateReducer } from "../state/reducer"
 import { Actions } from "../state/actions"
+import { SelectSize } from "./SelectSize"
+
+import classes from "./index.module.css"
 
 export function Configure() {
 	const [state, dispatch] = useReducer(stateReducer, initialState)
@@ -57,34 +59,17 @@ export function Configure() {
 				}}
 			/>
 
-			<div>
-				<h2 className="mb-6">Selecteer formaat</h2>
-				<Stack gap="md">
-					{[
-						SizeValue.small,
-						SizeValue.medium,
-						SizeValue.large,
-						SizeValue.fill,
-					].map((option) => (
-						<Radio
-							key={option}
-							label={option}
-							checked={option === state.size}
-							onChange={() => {
-								dispatch({
-									type: Actions.SetSize,
-									payload: { size: option },
-								})
-							}}
-						/>
-					))}
-				</Stack>
-			</div>
+			<SelectSize state={state} dispatch={dispatch} />
+
 			<div>
 				<h2 className="mb-6">Selecteer orientatie</h2>
 				<Stack gap="md">
 					{[Orientation.Landscape, Orientation.Portrait].map((option) => (
 						<Radio
+							disabled={
+								state.size === SizeValue.Fill ||
+								state.size === SizeValue.Custom
+							}
 							key={option}
 							label={option}
 							checked={option === state.orientation}

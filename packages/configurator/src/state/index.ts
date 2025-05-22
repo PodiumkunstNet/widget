@@ -1,17 +1,19 @@
 export const IFRAME_ID = "pk-widget"
 
 export enum SizeValue {
-	small = "Small",
-	medium = "Medium",
-	large = "Large",
-	fill = "Fill",
+	Small = "Small",
+	Medium = "Medium",
+	Large = "Large",
+	Fill = "Fill",
+	Custom = "Custom",
 }
 
-export const sizes = {
-	[SizeValue.small]: [360, 240],
-	[SizeValue.medium]: [640, 480],
-	[SizeValue.large]: [900, 600],
-	[SizeValue.fill]: ["100%", "100%"],
+export const sizes: Record<SizeValue, [string, string]> = {
+	[SizeValue.Small]: ["360px", "240px"],
+	[SizeValue.Medium]: ["640px", "480px"],
+	[SizeValue.Large]: ["900px", "600px"],
+	[SizeValue.Fill]: ["100%", "100%"],
+	[SizeValue.Custom]: ["", ""],
 }
 
 export enum Orientation {
@@ -22,6 +24,8 @@ export enum Orientation {
 export const accessibilityTitle = "Podiumkunst Widget"
 
 export interface State {
+	customHeight: string
+	customWidth: string
 	iri: string
 	orientation: Orientation
 	size: SizeValue
@@ -39,9 +43,11 @@ const secondaryColor = getComputedStyle(root)
 	.trim()
 
 const _initialState: State = {
+	customHeight: "",
+	customWidth: "",
 	iri: "", /** "http://example.com/pknet/testWorkZF" */
 	orientation: Orientation.Landscape,
-	size: SizeValue.medium,
+	size: SizeValue.Medium,
 	primaryColor,
 	secondaryColor,
 	source: "",

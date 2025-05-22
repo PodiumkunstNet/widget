@@ -1,5 +1,5 @@
 import { type AppOptions } from "@widget/main"
-import { accessibilityTitle, IFRAME_ID, Orientation, sizes, State } from "."
+import { accessibilityTitle, IFRAME_ID, Orientation, sizes, SizeValue, State } from "."
 import { Action, Actions } from "./actions"
 import { WidgetSubType } from "../../../widget/src/types/mainWidgetData"
 
@@ -21,6 +21,17 @@ export function stateReducer(state: State, action: Action): State {
 			nextState = {
 				...nextState,
 				size: action.payload.size,
+				customHeight: "",
+				customWidth: "",
+			}
+			break
+		}
+
+		case Actions.SetCustomSize: {
+			nextState = {
+				...nextState,
+				customWidth: action.payload.width ?? nextState.customWidth,
+				customHeight: action.payload.height ?? nextState.customHeight,
 			}
 			break
 		}
@@ -75,11 +86,20 @@ export function updateSource(state: State) {
 	const encodedOptions = encodeURIComponent(JSON.stringify(options))
 	const url = `${origin}/widget?id=${state.iri}&type=${WidgetSubType.Work}&options=${encodedOptions}`
 
-	// Get the width and height based on the orientation and size
-	const [width, height] =
-		state.orientation === Orientation.Landscape
-			? sizes[state.size]
-			: structuredClone(sizes[state.size]).reverse()
+	let width
+	let height
+
+	if (state.size === SizeValue.Custom) {
+		width = state.customWidth
+		height = state.customHeight
+	} else {
+		[width, height] =
+			state.orientation === Orientation.Landscape
+				? sizes[state.size]
+				: structuredClone(sizes[state.size]).reverse()
+	}
+
+	if (width === "" || height === "") return ""
 
 	// Construct the iframe HTML
 	return `<iframe width="${width}" height="${height}" id=${IFRAME_ID} title=${accessibilityTitle} src="${url}" frameborder="0"></iframe>`
