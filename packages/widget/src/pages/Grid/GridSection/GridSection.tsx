@@ -14,7 +14,6 @@ export const GridSection = ({
 	items,
 	isSubCategoryView,
 }: Props) => {
-	console.log(isSubCategoryView)
 	return (
 		<ul className={cx(classes.gridSection, { 
 			[classes.isSub]: isSubCategoryView,

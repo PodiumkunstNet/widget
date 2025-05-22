@@ -1,40 +1,14 @@
 import { SourceCode } from "./SourceCode"
-import { Orientation, SizeValue, useSourceCode } from "./useSourceCode"
-import { useState } from "react"
-import {
-	ColorInput,
-	Radio,
-	Select,
-	Stack,
-	TextInput,
-} from "@mantine/core"
+import { useReducer } from "react"
+import { ColorInput, Radio, Select, Stack, TextInput } from "@mantine/core"
 
 import classes from "./index.module.css"
-
-const root = document.documentElement
-const initPrimaryColor = getComputedStyle(root)
-	.getPropertyValue("--color-primary")
-	.trim()
-const initSecondaryColor = getComputedStyle(root)
-	.getPropertyValue("--color-blue")
-	.trim()
+import { initialState, Orientation, SizeValue } from "../state"
+import { stateReducer } from "../state/reducer"
+import { Actions } from "../state/actions"
 
 export function Configure() {
-	const [id, setID] = useState<string>("http://example.com/pknet/testWorkZF")
-	const [orientation, setOrientation] = useState<Orientation>(
-		Orientation.Landscape,
-	)
-	const [size, setSize] = useState<SizeValue>(SizeValue.large)
-	const [primaryColor, setPrimaryColor] = useState<string>(initPrimaryColor)
-	const [secondaryColor, setSecondaryColor] =
-		useState<string>(initSecondaryColor)
-	const source = useSourceCode(
-		id,
-		orientation,
-		size,
-		primaryColor,
-		secondaryColor,
-	)
+	const [state, dispatch] = useReducer(stateReducer, initialState)
 
 	return (
 		<div className={classes.container}>
@@ -43,9 +17,12 @@ export function Configure() {
 				label={<h2>Voer een IRI in</h2>}
 				id="code"
 				placeholder="Voer een IRI in"
-				value={id}
+				value={state.iri}
 				onChange={(e) => {
-					setID(e.target.value)
+					dispatch({
+						type: Actions.SetIRI,
+						payload: { iri: e.target.value },
+					})
 				}}
 			/>
 			<Select
@@ -70,9 +47,13 @@ export function Configure() {
 						label: "Programma Concertgebouworkest - Furtwaengler; Wilhelm",
 					},
 				]}
-				value={id}
+				value={state.iri}
 				onChange={(value) => {
-					setID(value || "")
+					if (!value) return
+					dispatch({
+						type: Actions.SetIRI,
+						payload: { iri: value },
+					})
 				}}
 			/>
 
@@ -88,9 +69,12 @@ export function Configure() {
 						<Radio
 							key={option}
 							label={option}
-							checked={option === size}
+							checked={option === state.size}
 							onChange={() => {
-								setSize(option)
+								dispatch({
+									type: Actions.SetSize,
+									payload: { size: option },
+								})
 							}}
 						/>
 					))}
@@ -103,9 +87,12 @@ export function Configure() {
 						<Radio
 							key={option}
 							label={option}
-							checked={option === orientation}
+							checked={option === state.orientation}
 							onChange={() => {
-								setOrientation(option)
+								dispatch({
+									type: Actions.SetOrientation,
+									payload: { orientation: option },
+								})
 							}}
 						/>
 					))}
@@ -116,15 +103,25 @@ export function Configure() {
 				<Stack gap="md">
 					<ColorInput
 						label="Hoofdkleur"
-						value={primaryColor}
-						onChangeEnd={setPrimaryColor}
+						value={state.primaryColor}
+						onChangeEnd={(primaryColor) => {
+							dispatch({
+								type: Actions.SetColor,
+								payload: { primaryColor },
+							})
+						}}
 						format="rgb"
 						swatchesPerRow={3}
 					/>
 					<ColorInput
 						label="Ondersteunende kleur"
-						value={secondaryColor}
-						onChangeEnd={setSecondaryColor}
+						value={state.secondaryColor}
+						onChangeEnd={(secondaryColor) => {
+							dispatch({
+								type: Actions.SetColor,
+								payload: { secondaryColor },
+							})
+						}}
 						format="rgb"
 						swatchesPerRow={3}
 					/>
@@ -135,13 +132,13 @@ export function Configure() {
 				<label htmlFor="embedCode">
 					<h2 className="mb-6">Embed code</h2>
 				</label>
-				<SourceCode
-					disabled={!id}
-					source={source}
-				/>
+				<SourceCode disabled={!state.iri} source={state.source} />
 			</div>
 
-			<div className={classes.preview} dangerouslySetInnerHTML={{ __html: source }} />
+			<div
+				className={classes.preview}
+				dangerouslySetInnerHTML={{ __html: state.source }}
+			/>
 		</div>
 	)
 }

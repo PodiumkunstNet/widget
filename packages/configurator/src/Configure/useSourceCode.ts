@@ -1,61 +1,38 @@
-import { type AppOptions } from "@widget/main"
-import { WidgetSubType } from "@widget/types/mainWidgetData"
-import { useState, useEffect } from "react"
+// import { type AppOptions } from "@widget/main"
+// import { WidgetSubType } from "@widget/types/mainWidgetData"
+// import { useState, useEffect } from "react"
 
-export const IFRAME_ID = "pk-widget"
+// export function useSourceCode(
+// 	id: string,
+// 	orientation: Orientation,
+// 	size: SizeValue,
+// 	primaryColor: string,
+// 	secondaryColor: string,
+// ) {
+// 	const [source, setSource] = useState("")
 
-export enum SizeValue {
-	small = "Small",
-	medium = "Medium",
-	large = "Large",
-	fill = "Fill",
-}
+// 	useEffect(() => {
+// 		const options: AppOptions = { pc: primaryColor, sc: secondaryColor }
 
-const sizes = {
-	[SizeValue.small]: [360, 240],
-	[SizeValue.medium]: [640, 480],
-	[SizeValue.large]: [900, 600],
-	[SizeValue.fill]: ["100%", "100%"],
-}
+// 		const url = getURL(id, WidgetSubType.Work, options)
 
-export enum Orientation {
-	Portrait = "Portrait",
-	Landscape = "Landscape",
-}
+// 		const [ width, height ] = orientation === Orientation.Landscape
+// 			? sizes[size]
+// 			: structuredClone(sizes[size]).reverse()
 
-const accessibilityTitle = "Podiumkunst Widget"
+// 		setSource(`<iframe width="${width}" height="${height}" id=${IFRAME_ID} title=${accessibilityTitle} src="${url}" frameborder="0"></iframe>`)
+// 	}, [id, orientation, size, primaryColor, secondaryColor])
 
-export function useSourceCode(
-	id: string,
-	orientation: Orientation,
-	size: SizeValue,
-	primaryColor: string,
-	secondaryColor: string,
-) {
-	const [source, setSource] = useState("")
+// 	return source
+// }
 
-	useEffect(() => {
-		const options: AppOptions = { pc: primaryColor, sc: secondaryColor }
+// const getURL = (id: string, type: WidgetSubType, options: AppOptions) => {
+// 	const origin = (import.meta.env.MODE === "development")
+// 		? "http://localhost:3001"
+// 		: window.location.origin
 
-		const url = getURL(id, WidgetSubType.Work, options)
+// 	const encodedOptions = encodeURIComponent(JSON.stringify(options))
 
-		const [ width, height ] = orientation === Orientation.Landscape
-			? sizes[size]
-			: structuredClone(sizes[size]).reverse()
+// 	return `${origin}/widget?id=${id}&type=${type}&options=${encodedOptions}`
 
-		setSource(`<iframe width="${width}" height="${height}" id=${IFRAME_ID} title=${accessibilityTitle} src="${url}" frameborder="0"></iframe>`)
-	}, [id, orientation, size, primaryColor, secondaryColor])
-
-	return source
-}
-
-const getURL = (id: string, type: WidgetSubType, options: AppOptions) => {
-	const origin = (import.meta.env.MODE === "development")
-		? "http://localhost:3001"
-		: window.location.origin
-
-	const encodedOptions = encodeURIComponent(JSON.stringify(options))
-
-	return `${origin}/widget?id=${id}&type=${type}&options=${encodedOptions}`
-
-}
+// }
