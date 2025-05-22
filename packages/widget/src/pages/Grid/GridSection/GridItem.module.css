@@ -27,6 +27,15 @@
 	font-size: .875rem;
 	font-weight: bold;
 	text-align: center;
+
+	width: 100%;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+	box-orient: vertical;
+	word-break: break-all;
+	display: -webkit-box;
 }
 
 .gridItem.static {
@@ -61,6 +70,14 @@
 	color: var(--color-black);
 }
 
+/**
+ * TEMPORARY. TODO.
+ * Static tiles are used to showcase the TileTurner. When the tile turns,
+ * the background needs to have the color of the app. This means that a 
+ * padding doesn't work, because the user would see the background of the
+ * tile. To set the padding on the tile, use the turn-front and turn-back
+ * divs.
+ */
 .gridItem.static {
 	padding: 0;
 }
@@ -68,72 +85,4 @@
 .gridItem.static:hover,
 .gridItem.static {
 	background: var(--color-current);
-}
-
-/**
- * Page flip animation effect 
- *
- * See https://codepen.io/Gijsjan/pen/ZYYNOwX for page flip
- */ 
-
-.dog-ear-wrapper,
-.dog-ear {
-	transition: all 1s ease-in-out;
-	transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Dog-ear base */
-.dog-ear-wrapper {
-	background: rgba(15, 120, 120, 0);
-	height: 200%;
-	overflow: hidden;
-	pointer-events: none;
-	position: absolute;
-	transform: rotate(-20deg);
-	transform-origin: 50% 85%;
-	width: 200%;
-	z-index: 2;
-}
-
-.dog-ear-shadow {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	right: 0;
-	z-index: 1;
-}
-
-.dog-ear {
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 0, 0, .5);
-	top: 0;
-	right: 0;
-	width: 50%;
-	height: 50%;
-	position: absolute;
-	transform: rotate(-45deg);
-	transition: transform 1s ease-in-out;
-	transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-	pointer-events: all;
-}
-
-.backside {
-	background-color: color-mix(in srgb, white, var(--color-primary) 15%);
-}
-
-.gridItem.flip {
-	overflow: hidden;
-}
-
-.gridItem.flip:hover {
-	overflow: visible;
-}
-
-.gridItem.flip:hover .dog-ear-wrapper {
-	transform: rotate(0) translateX(-75%) translateY(25%);
-	z-index: 3;
-}
-
-.gridItem.flip:hover .dog-ear {
-	transform: rotate(0deg) translateX(0);
 }

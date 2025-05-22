@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { GridCategory, type GridItem } from "../../../types/grid"
 import { cn } from "../../../utils/cn"
 import { useURL } from "../../../hooks/useGenerateUrlForTile"
@@ -6,9 +7,8 @@ import { Props as GridSectionProps } from "./GridSection"
 
 import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
-import { ReactNode } from "react"
-import { Page } from "../../../components/Page"
 import { TileTurner } from "./TileTurner"
+import { Box } from "../../../components/Box"
 
 type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 	item: GridItem
@@ -55,11 +55,11 @@ export function GridItemWrapper({
 			{item.type === GridCategory.Static ? (
 				<TileTurner
 					back={
-						<Page className={classes.backside}>
-							<img src="/oostpool.png" style={{ maxHeight: '100%'}} />
-						</Page>
+						<Box>
+							<img src="/oostpool.png" style={{ maxHeight: "100%" }} />
+						</Box>
 					}
-					front={children}
+					front={<Box>{children}</Box>}
 				/>
 			) : (
 				children
@@ -68,7 +68,8 @@ export function GridItemWrapper({
 	)
 }
 
-			{/* {item.type === GridCategory.More && (
+{
+	/* {item.type === GridCategory.More && (
 				<div className={classes["dog-ear-wrapper"]}>
 					<div className={classes["dog-ear-shadow"]} />
 					<div className={classes["dog-ear"]}>
@@ -77,4 +78,5 @@ export function GridItemWrapper({
 						</Page>
 					</div>
 				</div>
-			)} */}
+			)} */
+}
