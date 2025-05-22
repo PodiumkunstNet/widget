@@ -54,6 +54,7 @@ const _initialState: State = {
 }
 
 // Get the initial state from sessionStorage if it exists
+// The IFRAME_ID is re-used to use as a unique key
 const storedState = sessionStorage.getItem(IFRAME_ID)
 export const initialState = storedState
 	? JSON.parse(storedState)

@@ -1,5 +1,12 @@
 import { type AppOptions } from "@widget/main"
-import { accessibilityTitle, IFRAME_ID, Orientation, sizes, SizeValue, State } from "."
+import {
+	accessibilityTitle,
+	IFRAME_ID,
+	Orientation,
+	sizes,
+	SizeValue,
+	State,
+} from "."
 import { Action, Actions } from "./actions"
 import { WidgetSubType } from "../../../widget/src/types/mainWidgetData"
 
@@ -47,8 +54,7 @@ export function stateReducer(state: State, action: Action): State {
 		case Actions.SetColor: {
 			nextState = {
 				...nextState,
-				primaryColor:
-					action.payload.primaryColor ?? nextState.primaryColor,
+				primaryColor: action.payload.primaryColor ?? nextState.primaryColor,
 				secondaryColor:
 					action.payload.secondaryColor ?? nextState.secondaryColor,
 			}
@@ -64,10 +70,7 @@ export function stateReducer(state: State, action: Action): State {
 	 */
 	nextState.source = updateSource(nextState)
 
-	sessionStorage.setItem(
-		IFRAME_ID,
-		JSON.stringify(nextState)
-	)
+	sessionStorage.setItem(IFRAME_ID, JSON.stringify(nextState))
 
 	return nextState
 }
@@ -80,9 +83,10 @@ export function updateSource(state: State) {
 	}
 
 	// Construct the URL for the iframe
-	const origin = import.meta.env.MODE === "development"
-		? "http://localhost:3001"
-		: window.location.origin
+	const origin =
+		import.meta.env.MODE === "development"
+			? "http://localhost:3001"
+			: window.location.origin
 	const encodedOptions = encodeURIComponent(JSON.stringify(options))
 	const url = `${origin}/widget?id=${state.iri}&type=${WidgetSubType.Work}&options=${encodedOptions}`
 
@@ -93,7 +97,7 @@ export function updateSource(state: State) {
 		width = state.customWidth
 		height = state.customHeight
 	} else {
-		[width, height] =
+		;[width, height] =
 			state.orientation === Orientation.Landscape
 				? sizes[state.size]
 				: structuredClone(sizes[state.size]).reverse()

@@ -1,5 +1,3 @@
-'use client';
-
 import { useWidgetByIri } from '../../../hooks/useWidgetByIri';
 import { WidgetSubType } from '../../../types/mainWidgetData';
 import EmptyPreview from './EmptyPreview';

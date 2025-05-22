@@ -21,7 +21,6 @@ export const Grid = ({ isSubCategoryView }: Props) => {
 
 	useEffect(() => {
 		if (!isSubCategoryView) {
-			sessionStore.clearAll();
 			sessionStore.setHomeURL(id, type);
 		}
 	}, [isSubCategoryView, id, type])

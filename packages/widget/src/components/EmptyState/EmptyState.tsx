@@ -1,5 +1,3 @@
-'use client';
-
 import { Text } from '../Text';
 import { Button } from '../Button';
 import ArrowBack from '../../../public/visuals/icons/arrow-back.svg?react';

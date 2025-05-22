@@ -1,7 +1,6 @@
-"use client"
 import { GridDataState } from "../state"
 
-export const HOME_URL = 'WidgetHomeURL';
+export const HOME_URL = 'WidgetHomeURL'
 
 type ID = GridDataState["id"]
 type Type = GridDataState["type"]
@@ -28,10 +27,6 @@ class SessionStorageManager {
 
 	getTitle(id: ID, type: Type) {
 		return sessionStorage?.getItem(createUniqueID(id, type)) ?? ""
-	}
-
-	clearAll() {
-		sessionStorage.clear()
 	}
 }
 

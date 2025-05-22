@@ -1,5 +1,3 @@
-"use client"
-
 import React, { CSSProperties } from "react"
 import { useTransitionNavigate } from "../hooks/useTransitionNavigate"
 import { Link } from "react-router-dom"
