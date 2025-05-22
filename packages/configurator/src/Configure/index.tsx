@@ -19,8 +19,6 @@ const initSecondaryColor = getComputedStyle(root)
 	.getPropertyValue("--color-blue")
 	.trim()
 
-console.log("initPrimaryColor", initPrimaryColor)
-
 export function Configure() {
 	const [id, setID] = useState<string>("http://example.com/pknet/testWorkZF")
 	const [orientation, setOrientation] = useState<Orientation>(

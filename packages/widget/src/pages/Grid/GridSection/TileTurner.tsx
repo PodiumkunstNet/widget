@@ -113,8 +113,6 @@ function _TileTurner({
 		animationBackward.current!.finished.then(onFinished)
 	}
 
-	console.log('rend')
-
 	return (
 		<div
 			className={classes["turn-wrapper"]}
