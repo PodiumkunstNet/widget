@@ -8,6 +8,7 @@
 	justify-content: center;
 	line-height: 1.25rem;
 	min-height: 0;
+	min-width: 0;
 	padding: 1rem;
 	transition: all 300ms ease-in;
 	width: 100%;

@@ -1,3 +1,19 @@
+/**
+ * The InfoItem component is GridItem tile. When the user clicks on the tile,
+ * the tile blows up to the size of the grid. When the grid is animation,
+ * there are two styles added:
+ * 	- .detached:		the tile is detached from the grid and is animated
+ *								to the full screen or animating back from full-screen.
+ * 	- .full-screen:	the tile is the size of the grid. The detached class
+ *								is not removed.
+ * 
+ * So, the states:
+ * 	- <start blow up animation> .detached
+ * 	- <end blow up animation> .detached .full-screen
+ * 	- <start shrink animation> .detached
+ * 	- <end shrink animation> 
+ */
+
 .isInformation .infoItem {
 	height: auto;
 	width: auto;
@@ -9,6 +25,7 @@
 	width: 100%;
 	height: 100%;
 	transition: all .4s ease-in-out;
+	padding: 0;
 }
 
 .keyValueContainer {
@@ -30,12 +47,19 @@
 	grid-template-rows: 1fr 3fr;
 }
 
-.isInformation :global(.full-screen) :global(.page-content) {
-	opacity: 1;
-}
-
 .isInformation :global(.page-content) {
 	overflow: hidden;
 	opacity: 0;
 	transition: all .4s ease-in-out;
+	overflow: auto;
 }
+
+.isInformation :global(.detached) :global(.page-content) {
+	margin: 1rem 0;
+	padding-inline: 1rem;
+}
+
+.isInformation :global(.full-screen) :global(.page-content) {
+	opacity: 1;
+}
+
