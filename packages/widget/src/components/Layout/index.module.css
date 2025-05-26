@@ -1,6 +1,6 @@
 .container {
-	--color-current: var(--color-primary);
-	--color-current-rgb: var(--color-primary-rgb);
+	--color-current: var(--primary-color);
+	--color-current-rgb: var(--primary-color-rgb);
 	background: var(--color-current);
 	display: grid;
 	grid-template-columns: 1fr 2fr;
@@ -13,13 +13,14 @@
 }
 
 .container.isSub {
-	--color-current: var(--color-secondary);
-	--color-current-rgb: var(--color-secondary-rgb);
+	--color-current: var(--secondary-color);
+	--color-current-rgb: var(--secondary-color-rgb);
 }
 
 .container main {
 	height: 100%;
 	min-height: 0;
+	min-width: 0;
 }
 
 ::view-transition-old(root) {

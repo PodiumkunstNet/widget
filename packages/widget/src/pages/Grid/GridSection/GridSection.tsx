@@ -8,16 +8,21 @@ import { InfoItemView } from "./InfoItem"
 export interface Props {
 	items: GridItem[]
 	isSubCategoryView?: boolean
+	small?: boolean
 }
 
 export const GridSection = ({
 	items,
 	isSubCategoryView,
+	small = true
 }: Props) => {
 	return (
-		<ul className={cx(classes.gridSection, { 
-			[classes.isSub]: isSubCategoryView,
-		})}>
+		<ul
+			className={cx(classes.gridSection, { 
+				[classes.isSub]: isSubCategoryView,
+				[classes.small]: small,
+			})}
+		>
 			{items.map((item, index) => (
 				item.type === GridCategory.Information
 				? <InfoItemView

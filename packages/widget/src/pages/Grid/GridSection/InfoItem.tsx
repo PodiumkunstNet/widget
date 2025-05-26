@@ -98,9 +98,7 @@ function useAnimation(item: GridItem, ref: React.RefObject<HTMLDivElement>) {
 	}, [infoItem, item])
 
 	useEffect(() => {
-		// console.log(startState, infoItem)
 		if (startState != null && infoItem == null) {
-			// animateOptions.duration = 400000
 			ref.current?.classList.remove("full-screen")
 			const animation = ref.current?.animate(
 				[endState, startState], animateOptions,

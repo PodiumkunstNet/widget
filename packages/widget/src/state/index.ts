@@ -6,11 +6,35 @@ import { WidgetSubType } from "../types/mainWidgetData"
 // Define the shape of the state
 export interface State {
 	infoItem: GridItem | undefined
+	currentPage: number
+
+	// Sync options with AppOptions in utils/set-options.ts
+	options: {
+		borderWidth: number
+		maxColumns: number
+		maxRows: number
+		maxTiles: number
+		pages: number
+		primaryColor: string
+		secondaryColor: string
+		size: string
+	}
 }
 
 // Define the initial state
 export const initialState: State = {
 	infoItem: undefined,
+	currentPage: 2,
+	options: {
+		borderWidth: 20,
+		maxColumns: 2,
+		maxRows: 2,
+		maxTiles: 9,
+		pages: 1,
+		primaryColor: "rgb(199, 80, 0)",
+		secondaryColor: "rgb(5, 53, 255)",
+		size: 'medium',
+	}
 }
 
 // Create the state contexts
@@ -22,9 +46,9 @@ export interface MappedData {
 	items: GridItem[]
 }
 
-export const defaultMappedData = {
+export const defaultMappedData: MappedData = {
 	title: "",
-	items: []
+	items: [],
 }
 
 export interface GridDataState extends MappedData {

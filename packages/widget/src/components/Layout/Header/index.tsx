@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { ReactNode, useContext, useEffect, useState } from "react"
 
 // import ArrowBack from "../../../../public/visuals/icons/arrow-back.svg?react"
 
@@ -11,19 +11,21 @@ import { Actions } from "../../../state/actions"
 import { Logo } from "../../Logo"
 
 import classes from './index.module.css'
-import { IconCaretLeftFilled, IconX } from "@tabler/icons-react"
+import { IconCaretLeftFilled, IconCaretRightFilled, IconX } from "@tabler/icons-react"
 import { useLocation } from "react-router-dom"
 
 type Props = {
 	// isSubCategoryView?: boolean
 	staticPage?: boolean
+	small?: boolean
 }
 
 export function Header({
 	staticPage = false,
+	small = true
 }: Props) {
 	const dispatch = useContext(DispatchContext)
-	const { title, id, type } = useContext(GridDataContext)
+	const { title, id, type, items } = useContext(GridDataContext)
 	const { infoItem } = useContext(StateContext)
 	const { navigate, back } = useTransitionNavigate()
 
@@ -108,24 +110,72 @@ export function Header({
 				</nav>
 			</section>
 			<section className={classes.main}>
-				{
-					!staticPage && (
-						<div className={classes.h2Container}>
-							<div className={classes.h2Top} />
-							<h2>
-								{savedTitle && isSubCategoryView
-									? savedTitle
-									: `Meer over ${title}`}
-							</h2>
-							<div className={classes.h2Bottom}>
-								<div />
-								<div />
+				<Paginator items={items} small={small}>
+					{
+						!staticPage && (
+							<div className={classes.h2Container}>
+								<div className={classes.h2Top} />
+								<h2>
+									{savedTitle && isSubCategoryView
+										? savedTitle
+										: `Meer over ${title}`}
+								</h2>
+								<div className={classes.h2Bottom}>
+									<div />
+									<div />
+								</div>
 							</div>
-						</div>
-					)
-				}
+						)
+					}
+				</Paginator>
 			</section>
 		</header>
+	)
+}
+
+function Paginator({
+	items,
+	small,
+	children
+}: {
+	items: any[]
+	small?: boolean
+	children?: ReactNode	
+}) {
+	const pages = Math.ceil(items.length / 2)
+	const [currentPage, setCurrentPage] = useState(0)
+
+	useEffect(() => {
+		document.documentElement.style.setProperty(
+			'--current-page',
+			(currentPage).toString()
+		)
+	}, [currentPage])
+
+	if (!small) return children
+
+	return (
+		<ul
+			className={cn(classes.paginator, {		
+				[classes.small]: small,
+			})}
+		>
+			{
+				currentPage > 0
+				? <li onClick={() => setCurrentPage(p => p - 1)}>
+						<IconCaretLeftFilled size={18} color="white" />
+					</li>
+				: <li></li>
+			}
+			<li>{children}</li>
+			{
+				currentPage < pages - 1
+				? <li onClick={() => setCurrentPage(p => p + 1)}>
+						<IconCaretRightFilled size={18} color="white" />
+					</li>
+				: <li></li>
+			}
+		</ul>
 	)
 }
 

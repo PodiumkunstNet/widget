@@ -12,6 +12,15 @@
 	padding: 1rem;
 	transition: all 300ms ease-in;
 	width: 100%;
+
+	/* border: var(--border-width) solid var(--color-current); */
+	/* border-bottom: var(--border-width) solid var(--color-current);
+	/* width: 120px; */
+	/* box-sizing: border-box; */
+}
+
+.gridItem:last-child {
+	border-left-width: 0px;
 }
 
 .gridItem a {
