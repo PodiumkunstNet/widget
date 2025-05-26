@@ -9,7 +9,7 @@
 	grid-gap: var(--border-width);
 	grid-template-rows: repeat(var(--max-rows), 1fr);
 	height: 100%;
-	position: relative;
+	position: static;
 	transition: all 0.5s cubic-bezier(0.85, 0, 0.15, 1);
 	width: var(--grid-width);
 

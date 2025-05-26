@@ -1,10 +1,11 @@
 .container {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(180px, 240px)) 1fr;
-	grid-template-rows: fit-content(0) fit-content(0) 1fr;
+	grid-template-rows: fit-content(0) fit-content(0) fit-content(0) 1fr;
 	grid-template-areas: 
 		"iriInput iriInput iriSelect preview"
 		"sizeSelect orientationSelect colorSelect preview"
+		"rowsAndColumns rowsAndColumns rowsAndColumns preview"
 		"sourceCode sourceCode sourceCode preview";
 	height: 100%;
 	gap: 3rem;

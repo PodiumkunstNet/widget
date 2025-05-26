@@ -1,6 +1,5 @@
 .header {
 	--border-color: rgba(255, 255, 255, 0.75);
-	--border-width: 4px;
 	--header-padding: 1.5rem;
 	padding: var(--header-padding);
 	display: grid;
@@ -9,12 +8,13 @@
 
 .main {
 	display: flex;
-	justify-content: center;
+	/* justify-content: center; */
 	align-items: center;
 	padding-top: var(--header-padding);
 }
 
 .h2Container {
+	/* height: 100%; */
 	width: 100%;
 }
 
@@ -24,10 +24,18 @@
 	font-family: var(--font-sans);
 	font-size: 1.5rem;
 	font-weight: bold;
-	padding: .5rem 0 .75rem 0;
+	padding: .5rem .5rem .75rem 0;
 	text-transform: uppercase;
 	transform: translateX(-.4rem);
 	width: calc(100% + 0.4rem);
+
+	display: flex;
+	align-items: center;
+}
+
+.h2Container h2 span {
+	flex-grow: 1;
+	padding-right: .5rem;
 }
 
 .h2Top {
@@ -101,11 +109,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-}
-
-.paginator :nth-child(2) {
-	flex-grow: 1;
 }
 
 .paginator li {
@@ -142,7 +145,7 @@
 	(orientation: portrait) and (max-height: 360px)
 {
 	.header {
-		padding: .5rem;
+		padding: .5rem .5rem 0 .5rem;
 	}
 
 	/* Smaller logo */
@@ -155,6 +158,10 @@
 		border-bottom: none;
 		color: rgba(255, 255, 255, 0.6);
 		padding: 0;
+	}
+
+	.buttonWrapper svg {
+		display: none;
 	}
 
 	.top nav button {
@@ -175,10 +182,12 @@
 	.main {
 		padding: 0;
 	}
+
 	.h2Container h2 {
 		transform: none;
 		border: none;
-		text-align: center;
+		width: 100%;
+		height: 100%;
 	}
 
 	.h2Top {
@@ -216,9 +225,5 @@
 	.top nav ul {
 		flex-direction: column;
 		gap: 0rem;
-	}
-
-	.buttonWrapper svg {
-		display: none;
 	}
 }

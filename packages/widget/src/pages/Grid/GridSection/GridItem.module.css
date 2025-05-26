@@ -46,7 +46,7 @@
 	line-clamp: 3;
 	-webkit-box-orient: vertical;
 	box-orient: vertical;
-	word-break: break-all;
+	word-break: break-word;
 	display: -webkit-box;
 }
 
@@ -105,7 +105,7 @@
 	(orientation: landscape) and (max-width: 360px) {
 	.gridItem {
 		line-height: .666rem;
-		padding: .1rem;
+		padding: .2rem;
 	}
 	.key {
 		/* font-size: .5rem; */

@@ -26,7 +26,7 @@ export const initialState: State = {
 	infoItem: undefined,
 	currentPage: 2,
 	options: {
-		borderWidth: 20,
+		borderWidth: 2,
 		maxColumns: 2,
 		maxRows: 2,
 		maxTiles: 9,

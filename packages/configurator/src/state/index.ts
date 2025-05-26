@@ -1,3 +1,4 @@
+import { initialState as initialWidgetState } from "../../../widget/src/state"
 export const IFRAME_ID = "pk-widget"
 
 export enum SizeValue {
@@ -24,13 +25,17 @@ export enum Orientation {
 export const accessibilityTitle = "Podiumkunst Widget"
 
 export interface State {
+	borderWidth: number
 	customHeight: string
 	customWidth: string
 	iri: string
+	maxColumns: number
+	maxRows: number
+	maxTiles: number
 	orientation: Orientation
-	size: SizeValue
 	primaryColor: string
 	secondaryColor: string
+	size: SizeValue
 	source: string
 }
 
@@ -43,9 +48,13 @@ const secondaryColor = getComputedStyle(root)
 	.trim()
 
 const _initialState: State = {
+	borderWidth: initialWidgetState.options.borderWidth,
 	customHeight: "",
 	customWidth: "",
 	iri: "", /** "http://example.com/pknet/testWorkZF" */
+	maxColumns: initialWidgetState.options.maxColumns,
+	maxRows: initialWidgetState.options.maxRows, 
+	maxTiles: initialWidgetState.options.maxTiles,
 	orientation: Orientation.Landscape,
 	size: SizeValue.Medium,
 	primaryColor,

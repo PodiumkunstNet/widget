@@ -1,5 +1,5 @@
 import { GridItem } from "../types/grid"
-import { AppOptions } from "../utils/set-options"
+import { AppOptions } from "../utils/app-options"
 
 export enum Actions {
 	Init = "INIT",

@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 // import ArrowBack from "../../../../public/visuals/icons/arrow-back.svg?react"
 
@@ -10,8 +10,12 @@ import { DispatchContext, GridDataContext, StateContext } from "../../../state"
 import { Actions } from "../../../state/actions"
 import { Logo } from "../../Logo"
 
-import classes from './index.module.css'
-import { IconCaretLeftFilled, IconCaretRightFilled, IconX } from "@tabler/icons-react"
+import classes from "./index.module.css"
+import {
+	IconCaretLeftFilled,
+	IconCaretRightFilled,
+	IconX,
+} from "@tabler/icons-react"
 import { useLocation } from "react-router-dom"
 
 type Props = {
@@ -20,13 +24,10 @@ type Props = {
 	small?: boolean
 }
 
-export function Header({
-	staticPage = false,
-	small = true
-}: Props) {
+export function Header({ staticPage = false, small = true }: Props) {
 	const dispatch = useContext(DispatchContext)
 	const { title, id, type, items } = useContext(GridDataContext)
-	const { infoItem } = useContext(StateContext)
+	const { infoItem, options } = useContext(StateContext)
 	const { navigate, back } = useTransitionNavigate()
 
 	const savedTitle = sessionStore.getTitle(id, type)
@@ -36,6 +37,8 @@ export function Header({
 	// because the header is always re-rendered when the location changes
 	const location = useLocation()
 	const isSubCategoryView = location.pathname + location.search !== homeURL
+
+	console.log((Math.ceil(items.length / options.maxRows)) -  options.maxColumns)
 
 	return (
 		<header
@@ -51,17 +54,14 @@ export function Header({
 				/>
 				<nav>
 					<ul>
-						{
-							!staticPage &&
-							isSubCategoryView &&
-							homeURL &&
+						{!staticPage && isSubCategoryView && homeURL && (
 							<li className={classes.buttonWrapper}>
 								<button
 									onClick={() => {
 										navigate(homeURL)
 										dispatch({
 											type: Actions.SetInfoItem,
-											payload: { item: undefined }
+											payload: { item: undefined },
 										})
 									}}
 								>
@@ -70,21 +70,21 @@ export function Header({
 									Start
 								</button>
 							</li>
-						}
-						{
-							(
-								staticPage ||
-								infoItem != null ||
-								isSubCategoryView
-							) &&
-							<li className={cn(classes.buttonWrapper, classes.backButtonWrapper)}>
+						)}
+						{(staticPage || infoItem != null || isSubCategoryView) && (
+							<li
+								className={cn(
+									classes.buttonWrapper,
+									classes.backButtonWrapper,
+								)}
+							>
 								<button
 									className={classes.backButton}
 									onClick={() => {
 										if (infoItem) {
 											dispatch({
 												type: Actions.SetInfoItem,
-												payload: { item: undefined }
+												payload: { item: undefined },
 											})
 											return
 										}
@@ -92,89 +92,104 @@ export function Header({
 										back()
 									}}
 								>
-									{
-										infoItem == null
-										? <>
+									{infoItem == null ? (
+										<>
 											Terug
 											<IconCaretLeftFilled size={18} />
 										</>
-										: <>
+									) : (
+										<>
 											Sluiten
 											<IconX size={18} />
 										</>
-									}
+									)}
 								</button>
 							</li>
-						}
+						)}
 					</ul>
 				</nav>
 			</section>
+
 			<section className={classes.main}>
-				<Paginator items={items} small={small}>
-					{
-						!staticPage && (
-							<div className={classes.h2Container}>
-								<div className={classes.h2Top} />
-								<h2>
+				{
+					!staticPage && (
+						<div className={classes.h2Container}>
+							<div className={classes.h2Top} />
+							<h2>
+								<span>
 									{savedTitle && isSubCategoryView
 										? savedTitle
 										: `Meer over ${title}`}
-								</h2>
-								<div className={classes.h2Bottom}>
-									<div />
-									<div />
-								</div>
+								</span>
+								<Paginator
+									id={id}
+									pages={(Math.ceil(items.length / options.maxRows)) -  options.maxColumns}
+									small={small}
+								/>
+							</h2>
+							<div className={classes.h2Bottom}>
+								<div />
+								<div />
 							</div>
-						)
-					}
-				</Paginator>
+						</div>
+					)
+				}
 			</section>
 		</header>
 	)
 }
 
-function Paginator({
-	items,
-	small,
-	children
-}: {
-	items: any[]
+function Paginator({ id, pages, small }: {
+	id: string | undefined
+	pages: number
 	small?: boolean
-	children?: ReactNode	
 }) {
-	const pages = Math.ceil(items.length / 2)
+	// const pages = Math.ceil(items.length / 2)
 	const [currentPage, setCurrentPage] = useState(0)
 
 	useEffect(() => {
+		setCurrentPage(0)
+	}, [id])
+
+	useEffect(() => {
 		document.documentElement.style.setProperty(
-			'--current-page',
-			(currentPage).toString()
+			"--current-page",
+			currentPage.toString(),
 		)
 	}, [currentPage])
 
-	if (!small) return children
+	if (pages <= 1) return null
 
 	return (
 		<ul
-			className={cn(classes.paginator, {		
+			className={cn(classes.paginator, {
 				[classes.small]: small,
 			})}
 		>
-			{
-				currentPage > 0
-				? <li onClick={() => setCurrentPage(p => p - 1)}>
-						<IconCaretLeftFilled size={18} color="white" />
-					</li>
-				: <li></li>
-			}
-			<li>{children}</li>
-			{
-				currentPage < pages - 1
-				? <li onClick={() => setCurrentPage(p => p + 1)}>
-						<IconCaretRightFilled size={18} color="white" />
-					</li>
-				: <li></li>
-			}
+			{currentPage > 0 ? (
+				<li onClick={() => setCurrentPage((p) => p - 1)}>
+					<IconCaretLeftFilled size={18} color="white" />
+				</li>
+			) : (
+				<li>
+					<IconCaretLeftFilled
+						size={18}
+						color="rgba(255, 255, 255, 0.33)"
+					/>
+				</li>
+			)}
+			{currentPage < pages ? (
+				<li onClick={() => setCurrentPage((p) => p + 1)}>
+					<IconCaretRightFilled size={18} color="white" />
+				</li>
+			) : (
+				<li>
+					<IconCaretRightFilled
+						size={18}
+						color="rgba(255, 255, 255, 0.33)"
+					/>
+				</li>
+			)}
 		</ul>
 	)
 }

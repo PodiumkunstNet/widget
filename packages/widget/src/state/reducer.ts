@@ -1,5 +1,5 @@
 import { State } from "."
-import { AppOptions, numberProps, varByOption } from "../utils/set-options"
+import { AppOptions, numberProps, varByOption } from "../utils/app-options"
 import { Action, Actions } from "./actions"
 
 export function stateReducer(state: State, action: Action): State {

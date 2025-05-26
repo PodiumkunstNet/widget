@@ -1,6 +1,6 @@
 import { SourceCode } from "./SourceCode"
 import { useReducer } from "react"
-import { ColorInput, Radio, Select, Stack, TextInput } from "@mantine/core"
+import { ColorInput, NumberInput, Radio, Select, Stack, TextInput } from "@mantine/core"
 
 import { initialState, Orientation, SizeValue } from "../state"
 import { stateReducer } from "../state/reducer"
@@ -62,7 +62,7 @@ export function Configure() {
 			<SelectSize state={state} dispatch={dispatch} />
 
 			<div>
-				<h2 className="mb-6">Selecteer orientatie</h2>
+				<h2 className="mb-6">Orientatie</h2>
 				<Stack gap="md">
 					{[Orientation.Landscape, Orientation.Portrait].map((option) => (
 						<Radio
@@ -83,8 +83,9 @@ export function Configure() {
 					))}
 				</Stack>
 			</div>
+
 			<div>
-				<h2 className="mb-6">Selecteer kleuren</h2>
+				<h2 className="mb-6">Kleuren</h2>
 				<Stack gap="md">
 					<ColorInput
 						label="Hoofdkleur"
@@ -109,6 +110,72 @@ export function Configure() {
 						}}
 						format="rgb"
 						swatchesPerRow={3}
+					/>
+				</Stack>
+			</div>
+
+			<div>
+				<h2 className="mb-6">Aantal rijen en kolommen</h2>
+				<Stack gap="md">
+					<NumberInput
+						label="Rijen"
+						value={state.maxRows}
+						onChange={(n) => {
+							dispatch({
+								type: Actions.SetGrid,
+								payload: { maxRows: n ?? 0 },
+							})
+						}}
+						min={0}
+						max={6}
+					/>
+					<NumberInput
+						label="Kolommen"
+						value={state.maxColumns}
+						onChange={(n) => {
+							dispatch({
+								type: Actions.SetGrid,
+								payload: { maxColumns: n ?? 0 },
+							})
+						}}
+						min={0}
+						max={6}
+					/>
+				</Stack>
+			</div>
+
+			<div>
+				<h2 className="mb-6">Randbreedte</h2>
+				<Stack gap="md">
+					<NumberInput
+						label=" "
+						value={state.borderWidth}
+						onChange={(n) => {
+							dispatch({
+								type: Actions.SetBorderWidth,
+								payload: { borderWidth: n ?? 1 },
+							})
+						}}
+						min={1}
+						max={50}
+					/>
+				</Stack>
+			</div>
+
+			<div>
+				<h2 className="mb-6">Maximaal aantal tegels</h2>
+				<Stack gap="md">
+					<NumberInput
+						label=" "
+						value={state.maxTiles}
+						onChange={(n) => {
+							dispatch({
+								type: Actions.SetMaxTiles,
+								payload: { maxTiles: n ?? 0 },
+							})
+						}}
+						min={0}
+						max={50}
 					/>
 				</Stack>
 			</div>

@@ -1,4 +1,4 @@
-import { type AppOptions } from "@widget/main"
+import { type AppOptions } from "@widget/utils/app-options"
 import {
 	accessibilityTitle,
 	IFRAME_ID,
@@ -61,6 +61,36 @@ export function stateReducer(state: State, action: Action): State {
 			break
 		}
 
+		case Actions.SetGrid: {
+			const { maxColumns, maxRows } = action.payload
+			nextState = {
+				...nextState,
+				maxColumns: maxColumns ? Number(maxColumns) : nextState.maxColumns,
+				maxRows: maxRows ? Number(maxRows) : nextState.maxRows,
+			}
+			break
+		}
+
+		case Actions.SetBorderWidth: {
+			const { borderWidth } = action.payload
+
+			nextState = {
+				...nextState,
+				borderWidth: borderWidth ? Number(borderWidth) : nextState.borderWidth,
+			}
+			break
+		}
+
+		case Actions.SetMaxTiles: {
+			const { maxTiles } = action.payload
+
+			nextState = {
+				...nextState,
+				maxTiles: maxTiles ? Number(maxTiles) : nextState.maxTiles,
+			}
+			break
+		}
+
 		default:
 			throw new Error(`Unknown action type`)
 	}
@@ -77,7 +107,10 @@ export function stateReducer(state: State, action: Action): State {
 
 export function updateSource(state: State) {
 	// Construct the options for the iframe
-	const options: AppOptions = {
+	const options: Partial<AppOptions> = {
+		bw: state.borderWidth.toString(),
+		mc: state.maxColumns.toString(),
+		mr: state.maxRows.toString(),
 		pc: state.primaryColor,
 		sc: state.secondaryColor,
 	}

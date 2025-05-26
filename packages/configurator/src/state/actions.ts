@@ -1,14 +1,23 @@
 import { Orientation, SizeValue } from "."
 
 export enum Actions {
+	SetBorderWidth = "SET_BORDER_WIDTH",
 	SetColor = "SET_COLOR",
+	SetCustomSize = "SET_CUSTOM_SIZE",
+	SetGrid = "SET_GRID",
 	SetIRI = "SET_IRI",
+	SetMaxTiles = "SET_MAX_TILES",
 	SetOrientation = "SET_ORIENTATION",
 	SetSize = "SET_SIZE",
-	SetCustomSize = "SET_CUSTOM_SIZE",
 }
 
 export type Action =
+	| {
+		type: Actions.SetBorderWidth
+		payload: {
+			borderWidth: number | string
+		}
+	}
 	| {
 		type: Actions.SetIRI
 		payload: {
@@ -29,6 +38,13 @@ export type Action =
 		}
 	}
 	| {
+		type: Actions.SetGrid
+		payload: {
+			maxColumns?: number | string
+			maxRows?: number | string
+		}
+	}
+	| {
 		type: Actions.SetOrientation
 		payload: {
 			orientation: Orientation
@@ -41,3 +57,10 @@ export type Action =
 			secondaryColor?: string
 		}
 	}
+	| {
+		type: Actions.SetMaxTiles
+		payload: {
+			maxTiles: number | string
+		}
+	}
+

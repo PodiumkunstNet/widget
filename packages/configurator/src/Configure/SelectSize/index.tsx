@@ -13,7 +13,7 @@ export function SelectSize({
 }) {
 	return (
 		<div>
-			<h2 className="mb-6">Selecteer formaat</h2>
+			<h2 className="mb-6">Formaat</h2>
 			<Stack gap="md">
 				{Object.values(SizeValue)
 					.filter((option) => option !== SizeValue.Custom)

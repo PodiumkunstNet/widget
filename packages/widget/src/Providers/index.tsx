@@ -8,7 +8,7 @@ import {
 import { ReactNode, useEffect, useReducer } from "react"
 import { stateReducer } from "../state/reducer"
 import { useGridData } from "../pages/useGridData"
-import { AppOptions } from "../utils/set-options"
+import { AppOptions } from "../utils/app-options"
 import { Actions } from "../state/actions"
 import { GridItem } from "../types/grid"
 
