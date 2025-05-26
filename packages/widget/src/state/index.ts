@@ -29,7 +29,7 @@ export const initialState: State = {
 		borderWidth: 2,
 		maxColumns: 2,
 		maxRows: 2,
-		maxTiles: 9,
+		maxTiles: 12,
 		pages: 1,
 		primaryColor: "rgb(199, 80, 0)",
 		secondaryColor: "rgb(5, 53, 255)",

@@ -1,9 +1,8 @@
 import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
 import { endpointsBySubType, mappingFunctionBySubType, WidgetSubType } from "../types/mainWidgetData"
-import { defaultMappedData, GridDataState } from "../state"
-
-const MAX_ITEMS = 12
+import { defaultMappedData, GridDataState, State, StateContext } from "../state"
+import { useContext } from "react"
 
 /**
  * Fetch widget data by IRI and type. Every widget type has its own endpoint. 
@@ -19,8 +18,10 @@ export function useWidgetByIri(
 	iri: GridDataState["id"],
 	type: GridDataState["type"]
 ) {
+	const { options } = useContext(StateContext)
+
 	return useQuery({
-		...getUseQueryProps(iri, type),
+		...getUseQueryProps(iri, type, options.maxTiles),
 		retry: 5,
 		retryDelay: 1000,
 	})
@@ -28,7 +29,8 @@ export function useWidgetByIri(
 
 export function getUseQueryProps(
 	iri: GridDataState["id"],
-	type: GridDataState["type"]
+	type: GridDataState["type"],
+	maxTiles: State["options"]["maxTiles"]
 ) {
 	const queryFn = async () => {
 		if (!iri || !type) return Promise.resolve({ title: "", items: [] })
@@ -50,10 +52,10 @@ export function getUseQueryProps(
 			 * Warn if the number of items exceeds the maximum limit, in order
 			 * to draw attention to possible slow queries and 'lost' data.
 			 */
-			if (rawData?.length > MAX_ITEMS) {
+			if (rawData?.length > maxTiles) {
 				console.warn(
 					`Grid items exceed maximum limit, truncating ${rawData?.length} to`,
-					MAX_ITEMS,
+					maxTiles,
 				)
 			}
 
@@ -63,7 +65,7 @@ export function getUseQueryProps(
 			 * sliced to the maximum number of items.
 			 */
 			const mappingFunction = mappingFunctionBySubType[type]
-			const slicedData = rawData.slice(0, MAX_ITEMS)
+			const slicedData = rawData.slice(0, maxTiles)
 			const data = mappingFunction(slicedData)
 			if (data.error) throw new Error("Error mapping widget data")
 
