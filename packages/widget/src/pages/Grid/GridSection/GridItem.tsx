@@ -55,11 +55,11 @@ export function GridItemWrapper({
 			{item.type === GridCategory.Static ? (
 				<TileTurner
 					back={
-						<Box>
+						<Box centerContent>
 							<img src="/oostpool.png" style={{ maxHeight: "100%" }} />
 						</Box>
 					}
-					front={<Box>{children}</Box>}
+					front={<Box centerContent className={classes.staticBox}>{children}</Box>}
 				/>
 			) : (
 				children

@@ -54,6 +54,10 @@
 	cursor: default;
 }
 
+.staticBox {
+	flex-direction: column;
+}
+
 .gridItem.more {
 	position: relative;
 }

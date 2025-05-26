@@ -27,10 +27,6 @@
 .turn-front {
 	z-index: 2;
 	transform: rotateY(0deg);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
 }
 
 /* back, initially hidden pane */

@@ -2,6 +2,14 @@
 	padding: 1rem;
 }
 
+.Box.centerContent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
+
 /* Media query for small varianhhcjkhciwjkt */
 @media	(orientation: portrait) and (max-height: 360px),
 			(orientation: landscape) and (max-width: 360px)
