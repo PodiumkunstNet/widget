@@ -38,8 +38,6 @@ export function Header({ staticPage = false, small = true }: Props) {
 	const location = useLocation()
 	const isSubCategoryView = location.pathname + location.search !== homeURL
 
-	console.log((Math.ceil(items.length / options.maxRows)) -  options.maxColumns)
-
 	return (
 		<header
 			className={cn(classes.header, {
@@ -144,7 +142,6 @@ function Paginator({ id, pages, small }: {
 	pages: number
 	small?: boolean
 }) {
-	// const pages = Math.ceil(items.length / 2)
 	const [currentPage, setCurrentPage] = useState(0)
 
 	useEffect(() => {
@@ -158,7 +155,7 @@ function Paginator({ id, pages, small }: {
 		)
 	}, [currentPage])
 
-	if (pages <= 1) return null
+	if (pages < 1) return null
 
 	return (
 		<ul

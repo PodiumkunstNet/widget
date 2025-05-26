@@ -227,3 +227,13 @@
 		gap: 0rem;
 	}
 }
+
+@media (orientation: landscape) {
+	.paginator {
+		flex-direction: column;
+	}
+
+	.paginator li {
+		transform: rotate(90deg);
+	}
+}

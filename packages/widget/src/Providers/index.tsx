@@ -29,15 +29,15 @@ export function Providers({ children }: { children: ReactNode }) {
 	}, [])
 
 	useEffect(() => {
-		const [totalWidth, columnWidth] = getGridSectionWidth(gridData.items, state.options)
+		const [totalWidth, columnWidth] = getGridSectionSizes(gridData.items, state.options)
 
 		document.documentElement.style.setProperty(
-			'--grid-width',
+			'--total-size',
 			totalWidth + 'px'
 		)
 
 		document.documentElement.style.setProperty(
-			'--column-width',
+			'--single-size',
 			columnWidth + 'px'
 		)
 	}, [state.options, gridData.items])
@@ -53,13 +53,26 @@ export function Providers({ children }: { children: ReactNode }) {
 	)
 }
 
-function getGridSectionWidth(items: GridItem[], options: State['options']) {
-	const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
-	const columnWidth = availableColumnSpace / options.maxColumns
+function getGridSectionSizes(items: GridItem[], options: State['options']) {
+	const isPortait = window.innerHeight > window.innerWidth
+	let singleSize = 0 // single size is the size of one column in potrait mode and one row in landscape mode
+	let totalSize = 0 // total size is the size of the whole grid section
 
-	// Calc the number of columns, there are ROW_COUNT rows
-	const columns = Math.ceil(items.length / options.maxRows)
+	if (isPortait) {
+		const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
+		singleSize = availableColumnSpace / options.maxColumns // column width
 
-	return [(columnWidth * columns) + (options.borderWidth * (columns + 1)), columnWidth]
+		const columns = Math.ceil(items.length / options.maxRows)
 
+		totalSize = (singleSize * columns) + (options.borderWidth * (columns + 1))
+	} else {
+		const availableRowSpace = (window.innerHeight - (options.borderWidth * (options.maxRows + 1)))
+		singleSize = availableRowSpace / options.maxRows // row height
+
+		const rows = Math.ceil(items.length / options.maxColumns)
+
+		totalSize = (singleSize * rows) + (options.borderWidth * (rows + 1))
+	}
+
+	return [totalSize, singleSize]
 }
