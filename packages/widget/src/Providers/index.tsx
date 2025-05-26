@@ -13,8 +13,8 @@ import { Actions } from "../state/actions"
 import { GridItem } from "../types/grid"
 
 export function Providers({ children }: { children: ReactNode }) {
-	const gridData = useGridData()
 	const [state, dispatch] = useReducer(stateReducer, initialState)
+	const gridData = useGridData(state?.options)
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search)

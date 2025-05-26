@@ -4,9 +4,9 @@ import { useQueryClient } from "@tanstack/react-query"
 
 import { getUseQueryProps, useWidgetByIri } from "../hooks/useWidgetByIri"
 import { GridItem } from "../types/grid"
-import { GridDataState } from "../state"
+import { GridDataState, State } from "../state"
 
-export function useGridData() {
+export function useGridData(options: State['options']) {
 	const [params] = useSearchParams()
 
 	const id = params.get("id") ?? undefined
@@ -20,7 +20,7 @@ export function useGridData() {
 
 		const ps = (data.items ?? []).map(async (tile: GridItem) => {
 			if (tile?.id && tile?.subType) {
-				const useQueryProps = getUseQueryProps(tile.id, tile.subType)
+				const useQueryProps = getUseQueryProps(tile.id, tile.subType, options.maxTiles)
 				return queryClient?.prefetchQuery(useQueryProps)
 			}
 		})
