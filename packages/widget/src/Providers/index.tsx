@@ -29,16 +29,19 @@ export function Providers({ children }: { children: ReactNode }) {
 	}, [])
 
 	useEffect(() => {
-		const [totalWidth, columnWidth] = getGridSectionSizes(gridData.items, state.options)
+		if (!gridData.items || gridData.items.length === 0) return
+
+		const [totalSize, singleSize] = getGridSectionSizes(gridData.items, state.options)
+		console.log(totalSize, singleSize, window.innerHeight)
 
 		document.documentElement.style.setProperty(
 			'--total-size',
-			totalWidth + 'px'
+			totalSize + 'px'
 		)
 
 		document.documentElement.style.setProperty(
 			'--single-size',
-			columnWidth + 'px'
+			singleSize + 'px'
 		)
 	}, [state.options, gridData.items])
 
@@ -54,11 +57,11 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 
 function getGridSectionSizes(items: GridItem[], options: State['options']) {
-	const isPortait = window.innerHeight > window.innerWidth
+	const isPortrait = window.innerHeight > window.innerWidth
 	let singleSize = 0 // single size is the size of one column in potrait mode and one row in landscape mode
 	let totalSize = 0 // total size is the size of the whole grid section
 
-	if (isPortait) {
+	if (isPortrait) {
 		const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
 		singleSize = availableColumnSpace / options.maxColumns // column width
 
@@ -67,6 +70,7 @@ function getGridSectionSizes(items: GridItem[], options: State['options']) {
 		totalSize = (singleSize * columns) + (options.borderWidth * (columns + 1))
 	} else {
 		const availableRowSpace = (window.innerHeight - (options.borderWidth * (options.maxRows + 1)))
+		console.log('availableRowSpace', availableRowSpace)
 		singleSize = availableRowSpace / options.maxRows // row height
 
 		const rows = Math.ceil(items.length / options.maxColumns)
