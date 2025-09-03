@@ -1,6 +1,13 @@
 import { SourceCode } from "./SourceCode"
 import { useReducer } from "react"
-import { ColorInput, NumberInput, Radio, Select, Stack, TextInput } from "@mantine/core"
+import {
+	ColorInput,
+	NumberInput,
+	Radio,
+	Select,
+	Stack,
+	TextInput,
+} from "@mantine/core"
 
 import { initialState, Orientation, SizeValue } from "../state"
 import { stateReducer } from "../state/reducer"
@@ -33,22 +40,61 @@ export function Configure() {
 				placeholder="Selecteer een werk"
 				data={[
 					{
-						value: "http://example.com/pknet/testWorkZF",
-						label: "Die Zauberflote",
+						group: "Werk",
+						items: [
+							{
+								value: "http://example.com/pknet/work21_Thron&type=work",
+								label: "Der Thronfolger",
+							},
+							{
+								value: "http://example.com/pknet/testWorkZF",
+								label: "Die Zauberflote",
+							},
+							{
+								value: "https://data.muziekschatten.nl/som/work/82b52a5dbd3d377825ebc3901652e09d",
+								label: "Abramsz, Simon. Dansliedje",
+							},
+							{
+								value: "https://data.muziekschatten.nl/som/work/7b1590f2b7c54c7a7c8e36eef531b2af",
+								label: "Andriessen, Louis. De Materie",
+							},
+							// {
+							// 	value: "http://data.beeldengeluid.nl/id/program/2101608140126825331_work",
+							// 	label: "Programma Concertgebouworkest - Furtwaengler; Wilhelm",
+							// },
+
+
+						],
 					},
 					{
-						value: "https://data.muziekschatten.nl/som/work/82b52a5dbd3d377825ebc3901652e09d",
-						label: "Abramsz, Simon. Dansliedje",
+						group: "Persoon",
+						items: [
+							{
+								value: "http://example.com/pknet/agentKrisztinaDeCh%C3%A2tel&type=agent",
+								label: "Brahms, Johannes (1833-1897)",
+							},
+						]
 					},
 					{
-						value: "https://data.muziekschatten.nl/som/work/7b1590f2b7c54c7a7c8e36eef531b2af",
-						label: "Andriessen, Louis. De Materie",
+						group: "Organisatie",
+						items: [
+							{
+								value: "http://example.com/pknet/agentDansgroepKrisztinaDeCh%C3%A2tel&type=agent",
+								label: "Dansgroep Krisztina de Châtel",
+							},
+						]
 					},
 					{
-						value: "http://data.beeldengeluid.nl/id/program/2101608140126825331_work",
-						label: "Programma Concertgebouworkest - Furtwaengler; Wilhelm",
-					},
+						group: "Registratie",
+						items: [
+							{
+								value: "http://example.com/pknet/recording01_TheaterkrantRecensie&type=work",
+								label: "Thron recensie Theaterkrant 2017",
+							},
+						]
+					}
 				]}
+				maxDropdownHeight={600}
 				value={state.iri}
 				onChange={(value) => {
 					if (!value) return
