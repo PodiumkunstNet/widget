@@ -52,7 +52,17 @@ export function GridItemWrapper({
 				if (onClick) onClick()
 			}}
 		>
-			{item.type === GridCategory.Static ? (
+			{
+				import.meta.env.DEV &&
+				<div className={classes.devPanel} onClick={(ev) => {
+					ev.stopPropagation()
+					console.log(item)
+				}}>
+					{item.type}
+				</div>
+			}
+			{ children}
+			{/* {item.type === GridCategory.Static ? (
 				<TileTurner
 					back={
 						<Box centerContent>
@@ -63,7 +73,7 @@ export function GridItemWrapper({
 				/>
 			) : (
 				children
-			)}
+			)} */}
 		</li>
 	)
 }

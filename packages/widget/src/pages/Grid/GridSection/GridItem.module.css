@@ -10,6 +10,7 @@
 	min-height: 0;
 	min-width: 0;
 	padding: 1rem;
+	position: relative;
 	transition: all 300ms ease-in;
 	width: 100%;
 
@@ -58,9 +59,9 @@
 	flex-direction: column;
 }
 
-.gridItem.more {
+/* .gridItem.more {
 	position: relative;
-}
+} */
 
 .gridItem.more:hover {
 	background: var(--color-current);
@@ -78,7 +79,7 @@
 * background-color: color-mix(in srgb, white, var(--color-primary) 15%);
 */
 .gridItem.static:hover {
-	background-color: rgba(255, 255, 255, 0.85);
+	background-color: rgba(255, 255, 255, 0.9);
 }
 
 .gridItem.static:hover .key,
@@ -94,15 +95,34 @@
  * tile. To set the padding on the tile, use the turn-front and turn-back
  * divs.
  */
-.gridItem.static {
+/* .gridItem.static {
 	padding: 0;
 }
 
 .gridItem.static:hover,
 .gridItem.static {
 	background: var(--color-current);
+} */
+
+.devPanel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: rgba(0,0,0,.5);
+	color: white;
+	font-size: .6rem;
+	padding: .1rem .5rem;
+	border-bottom-left-radius: .25rem;
+	z-index: 10;
+	user-select: none;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
 }
 
+.devPanel:hover {
+	background: rgba(0,0,0,.6);
+}
 
 @media 
 	(orientation: portrait) and (max-height: 360px),
