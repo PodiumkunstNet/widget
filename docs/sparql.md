@@ -1,0 +1,253 @@
+# SPARQL queries
+
+## Endpoint
+- https://podiumkunst.triply.cc/Podiumkunstnet/MVP-Test/sparql
+
+## List all predicates
+```
+SELECT DISTINCT ?predicate
+WHERE {
+  ?s ?predicate ?o .
+}
+ORDER BY ?predicate
+```
+
+## Select all triples with `<url>` as subject or object
+```
+SELECT ?s ?p ?o WHERE {
+  BIND(<http://example.com/pknet/testWorkZF> AS ?target)
+  { 
+    ?target ?p ?o .
+    BIND(?target AS ?s)
+  }
+  UNION
+  { 
+    ?s ?p ?target .
+    BIND(?target AS ?o)
+  }
+}
+```
+
+## List all languages in the dataset with their respective counts
+```
+SELECT 
+  (lang(?label) AS ?language)
+  (COUNT(*) AS ?count)
+WHERE {
+  ?s ?p ?label .
+  FILTER (lang(?label) != "")
+}
+GROUP BY (lang(?label))
+ORDER BY ?language
+```
+
+## List all categories of works (rdaw:P10004)
+```
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdaw: <http://rdaregistry.info/Elements/w/>
+
+select DISTINCT ?category ?categoryname where {
+  optional {
+    ?work rdaw:P10004 ?category .
+    ?category skos:prefLabel ?categoryname .
+    filter (langmatches(lang(?categoryname), "nl"))
+  }
+}
+```
+
+## Select the work `<http://example.com/pknet/testWorkZF>`
+```
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdaw: <http://rdaregistry.info/Elements/w/>
+prefix rdae: <http://rdaregistry.info/Elements/e/>
+prefix rdam: <http://rdaregistry.info/Elements/m/>
+prefix rdaa: <http://rdaregistry.info/Elements/a/>
+prefix rdat: <http://rdaregistry.info/Elements/t/>
+
+select
+  ?work
+  ?title
+  ?alttitle
+  ?language
+  ?date
+  ?note
+  ?category
+  ?categoryname
+  ?composer
+  ?composername
+  ?librettist
+  ?librettistname
+  ?choreographer
+  ?choreographername
+  ?author
+  ?authorname
+  ?producer
+  ?producername
+  ?director
+  ?directorname
+  ?dedicatee
+  ?dedicateename
+  ?commissioning
+  ?commissioningname
+  ?creator
+  ?creatorname
+  (count(distinct(?manifestation)) as ?manifestations)
+
+where {
+  VALUES ?work { <http://example.com/pknet/testWorkZF> }
+
+  # title
+  optional {
+    ?work rdaw:P10223 ?preftitle
+  }
+  optional {
+    ?work rdaw:P10088 ?worktitle
+  }
+  bind(coalesce(?preftitle, ?worktitle) as ?title)
+
+  # language
+  optional {
+    ?work rdaw:P10353 ?language
+  }
+
+  # date, comes in different formats (eg year, full date)
+  optional {
+    ?work rdaw:P10219 ?date
+  }
+
+  # note, a brief description
+  optional {
+    ?work rdaw:P10330 ?note
+  }
+
+  # if there is an expression for work
+  optional {
+    ?expression rdae:P20231 ?work
+
+    # get manifestations
+    optional {
+      ?manifestation rdam:P30139 ?expression
+    }
+  }
+
+  # category: identifier + label
+  optional {
+    ?work rdaw:P10004 ?category .
+    ?category skos:prefLabel ?categoryname .
+    filter (langmatches(lang(?categoryname), "nl"))
+  }
+
+  # composer: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10053 ?composer .
+    optional {
+      ?composer rdaa:P50385 ?composernamerda
+    }
+    optional {
+      ?composer skos:prefLabel ?composernameskos
+    }
+    bind(coalesce(?composernamerda, ?composernameskos, str(?composer)) as ?composername)
+  }
+
+  # librettist: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10205 ?librettist .
+    optional {
+      ?librettist rdaa:P50385 ?librettistnamerda
+    }
+    bind(coalesce(?librettistnamerda, str(?librettist)) as ?librettistname)
+  }
+
+  # choreographer: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10060 ?choreographer .
+    optional {
+      ?choreographer rdaa:P50385 ?choreographernamerda
+    }
+    bind(coalesce(?choreographernamerda, str(?choreographer)) as ?choreographername)
+  }
+  
+  # author: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10061 ?author .
+    optional {
+      ?author rdaa:P50385 ?authornamerda
+    }
+    bind(coalesce(?authornamerda, str(?author)) as ?authorname)
+  }
+
+  # producer: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10064 ?producer .
+    optional {
+      ?producer rdaa:P50385 ?producernamerda
+    }
+    bind(coalesce(?producernamerda, str(?producer)) as ?producername)
+  }
+
+  # director: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10066 ?director .
+    optional {
+      ?director rdaa:P50385 ?directornamerda
+    }
+    bind(coalesce(?directornamerda, str(?director)) as ?directorname)
+  }
+
+  # dedicatee: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10069 ?dedicatee .
+    optional {
+      ?dedicatee rdaa:P50385 ?dedicateenamerda
+    }
+    bind(coalesce(?dedicateenamerda, str(?dedicatee)) as ?dedicateename)
+  }
+
+  # commissioning: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10287 ?commissioning .
+    optional {
+      ?commissioning rdaa:P50385 ?commissioningnamerda
+    }
+    bind(coalesce(?commissioningnamerda, str(?commissioning)) as ?commissioningname)
+  }
+  
+  # creator: identifier + label, could be more than one
+  optional {
+    ?work rdaw:P10437 ?creator .
+    optional {
+      ?creator rdaw:P10437 ?creatornamerda
+    }
+    bind(coalesce(?creatornamerda, str(?creator)) as ?creatorname)
+  }
+
+} group by 
+  ?work 
+  ?title 
+  ?alttitle 
+  ?language 
+  ?date 
+  ?note 
+  ?category 
+  ?categoryname 
+  ?composer 
+  ?composername 
+  ?librettist 
+  ?librettistname 
+  ?choreographer 
+  ?choreographername 
+  ?author 
+  ?authorname 
+  ?producer 
+  ?producername
+  ?director 
+  ?directorname
+  ?dedicatee 
+  ?dedicateename
+  ?commissioning 
+  ?commissioningname
+  ?creator 
+  ?creatorname
+```
