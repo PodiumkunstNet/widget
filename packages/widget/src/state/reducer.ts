@@ -10,11 +10,6 @@ export function stateReducer(state: State, action: Action): State {
 
 	switch (action.type) {
 		case Actions.Init: {
-			console.log(
-				"Init reducer",
-				action.payload,
-				convertOptionsToState(action.payload),
-			)
 			nextState = {
 				...nextState,
 				options: {
