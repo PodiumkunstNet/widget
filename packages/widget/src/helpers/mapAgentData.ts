@@ -1,14 +1,13 @@
 import {
-	MainWidgetType,
 	MappedWidgetType,
 	WidgetType,
 } from "."
-import { AgentKey, getAgentLabel } from "../types/agent"
+import { AgentData, AgentKey, getAgentLabel } from "../types/agent"
 import { GridCategory, GridItem } from "../types/grid"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, "title"]
 
-export function mapAgentData(data: MainWidgetType): MappedWidgetType {
+export function mapAgentData(data: AgentData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
 			mappedData: null,

@@ -4,24 +4,27 @@ import { mapWorkData } from "./mapWorkData"
 import { mapManifistationData } from "./mapManifistationsData"
 import { mapWorkForAgentData } from "./mapWorksForAgentData"
 import { MappedData } from "../state"
+// import { WorkKey } from "../types/work"
 
-export type MainWidgetType = {
-	work: string
-	title?: string | null
-	alttitle?: string | null
-	date?: string | null
-	note?: string | null
-	category?: string | null
-	categoryname?: string | null
-	manifestation?: string | null
-	composer?: string | null
-	composername?: string | null
-	librettist?: string | null
-	librettistname?: string | null
-	choreographer?: string | null
-	choreographername?: string | null
-	[key: string]: string | null | undefined
-}
+/** 
+ * Can we replace this with: Record<WorkKey, string | null | undefined> ?
+ */
+// export type MainWidgetType = {
+// 	[WorkKey.Work]: string;
+// 	[WorkKey.Title]?: string | null;
+// 	[WorkKey.Date]?: string | null;
+// 	[WorkKey.Note]?: string | null;
+// 	[WorkKey.Categoryname]?: string | null;
+// 	[WorkKey.Composer]?: string | null;
+// 	[WorkKey.Composername]?: string | null;
+// 	[WorkKey.Librettist]?: string | null;
+// 	[WorkKey.Librettistname]?: string | null;
+// 	[WorkKey.Choreographer]?: string | null;
+// 	[WorkKey.Choreographername]?: string | null;
+// 	// [WorkKey.Alttitle]?: string | null;
+// 	// [WorkKey.Category]?: string | null;
+// 	// [WorkKey.Manifestation]?: string | null;
+// }
 
 export type MappedWidgetType = {
 	mappedData: MappedData | null

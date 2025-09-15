@@ -1,21 +1,25 @@
+export type AgentData = Record<AgentKey, string | null | undefined>
+
 export enum AgentKey {
-  Role = 'role',
-  Datebirth = 'datebirth',
+  Agent =		'agent',
+  Datebirth =	'datebirth',
+  Datedeath =	'datedeath',
+  Note =			'note',
   Placebirth = 'placebirth',
-  Datedeath = 'datedeath',
   Placedeath = 'placedeath',
-  Note = 'note',
-  Agent = 'agent'
+  Role =			'role',
+  Title =		'title',
 }
 
 const AgentLabels = {
-  [AgentKey.Role]: 'Rol',
+  [AgentKey.Agent]:		'Agent',
   [AgentKey.Datebirth]: 'Geboortedatum',
-  [AgentKey.Placebirth]: 'Geboorteplaats',
   [AgentKey.Datedeath]: 'Sterfdatum',
-  [AgentKey.Placedeath]: 'Sterfplaats',
-  [AgentKey.Note]: 'Meer Informatie',
-  [AgentKey.Agent]: 'Agent',
+  [AgentKey.Note]:		'Meer Informatie',
+  [AgentKey.Placebirth]:'Geboorteplaats',
+  [AgentKey.Placedeath]:'Sterfplaats',
+  [AgentKey.Role]:		'Rol',
+  [AgentKey.Title]:		'Titel',
 } as const satisfies Record<AgentKey, string>
 
 export function getAgentLabel(key: AgentKey) {

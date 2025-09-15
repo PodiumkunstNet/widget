@@ -1,30 +1,24 @@
-import {
-	MainWidgetType,
-	MappedWidgetType,
-	WidgetType,
-} from "."
+import { MappedWidgetType, WidgetType } from "."
 import { GridCategory, GridItem } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
-import {
-	FIELD_LABELS,
-	getLabelByType,
-} from "../constants/fieldLabels"
+import { getLabelByFieldAndSubType } from "../constants/fieldLabels"
+import { getWorkLabel, WorkData, WorkKey } from "../types/work"
 
 const keysToExclude = [
-	"work",
-	"title",
-	"categoryname",
-	"composername",
-	"librettistname",
-	"choreographername",
+	WorkKey.Work,
+	WorkKey.Title,
+	WorkKey.Categoryname,
+	WorkKey.Composername,
+	WorkKey.Librettistname,
+	WorkKey.Choreographername,
 ]
-const keysInfo = ["note"]
-const keysStatic = ["alttitle", "date"] as const
-const keyToGetName = ["composer", "librettist", "choreographer"] as const
 
-export function mapWorkData(
-	data: MainWidgetType,
-): MappedWidgetType {
+/**
+ * These keys render 2 tiles: one for the agent, one for works by that agent
+ */
+const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer]
+
+export function mapWorkData(data: WorkData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
 			mappedData: null,
@@ -33,7 +27,9 @@ export function mapWorkData(
 	}
 
 	const items: GridItem[] = []
-	Object.keys(data).forEach((key) => {
+	const keys = Object.keys(data) as WorkKey[]
+
+	keys.forEach((key) => {
 		if (!data[key]) {
 			return
 		}
@@ -42,58 +38,62 @@ export function mapWorkData(
 			return
 		}
 
-		if (
-			keyToGetName.includes(key as (typeof keyToGetName)[number]) &&
-			data[`${key}name`]
-		) {
-			items.push({
-				key: getLabelByType(
-					key as (typeof keyToGetName)[number],
-					WidgetType.Agent,
-				),
-				value: data[`${key}name`] ?? undefined,
-				type: GridCategory.More,
-				id: data[key as (typeof keyToGetName)[number]] || "",
-				subType: WidgetType.Agent,
-				sourceKey: `${key}name`,
-			})
+		/** Map the agent data to 2 tiles */
+		if (agentTiles.includes(key)) {
+			const nameKey = `${key}name`
 
-			items.push({
-				key: getLabelByType(
-					key as (typeof keyToGetName)[number],
-					WidgetType.WorksForAgent,
-				),
-				value: data[`${key}name`] ?? undefined,
-				type: GridCategory.More,
-				subType: WidgetType.WorksForAgent,
-				id: data[key as (typeof keyToGetName)[number]] || "",
-				sourceKey: `${key}name`,
-			})
+			if (keyExists(nameKey, keys)) {
+				const value = data[key]
+
+				items.push({
+					id: value ?? "",
+					key: getLabelByFieldAndSubType(key, WidgetType.Agent),
+					sourceKey: nameKey,
+					subType: WidgetType.Agent,
+					type: GridCategory.More,
+					value,
+				})
+
+				items.push({
+					id: value ?? "",
+					key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
+					sourceKey: nameKey,
+					subType: WidgetType.WorksForAgent,
+					type: GridCategory.More,
+					value,
+				})
+			}
 
 			return
 		}
 
-		if (key == "category") {
-			items.push({
-				key: FIELD_LABELS[key as (typeof keysStatic)[number]],
-				value: capitalizeFirstLetter(data?.categoryname ?? ""),
-				type: GridCategory.More,
-				id: data["category"] || "",
-				subType: WidgetType.Category,
-				sourceKey: "categoryname",
-			})
-			return
+		if (key == WorkKey.Category) {
+			const nameKey = `${key}name`
+
+			if (keyExists(nameKey, keys)) {
+				const value = data[nameKey] ?? ""
+
+				items.push({
+					key: getWorkLabel(WorkKey.Category),
+					value: capitalizeFirstLetter(value),
+					type: GridCategory.More,
+					id: data[WorkKey.Category] ?? "",
+					subType: WidgetType.Category,
+					sourceKey: WorkKey.Category,
+				})
+				return
+			}
 		}
 
-		if (key == "manifestations") {
-			if (Number(data["manifestations"]) > 0) {
+		if (key == WorkKey.Manifestations) {
+			if (Number(data[WorkKey.Manifestations]) > 0) {
 				items.push({
 					key: "",
-					value: "Gebaseerd op dit werk",
+					value: getWorkLabel(WorkKey.Manifestations),
 					type: GridCategory.More,
-					id: data["work"] || "",
+					id: data[WorkKey.Work] ?? "",
 					subType: WidgetType.Manifestation,
-					sourceKey: "manifestations",
+					sourceKey: WorkKey.Manifestations,
 				})
 			}
 
@@ -101,9 +101,9 @@ export function mapWorkData(
 		}
 
 		// Show info fields
-		if (keysInfo.includes(key)) {
+		if (key === WorkKey.Note) {
 			items.push({
-				key: FIELD_LABELS.note,
+				key: getWorkLabel(key),
 				value: "Synopsis",
 				type: GridCategory.Information,
 				note: data[key],
@@ -114,7 +114,7 @@ export function mapWorkData(
 
 		// Show static fields
 		items.push({
-			key: FIELD_LABELS[key as (typeof keysStatic)[number]],
+			key: getWorkLabel(key),
 			value: data[key],
 			type: GridCategory.Static,
 			sourceKey: key,
@@ -130,4 +130,8 @@ export function mapWorkData(
 		},
 		error: false,
 	}
+}
+
+function keyExists(key: string, keys: WorkKey[]): key is WorkKey {
+	return keys.includes(key as WorkKey)
 }

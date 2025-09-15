@@ -1,28 +1,23 @@
 import { WidgetType } from "../helpers"
+import { getWorkLabel, WorkKey } from "../types/work";
 
-export const FIELD_LABELS = {
-  alttitle: 'Alternatieve titel',
-  date: 'Datum',
-  note: 'Informatie',
-  category: 'Meer van het genre',
-  manifestation: '',
-} as const;
+// export const FIELD_LABELS = {
+//   alttitle: 'Alternatieve titel',
+//   date: 'Datum',
+//   note: 'Informatie',
+//   category: 'Meer van het genre',
+//   manifestation: '',
+// } as const;
 
-const lablesByType: Record<string, string> = {
-  composer: 'Over de componist',
-  librettist: 'Over de librettist',
-  choreographer: 'Over de choreograaf',
-} as const;
-
-export function getLabelByType(
-  field: keyof typeof lablesByType,
+export function getLabelByFieldAndSubType(
+  field: WorkKey,
   subType: WidgetType
 ) {
 	if (subType === WidgetType.WorksForAgent) {
 		return 'Meer werk van'
 	}
 
-	return lablesByType[field];
+	return getWorkLabel(field)
 }
 
 // export type FieldLabels = (typeof FIELD_LABELS)[keyof typeof FIELD_LABELS];
