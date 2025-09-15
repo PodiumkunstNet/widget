@@ -1,7 +1,7 @@
 import { createContext, Dispatch } from "react"
 import type { Action } from "./actions"
 import { GridItem } from "../types/grid"
-import { WidgetSubType } from "../helpers"
+import { WidgetType } from "../helpers"
 
 // Define the shape of the state
 export interface State {
@@ -55,7 +55,7 @@ export interface GridDataState extends MappedData {
 	isLoading: boolean
 	isError: boolean
 	id: string | undefined
-	type: WidgetSubType | undefined
+	type: WidgetType | undefined
 }
 
 const initialGridDataState: GridDataState = {

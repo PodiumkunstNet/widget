@@ -14,15 +14,6 @@ export const FIELD_LABELS = {
   manifestation: '',
 } as const;
 
-export const AGENT_FIELD_LABELS = {
-  role: 'Rol',
-  datebirth: 'Geboortedatum',
-  placebirth: 'Geboorteplaats',
-  datedeath: 'Sterfdatum',
-  placedeath: 'Sterfplaats',
-  note: 'Meer Informatie',
-} as const;
-
 const lablesByType = {
   composer: (type: SameFieldPurposeType) =>
     type === SameFieldPurpose.otherWorks

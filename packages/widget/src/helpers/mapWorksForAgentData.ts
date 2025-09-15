@@ -1,5 +1,5 @@
 import { GridCategory, GridItem } from "../types/grid"
-import { MappedWidgetType, WidgetSubType } from "../helpers"
+import { MappedWidgetType, WidgetType } from "../helpers"
 
 export type WorkForAgentType = {
 	agent: string
@@ -24,7 +24,7 @@ export function mapWorkForAgentData(
 			value: item.title,
 			type: GridCategory.More,
 			id: item.work,
-			subType: WidgetSubType.Work,
+			subType: WidgetType.Work,
 			sourceKey: "title",
 		})
 	})

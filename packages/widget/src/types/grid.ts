@@ -1,4 +1,4 @@
-import { WidgetSubType } from "../helpers"
+import { WidgetType } from "../helpers"
 
 export enum GridCategory {
   Information = 'information',
@@ -14,7 +14,7 @@ export interface GridItem {
 	type: GridCategory
 	id?: string
 	note?: string | null
-	subType?: WidgetSubType
+	subType?: WidgetType
 	url?: string
 	/** Optional: original source JSON key for the value, for debugging/inspection */
 	sourceKey?: string

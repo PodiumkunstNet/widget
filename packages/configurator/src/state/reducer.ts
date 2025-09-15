@@ -8,7 +8,7 @@ import {
 	State,
 } from "."
 import { Action, Actions } from "./actions"
-import { WidgetSubType } from "../../../widget/src/types/mainWidgetData"
+import { WidgetType } from "@widget/helpers"
 
 export function stateReducer(state: State, action: Action): State {
 	if (process.env.NODE_ENV === "development") console.log("[REDUCER]", action)
@@ -121,7 +121,7 @@ export function updateSource(state: State) {
 			? "http://localhost:3001"
 			: window.location.origin
 	const encodedOptions = encodeURIComponent(JSON.stringify(options))
-	const url = `${origin}/widget?id=${state.iri}&type=${WidgetSubType.Work}&options=${encodedOptions}`
+	const url = `${origin}/widget?id=${state.iri}&type=${WidgetType.Work}&options=${encodedOptions}`
 
 	let width
 	let height

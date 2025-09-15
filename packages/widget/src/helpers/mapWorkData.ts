@@ -1,8 +1,8 @@
 import {
 	MainWidgetType,
 	MappedWidgetType,
-	WidgetSubType,
-} from "../helpers"
+	WidgetType,
+} from "."
 import { GridCategory, GridItem } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
 import {
@@ -55,7 +55,7 @@ export function mapWorkData(
 				value: data[`${key}name`] ?? undefined,
 				type: GridCategory.More,
 				id: data[key as (typeof keyToGetName)[number]] || "",
-				subType: WidgetSubType.Agent,
+				subType: WidgetType.Agent,
 				sourceKey: `${key}name`,
 			})
 
@@ -66,7 +66,7 @@ export function mapWorkData(
 				),
 				value: data[`${key}name`] ?? undefined,
 				type: GridCategory.More,
-				subType: WidgetSubType.WorksForAgent,
+				subType: WidgetType.WorksForAgent,
 				id: data[key as (typeof keyToGetName)[number]] || "",
 				sourceKey: `${key}name`,
 			})
@@ -80,7 +80,7 @@ export function mapWorkData(
 				value: capitalizeFirstLetter(data?.categoryname ?? ""),
 				type: GridCategory.More,
 				id: data["category"] || "",
-				subType: WidgetSubType.Category,
+				subType: WidgetType.Category,
 				sourceKey: "categoryname",
 			})
 			return
@@ -93,7 +93,7 @@ export function mapWorkData(
 					value: "Gebaseerd op dit werk",
 					type: GridCategory.More,
 					id: data["work"] || "",
-					subType: WidgetSubType.Manifestation,
+					subType: WidgetType.Manifestation,
 					sourceKey: "manifestations",
 				})
 			}
@@ -126,7 +126,7 @@ export function mapWorkData(
 
 	return {
 		mappedData: {
-			title: data.title || "",
+			title: data.title ?? "",
 			items: filteredResults,
 		},
 		error: false,

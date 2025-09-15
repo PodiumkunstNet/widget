@@ -1,8 +1,7 @@
 import { useSearchParams, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { queryWidgetByIri } from "@widget/hooks/useWidgetByIri"
-import { mappingFunctionBySubType, WidgetSubType } from "@widget/types/mainWidgetData"
-import { parseWidgetSubType } from "../utils/parseWidgetSubType"
+import { widgetHelpers, WidgetType, ensureWidgetType } from "@widget/helpers"
 import { Anchor, Box, Button, Group, Loader, Paper, Stack, Text, Title, Table, ScrollArea, Tooltip, Popover, Checkbox, Divider } from "@mantine/core"
 import { useMemo, useState } from "react"
 import { JsonModal } from './json-modal'
@@ -13,7 +12,7 @@ export function Source() {
 	const iri = params.get("id") ?? ""
 	const maxTiles = Number(params.get("maxTiles") ?? "50")
 	// Read subtype from URL; default to 'work' if not provided or invalid
-	const type: WidgetSubType = parseWidgetSubType(params.get("type")) ?? WidgetSubType.Work
+	const type = ensureWidgetType(params.get("type")) ?? WidgetType.Work
 
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["validate-initial", iri, maxTiles, type],
@@ -21,10 +20,13 @@ export function Source() {
 		queryFn: async () => {
 			if (!iri) return null
 			const raw = await queryWidgetByIri(iri, type)
-			const mapFn = mappingFunctionBySubType[type]
 			const sliced = raw.slice(0, maxTiles)
-			const mapped = mapFn(sliced)
+
+			const helper = widgetHelpers.get(type)
+			if (!helper) throw new Error("Unknown widget type")
+			const mapped = helper.mappingFunction(sliced)
 			if (mapped.error) throw new Error("Mapping error")
+
 			return { mapped: mapped.mappedData, raw }
 		},
 	})

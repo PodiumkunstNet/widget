@@ -1,6 +1,6 @@
 import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
-import { widgetHelpers, WidgetSubType } from "../helpers"
+import { widgetHelpers, WidgetType } from "../helpers"
 import { defaultMappedData, GridDataState, State, StateContext } from "../state"
 import { useContext } from "react"
 
@@ -8,7 +8,7 @@ import { useContext } from "react"
  * Fetch widget data by IRI and type. Every widget type has its own endpoint. 
  * Results can be large, so this function only returns raw data.
  */
-export async function queryWidgetByIri(iri: string, type: WidgetSubType) {
+export async function queryWidgetByIri(iri: string, type: WidgetType) {
 	const helper = widgetHelpers.get(type)
 	const endpoint = helper?.endpoint(iri)
 	if (!endpoint) return { mappedData: null, error: true }

@@ -1,5 +1,5 @@
 import { GridCategory, GridItem } from "../types/grid"
-import { MappedWidgetType, WidgetSubType } from "../helpers"
+import { MappedWidgetType, WidgetType } from "../helpers"
 
 export type CategoryType = {
 	category: string
@@ -22,7 +22,7 @@ export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
 			key: "",
 			value: item.worktitle,
 			type: GridCategory.More,
-			subType: WidgetSubType.Work,
+			subType: WidgetType.Work,
 			id: item.work,
 			sourceKey: "worktitle",
 		})
