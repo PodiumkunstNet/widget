@@ -7,7 +7,6 @@ import { GridCategory, GridItem } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
 import {
 	FIELD_LABELS,
-	SameFieldPurpose,
 	getLabelByType,
 } from "../constants/fieldLabels"
 
@@ -50,7 +49,7 @@ export function mapWorkData(
 			items.push({
 				key: getLabelByType(
 					key as (typeof keyToGetName)[number],
-					SameFieldPurpose.moreInfo,
+					WidgetType.Agent,
 				),
 				value: data[`${key}name`] ?? undefined,
 				type: GridCategory.More,
@@ -62,7 +61,7 @@ export function mapWorkData(
 			items.push({
 				key: getLabelByType(
 					key as (typeof keyToGetName)[number],
-					SameFieldPurpose.otherWorks,
+					WidgetType.WorksForAgent,
 				),
 				value: data[`${key}name`] ?? undefined,
 				type: GridCategory.More,

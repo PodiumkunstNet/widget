@@ -1,10 +1,4 @@
-export const SameFieldPurpose = {
-  otherWorks: 'otherWorks',
-  moreInfo: 'moreInfo',
-} as const;
-
-export type SameFieldPurposeType =
-  (typeof SameFieldPurpose)[keyof typeof SameFieldPurpose];
+import { WidgetType } from "../helpers"
 
 export const FIELD_LABELS = {
   alttitle: 'Alternatieve titel',
@@ -14,26 +8,21 @@ export const FIELD_LABELS = {
   manifestation: '',
 } as const;
 
-const lablesByType = {
-  composer: (type: SameFieldPurposeType) =>
-    type === SameFieldPurpose.otherWorks
-      ? 'Meer werk van'
-      : 'Over de componist',
-  librettist: (type: SameFieldPurposeType) =>
-    type === SameFieldPurpose.otherWorks
-      ? 'Meer werk van'
-      : 'Over de librettist',
-  choreographer: (type: SameFieldPurposeType) =>
-    type === SameFieldPurpose.otherWorks
-      ? 'Meer werk van'
-      : 'Over de choreograaf',
+const lablesByType: Record<string, string> = {
+  composer: 'Over de componist',
+  librettist: 'Over de librettist',
+  choreographer: 'Over de choreograaf',
 } as const;
 
-export const getLabelByType = (
+export function getLabelByType(
   field: keyof typeof lablesByType,
-  type: SameFieldPurposeType
-) => {
-  return lablesByType[field](type);
-};
+  subType: WidgetType
+) {
+	if (subType === WidgetType.WorksForAgent) {
+		return 'Meer werk van'
+	}
 
-export type FieldLabels = (typeof FIELD_LABELS)[keyof typeof FIELD_LABELS];
+	return lablesByType[field];
+}
+
+// export type FieldLabels = (typeof FIELD_LABELS)[keyof typeof FIELD_LABELS];
