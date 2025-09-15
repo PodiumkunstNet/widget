@@ -1,4 +1,4 @@
-import { WidgetSubType } from "./mainWidgetData"
+import { WidgetSubType } from "../helpers"
 
 export enum GridCategory {
   Information = 'information',

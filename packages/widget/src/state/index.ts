@@ -1,7 +1,7 @@
 import { createContext, Dispatch } from "react"
 import type { Action } from "./actions"
 import { GridItem } from "../types/grid"
-import { WidgetSubType } from "../types/mainWidgetData"
+import { WidgetSubType } from "../helpers"
 
 // Define the shape of the state
 export interface State {

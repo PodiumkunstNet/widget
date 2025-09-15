@@ -1,6 +1,6 @@
 import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
-import { widgetHelpers, WidgetSubType } from "../types/mainWidgetData"
+import { widgetHelpers, WidgetSubType } from "../helpers"
 import { defaultMappedData, GridDataState, State, StateContext } from "../state"
 import { useContext } from "react"
 

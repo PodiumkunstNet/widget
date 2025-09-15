@@ -1,5 +1,5 @@
 import { GridCategory, GridItem } from "../types/grid"
-import { MappedWidgetType } from "../types/mainWidgetData"
+import { MappedWidgetType } from "../helpers"
 
 export type ManifistationType = {
 	manifestation: string

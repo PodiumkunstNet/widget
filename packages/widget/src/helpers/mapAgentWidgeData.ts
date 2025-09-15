@@ -2,7 +2,7 @@ import {
 	MainWidgetType,
 	MappedWidgetType,
 	WidgetSubType,
-} from "../types/mainWidgetData"
+} from "../helpers"
 import { AgentProperties } from "../types/categories"
 import { GridCategory, GridItem } from "../types/grid"
 import { AGENT_FIELD_LABELS } from "../constants/fieldLabels"

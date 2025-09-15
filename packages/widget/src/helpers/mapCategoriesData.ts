@@ -1,5 +1,5 @@
 import { GridCategory, GridItem } from "../types/grid"
-import { MappedWidgetType, WidgetSubType } from "../types/mainWidgetData"
+import { MappedWidgetType, WidgetSubType } from "../helpers"
 
 export type CategoryType = {
 	category: string

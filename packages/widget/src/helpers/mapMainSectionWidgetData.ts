@@ -2,7 +2,7 @@ import {
 	MainWidgetType,
 	MappedWidgetType,
 	WidgetSubType,
-} from "../types/mainWidgetData"
+} from "../helpers"
 import { GridCategory, GridItem } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
 import {
