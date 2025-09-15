@@ -16,4 +16,6 @@ export interface GridItem {
 	note?: string | null
 	subType?: WidgetSubType
 	url?: string
+	/** Optional: original source JSON key for the value, for debugging/inspection */
+	sourceKey?: string
 }

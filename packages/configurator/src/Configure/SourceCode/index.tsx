@@ -14,7 +14,6 @@ export function SourceCode({ source, disabled }: Props) {
 		<Stack>
 			<Textarea id="embedCode" rows={4} readOnly value={source} />
 			<Button
-				type="button"
 				disabled={disabled}
 				onClick={() => {
 					navigator.clipboard.writeText(source)

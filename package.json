@@ -4,6 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
+		"build": "npm run build -w @podiumkunst.net/widget -w @podiumkunst.net/widget-configurator",
 		"dev:widget": "(cd packages/widget && vite dev)",
 		"dev:configurator": "(cd packages/configurator && vite dev)",
 		"lint": "eslint .",

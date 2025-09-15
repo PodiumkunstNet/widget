@@ -1,6 +1,8 @@
 import { SourceCode } from "./SourceCode"
 import { useReducer } from "react"
+import { useNavigate } from "react-router-dom"
 import {
+	Button,
 	ColorInput,
 	NumberInput,
 	Radio,
@@ -15,9 +17,11 @@ import { Actions } from "../state/actions"
 import { SelectSize } from "./SelectSize"
 
 import classes from "./index.module.css"
+import { extractIriAndType } from "../utils/iri"
 
 export function Configure() {
 	const [state, dispatch] = useReducer(stateReducer, initialState)
+	const navigate = useNavigate()
 
 	return (
 		<div className={classes.container}>
@@ -34,77 +38,93 @@ export function Configure() {
 					})
 				}}
 			/>
-			<Select
-				className={classes.iriSelect}
-				label={<h2>Voorbeeld IRIs</h2>}
-				placeholder="Selecteer een werk"
-				data={[
-					{
-						group: "Werk",
-						items: [
-							{
-								value: "http://example.com/pknet/work21_Thron&type=work",
-								label: "Der Thronfolger",
-							},
-							{
-								value: "http://example.com/pknet/testWorkZF",
-								label: "Die Zauberflote",
-							},
-							{
-								value: "https://data.muziekschatten.nl/som/work/82b52a5dbd3d377825ebc3901652e09d",
-								label: "Abramsz, Simon. Dansliedje",
-							},
-							{
-								value: "https://data.muziekschatten.nl/som/work/7b1590f2b7c54c7a7c8e36eef531b2af",
-								label: "Andriessen, Louis. De Materie",
-							},
-							// {
-							// 	value: "http://data.beeldengeluid.nl/id/program/2101608140126825331_work",
-							// 	label: "Programma Concertgebouworkest - Furtwaengler; Wilhelm",
-							// },
-
-
-						],
-					},
-					{
-						group: "Persoon",
-						items: [
-							{
-								value: "http://example.com/pknet/agentKrisztinaDeCh%C3%A2tel&type=agent",
-								label: "Brahms, Johannes (1833-1897)",
-							},
-						]
-					},
-					{
-						group: "Organisatie",
-						items: [
-							{
-								value: "http://example.com/pknet/agentDansgroepKrisztinaDeCh%C3%A2tel&type=agent",
-								label: "Dansgroep Krisztina de Châtel",
-							},
-						]
-					},
-					{
-						group: "Registratie",
-						items: [
-							{
-								value: "http://example.com/pknet/recording01_TheaterkrantRecensie&type=work",
-								label: "Thron recensie Theaterkrant 2017",
-							},
-						]
-					}
-				]}
-				maxDropdownHeight={600}
-				value={state.iri}
-				onChange={(value) => {
-					if (!value) return
-					dispatch({
-						type: Actions.SetIRI,
-						payload: { iri: value },
-					})
-				}}
-			/>
-
+			<div className={classes.iriSelectContainer}>
+				<Select
+					className={classes.iriSelect}
+					label={<h2>Voorbeeld IRIs</h2>}
+					placeholder="Selecteer een werk"
+					data={[
+						{
+							group: "Werk (work)",
+							items: [
+								{
+									value: "http://example.com/pknet/work21_Thron&type=work",
+									label: "Der Thronfolger",
+								},
+								{
+									value: "http://example.com/pknet/testWorkZF",
+									label: "Die Zauberflote",
+								},
+								{
+									value: "https://data.muziekschatten.nl/som/work/82b52a5dbd3d377825ebc3901652e09d",
+									label: "Abramsz, Simon. Dansliedje",
+								},
+								{
+									value: "https://data.muziekschatten.nl/som/work/7b1590f2b7c54c7a7c8e36eef531b2af",
+									label: "Andriessen, Louis. De Materie",
+								},
+								// {
+								// 	value: "http://data.beeldengeluid.nl/id/program/2101608140126825331_work",
+								// 	label: "Programma Concertgebouworkest - Furtwaengler; Wilhelm",
+								// },
+							],
+						},
+						{
+							group: "Persoon (agent)",
+							items: [
+								{
+									value: "http://example.com/pknet/agentKrisztinaDeCh%C3%A2tel&type=agent",
+									label: "Krisztina de Châtel",
+								},
+							],
+						},
+						{
+							group: "Organisatie (agent)",
+							items: [
+								{
+									value: "http://example.com/pknet/agentDansgroepKrisztinaDeCh%C3%A2tel&type=agent",
+									label: "Dansgroep Krisztina de Châtel",
+								},
+							],
+						},
+						{
+							group: "Registratie (work)",
+							items: [
+								{
+									value: "http://example.com/pknet/recording01_TheaterkrantRecensie&type=work",
+									label: "Thron recensie Theaterkrant 2017",
+								},
+							],
+						},
+					]}
+					maxDropdownHeight={600}
+					value={state.iri}
+					onChange={(value) => {
+						if (!value) return
+						dispatch({
+							type: Actions.SetIRI,
+							payload: { iri: value },
+						})
+					}}
+				/>
+				<Button
+					disabled={!state.iri}
+					onClick={() => {
+						if (!state.iri) return
+						const { cleanIri, type } = extractIriAndType(state.iri)
+						const typeParam = (type ?? "work").toLowerCase()
+						navigate(
+							`/validate?id=${encodeURIComponent(
+								cleanIri,
+							)}&type=${encodeURIComponent(typeParam)}&maxTiles=${
+								state.maxTiles
+							}`,
+						)
+					}}
+				>
+					Bekijk brondata
+				</Button>
+			</div>
 			<SelectSize state={state} dispatch={dispatch} />
 
 			<div>

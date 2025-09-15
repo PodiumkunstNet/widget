@@ -1,0 +1,330 @@
+import { useSearchParams, Link } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+import { queryWidgetByIri } from "@widget/hooks/useWidgetByIri"
+import { mappingFunctionBySubType, WidgetSubType } from "@widget/types/mainWidgetData"
+import { parseWidgetSubType } from "../utils/parseWidgetSubType"
+import { Anchor, Box, Button, Group, Loader, Paper, Stack, Text, Title, Table, ScrollArea, Tooltip, Popover, Checkbox, Divider } from "@mantine/core"
+import { useMemo, useState } from "react"
+import { JsonModal } from './json-modal'
+
+// Simple validation page: fetch raw data + map it, then list properties (grid items)
+export function Source() {
+	const [params] = useSearchParams()
+	const iri = params.get("id") ?? ""
+	const maxTiles = Number(params.get("maxTiles") ?? "50")
+	// Read subtype from URL; default to 'work' if not provided or invalid
+	const type: WidgetSubType = parseWidgetSubType(params.get("type")) ?? WidgetSubType.Work
+
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ["validate-initial", iri, maxTiles, type],
+		enabled: !!iri,
+		queryFn: async () => {
+			if (!iri) return null
+			const raw = await queryWidgetByIri(iri, type)
+			const mapFn = mappingFunctionBySubType[type]
+			const sliced = raw.slice(0, maxTiles)
+			const mapped = mapFn(sliced)
+			if (mapped.error) throw new Error("Mapping error")
+			return { mapped: mapped.mappedData, raw }
+		},
+	})
+
+	const [jsonOpen, setJsonOpen] = useState(false)
+
+	// Column visibility state (persisted in localStorage)
+	const allColumns = ["sourceKey", "title", "sourceValue", "value", "type", "subType", "urlId"] as const
+	type ColumnId = typeof allColumns[number]
+	const [visibleCols, setVisibleCols] = useState<Record<ColumnId, boolean>>({
+		sourceKey: false,
+		title: true,
+		sourceValue: false,
+		value: true,
+		type: true,
+		subType: true,
+		urlId: true,
+	})
+
+	// useEffect(() => {
+	// 	try {
+	// 		const raw = localStorage.getItem("configurator.source.visibleCols")
+	// 		if (raw) {
+	// 			const parsed = JSON.parse(raw)
+	// 			setVisibleCols((prev) => ({ ...prev, ...parsed }))
+	// 		}
+	// 	} catch {}
+	// }, [])
+
+	// useEffect(() => {
+	// 	try {
+	// 		localStorage.setItem("configurator.source.visibleCols", JSON.stringify(visibleCols))
+	// 	} catch {}
+	// }, [visibleCols])
+
+	const toggleCol = (id: ColumnId) =>
+		setVisibleCols((s) => ({ ...s, [id]: !s[id] }))
+
+	const columns = useMemo(
+		() => [
+			{
+				id: "sourceKey" as const,
+				label: "Source key",
+				width: "16%",
+				render: (item: any) =>
+					item.sourceKey ? (
+						<code>{item.sourceKey}</code>
+					) : (
+						<Text size="xs" c="dimmed">?</Text>
+					),
+			},
+			{
+				id: "title" as const,
+				label: "Key",
+				width: "20%",
+				render: (item: any) => <code>{item.key}</code>,
+			},
+			{
+				id: "sourceValue" as const,
+				label: "Source value",
+				width: "16%",
+				render: (item: any) => {
+					const first = Array.isArray(data?.raw) ? data?.raw?.[0] : undefined
+					const v = item.sourceKey && first && typeof first === 'object' ? (first as any)[item.sourceKey] : undefined
+					const full = v == null ? '-' : typeof v === 'string' ? v : typeof v === 'object' ? JSON.stringify(v) : String(v)
+					let display = typeof full === 'string' ? full.replace(/\s+/g, ' ').trim() : String(full)
+					if (display.length > 50) display = display.slice(0, 50) + '…'
+					return (
+						<Tooltip label={full} multiline maw={400} withArrow>
+							<span style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
+								{display}
+							</span>
+						</Tooltip>
+					)
+				},
+			},
+			{
+				id: "value" as const,
+				label: "Value",
+				width: "24%",
+				render: (item: any) => {
+					const rawVal = item.value ?? "-"
+					let display =
+						typeof rawVal === "string"
+							? rawVal.replace(/\s+/g, " ").trim()
+							: String(rawVal)
+					if (display.length > 50) display = display.slice(0, 50) + "…"
+					return (
+						<Tooltip label={rawVal} multiline maw={400} withArrow>
+							<span
+								style={{
+									display: "block",
+									whiteSpace: "nowrap",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+									maxWidth: "100%",
+								}}
+							>
+								{display}
+							</span>
+						</Tooltip>
+					)
+				},
+			},
+			{
+				id: "type" as const,
+				label: "Type",
+				width: "10%",
+				render: (item: any) => item.type,
+			},
+			{
+				id: "subType" as const,
+				label: "SubType",
+				width: "10%",
+				render: (item: any) => item.subType ?? "-",
+			},
+			{
+				id: "urlId" as const,
+				label: "URL / ID",
+				width: "20%",
+				render: (item: any) => {
+					const showOpen = item?.type === 'more' && typeof item?.id === 'string' && item?.subType
+					const openBtn = showOpen ? (
+						<Button
+							component={Link}
+							to={`/validate?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(item.subType)}`}
+							variant="light"
+							size="xs"
+							ml="xs"
+						>
+							Open
+						</Button>
+					) : null
+					if (item.url) {
+						return (
+							<>
+								<Anchor href={item.url} target="_blank" rel="noreferrer">{item.url}</Anchor>
+								{openBtn}
+							</>
+						)
+					}
+					const idStr = typeof item.id === 'string' ? item.id : undefined
+					let isUrl = false
+					if (idStr) {
+						try {
+							// Using the URL constructor to validate
+							new URL(idStr)
+							isUrl = true
+						} catch {}
+					}
+					if (isUrl && idStr) {
+						return (
+							<>
+								<Anchor href={idStr} target="_blank" rel="noreferrer">{item.id}</Anchor>
+								{openBtn}
+							</>
+						)
+					}
+					return idStr ? (
+						<>
+							<Text size="xs" c="dimmed" truncate>{item.id}</Text>
+							{openBtn}
+						</>
+					) : (
+						<Text size="xs" c="dimmed">-</Text>
+					)
+				},
+			},
+		],
+		[data],
+	)
+
+	return (
+		<Stack gap="xl">
+			<Group justify="space-between">
+				<Group gap="sm">
+					<Button component={Link} to="/" variant="light">
+						Terug naar configurator
+					</Button>
+				</Group>
+				<Title order={2}>Brondata <i>{data?.raw[0]?.title}</i> <Text span c="dimmed" size="sm">({type})</Text></Title>
+				<Group gap="xs">
+					<Popover position="bottom-end" shadow="md" withArrow>
+						<Popover.Target>
+							<Button variant="light">Kolommen</Button>
+						</Popover.Target>
+						<Popover.Dropdown>
+							<Stack gap="xs">
+								<Text fw={500} size="sm">Toon kolommen</Text>
+								<Divider my="xs" />
+								{allColumns.map((id) => (
+									<Checkbox
+										key={id}
+										label={columns.find((c) => c.id === id)?.label ?? id}
+										checked={visibleCols[id]}
+										onChange={() => toggleCol(id)}
+									/>
+								))}
+							</Stack>
+						</Popover.Dropdown>
+					</Popover>
+					<Button
+						variant="default"
+						disabled={!data || isLoading || isError}
+						onClick={() => setJsonOpen(true)}
+					>
+						Bekijk JSON
+					</Button>
+				</Group>
+			</Group>
+			<Paper
+				pt="md"
+				p="md"
+				withBorder
+				style={{ flex: 1, display: "flex", flexDirection: "column" }}
+			>
+				<Stack
+					gap="sm"
+					style={{
+						flex: 1,
+						display: "flex",
+						flexDirection: "column",
+						minHeight: 0,
+					}}
+				>
+					<Text size="sm" my="xs">
+						IRI: {" "}
+						<Anchor href={iri.startsWith('http') ? iri : undefined} target="_blank" rel="noreferrer">
+							{iri}
+						</Anchor>
+					</Text>
+					{isLoading && (
+						<Group>
+							<Loader size="sm" />
+							<Text>Data laden...</Text>
+						</Group>
+					)}
+					{isError && (
+						<Text c="red">
+							Fout bij ophalen data: {(error as Error)?.message}
+						</Text>
+					)}
+					{!isLoading && !isError && !iri && (
+						<Text c="dimmed">Geen IRI opgegeven.</Text>
+					)}
+					{!isLoading && !isError && iri && data && (
+						<Box
+							style={{
+								flex: 1,
+								display: "flex",
+								flexDirection: "column",
+								minHeight: 0,
+							}}
+						>
+							{(!data.mapped || data.mapped.items.length === 0) && (
+								<Text c="dimmed">Geen items gevonden.</Text>
+							)}
+							{data.mapped && data.mapped.items.length > 0 && (
+								<ScrollArea offsetScrollbars style={{ flex: 1 }}>
+									<Table
+										striped
+										highlightOnHover
+										withTableBorder
+										withColumnBorders
+										stickyHeader
+										stickyHeaderOffset={0}
+									>
+										<Table.Thead>
+											<Table.Tr>
+												{columns
+													.filter((c) => visibleCols[c.id])
+													.map((c) => (
+														<Table.Th key={c.id} style={{ width: c.width }}>
+															{c.label}
+														</Table.Th>
+													))}
+											</Table.Tr>
+										</Table.Thead>
+										<Table.Tbody>
+											{data.mapped?.items.map((item) => (
+												<Table.Tr key={item.key + item.id}>
+													{columns
+														.filter((c) => visibleCols[c.id])
+														.map((c) => (
+															<Table.Td key={c.id} style={c.id === 'value' ? { padding: '4px 8px' } : undefined}>
+																{c.render(item)}
+															</Table.Td>
+														))}
+												</Table.Tr>
+											))}
+										</Table.Tbody>
+									</Table>
+								</ScrollArea>
+							)}
+						</Box>
+					)}
+				</Stack>
+			</Paper>
+			<JsonModal opened={jsonOpen} onClose={() => setJsonOpen(false)} data={data ?? null} />
+			{/* Placeholder: future validation results / warnings */}
+		</Stack>
+	)
+}

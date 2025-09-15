@@ -16,6 +16,10 @@
 	grid-area: iriInput;
 }
 
+.iriSelectContainer > button {
+	margin-top: 1rem;
+}
+
 .iriSelect {
 	grid-area: iriSelect;
 }

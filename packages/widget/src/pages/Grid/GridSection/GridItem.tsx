@@ -7,8 +7,6 @@ import { Props as GridSectionProps } from "./GridSection"
 
 import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
-import { TileTurner } from "./TileTurner"
-import { Box } from "../../../components/Box"
 
 type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
 	item: GridItem

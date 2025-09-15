@@ -17,6 +17,8 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 		}
 	}
 
+	const warnings: Record<string, string | null | undefined> = {}
+
 	const items: GridItem[] = Object.entries(data)
 		.filter(([key, value]) => value != null && !keysToExclude.includes(key))
 		.map(([key, value]) => {
@@ -31,6 +33,7 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 					key: AGENT_FIELD_LABELS[key],
 					value,
 					type: GridCategory.Static,
+					sourceKey: key,
 				}
 			}
 
@@ -40,15 +43,17 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 					value: "Bio",
 					note: value,
 					type: GridCategory.Information,
+					sourceKey: key,
 				}
 			}
 
-			console.warn(
-				`Key ${key} with value ${value} is not handled in mapAgentWidgetData.
-				Please check the mapping logic.`,
-			)
+			warnings[key] = value
 		})
 		.filter((item) => item != null) as GridItem[]
+
+	if (Object.keys(warnings).length > 0) {
+		console.warn("Some keys are not handled!", warnings)
+	}
 
 	if (data[AgentCategory.Agent]) {
 		items.push({
@@ -57,6 +62,7 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 			type: GridCategory.More,
 			subType: WidgetSubType.WorksForAgent,
 			id: data?.agent || "",
+			sourceKey: AgentCategory.Agent,
 		})
 	}
 
