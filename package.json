@@ -9,7 +9,8 @@
 		"dev:configurator": "(cd packages/configurator && vite dev)",
 		"lint": "eslint .",
 		"preview": "vite preview",
-		"types": "tsc -w --noEmit"
+		"types:configurator": "(cd packages/widget && npm run types)",
+		"types:widget": "(cd packages/widget && npm run types)"
 	},
 	"workspaces": [
 		"packages/widget",
