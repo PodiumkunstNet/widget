@@ -2,6 +2,7 @@ import { useSearchParams, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { queryWidgetByIri } from "@widget/hooks/useWidgetByIri"
 import { widgetHelpers, WidgetType, ensureWidgetType } from "@widget/helpers"
+import { MissingKeys } from "./MissingKeys"
 import { Anchor, Box, Button, Group, Loader, Paper, Stack, Text, Title, Table, ScrollArea, Tooltip, Popover, Checkbox, Divider } from "@mantine/core"
 import { useMemo, useState } from "react"
 import { JsonModal } from './json-modal'
@@ -32,6 +33,8 @@ export function Source() {
 	})
 
 	const [jsonOpen, setJsonOpen] = useState(false)
+
+	// Missing keys moved to separate component
 
 	// Column visibility state (persisted in localStorage)
 	const allColumns = ["sourceKey", "title", "sourceValue", "value", "type", "subType", "urlId"] as const
@@ -321,6 +324,8 @@ export function Source() {
 									</Table>
 								</ScrollArea>
 							)}
+
+							<MissingKeys type={type} raw={data.raw} />
 						</Box>
 					)}
 				</Stack>
