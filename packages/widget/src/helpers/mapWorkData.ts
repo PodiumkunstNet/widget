@@ -26,100 +26,33 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 		}
 	}
 
-	const items: GridItem[] = []
 	const keys = Object.keys(data) as WorkKey[]
 
-	keys.forEach((key) => {
-		if (!data[key]) {
-			return
-		}
-		// Exclude keys that we don't want to show
-		if (keysToExclude.includes(key)) {
-			return
-		}
+	const items: GridItem[] = keys
+		.filter((key) => data[key] != null && !keysToExclude.includes(key))
+		.flatMap<GridItem>((key) => {
+			/** We know the value exists */
+			const value = data[key]!
 
-		/** Map the agent data to 2 tiles */
-		if (agentTiles.includes(key)) {
-			const nameKey = `${key}name`
-
-			if (keyExists(nameKey, keys)) {
-				const value = data[key]
-
-				items.push({
-					id: value ?? "",
-					key: getLabelByFieldAndSubType(key, WidgetType.Agent),
-					sourceKey: nameKey,
-					subType: WidgetType.Agent,
-					type: GridCategory.More,
-					value,
-				})
-
-				items.push({
-					id: value ?? "",
-					key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
-					sourceKey: nameKey,
-					subType: WidgetType.WorksForAgent,
-					type: GridCategory.More,
-					value,
-				})
+			/** Map the agent data to 2 tiles */
+			if (agentTiles.includes(key)) {
+				return createAgentTiles(key, value, keys)
 			}
 
-			return
-		}
-
-		if (key == WorkKey.Category) {
-			const nameKey = `${key}name`
-
-			if (keyExists(nameKey, keys)) {
-				const value = data[nameKey] ?? ""
-
-				items.push({
-					key: getWorkLabel(WorkKey.Category),
-					value: capitalizeFirstLetter(value),
-					type: GridCategory.More,
-					id: data[WorkKey.Category] ?? "",
-					subType: WidgetType.Category,
-					sourceKey: WorkKey.Category,
-				})
-				return
-			}
-		}
-
-		if (key == WorkKey.Manifestations) {
-			if (Number(data[WorkKey.Manifestations]) > 0) {
-				items.push({
-					key: "",
-					value: getWorkLabel(WorkKey.Manifestations),
-					type: GridCategory.More,
-					id: data[WorkKey.Work] ?? "",
-					subType: WidgetType.Manifestation,
-					sourceKey: WorkKey.Manifestations,
-				})
+			if (key == WorkKey.Category) {
+				return createCategoryTile(key, data, keys)
 			}
 
-			return
-		}
+			if (key == WorkKey.Manifestations) {
+				return createManifestationTile(data)
+			}
 
-		// Show info fields
-		if (key === WorkKey.Note) {
-			items.push({
-				key: getWorkLabel(key),
-				value: "Synopsis",
-				type: GridCategory.Information,
-				note: data[key],
-				sourceKey: key,
-			})
-			return
-		}
+			if (key === WorkKey.Note) {
+				return createInformationTile(key, value)
+			}
 
-		// Show static fields
-		items.push({
-			key: getWorkLabel(key),
-			value: data[key],
-			type: GridCategory.Static,
-			sourceKey: key,
+			return createStaticTile(key, value)
 		})
-	})
 
 	const filteredResults = items.filter((item) => item !== null) as GridItem[]
 
@@ -134,4 +67,89 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 
 function keyExists(key: string, keys: WorkKey[]): key is WorkKey {
 	return keys.includes(key as WorkKey)
+}
+
+function createAgentTiles(
+	key: WorkKey,
+	value: string,
+	keys: WorkKey[],
+): GridItem[] {
+	const nameKey = `${key}name`
+	if (!keyExists(nameKey, keys)) return []
+
+	return [
+		{
+			id: value ?? "",
+			key: getLabelByFieldAndSubType(key, WidgetType.Agent),
+			sourceKey: nameKey,
+			subType: WidgetType.Agent,
+			type: GridCategory.More,
+			value,
+		},
+		{
+			id: value ?? "",
+			key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
+			sourceKey: nameKey,
+			subType: WidgetType.WorksForAgent,
+			type: GridCategory.More,
+			value,
+		},
+	]
+}
+
+function createStaticTile(key: WorkKey, value: string): GridItem {
+	return {
+		id: "",
+		key: getWorkLabel(key),
+		sourceKey: key,
+		type: GridCategory.Static,
+		value,
+	}
+}
+
+function createInformationTile(key: WorkKey, value: string): GridItem {
+	return {
+		id: "",
+		key: getWorkLabel(key),
+		note: value,
+		sourceKey: key,
+		type: GridCategory.Information,
+		value: "Synopsis",
+	}
+}
+
+function createCategoryTile(
+	key: WorkKey,
+	data: WorkData,
+	keys: WorkKey[],
+): GridItem | [] {
+	const nameKey = `${key}name`
+
+	if (keyExists(nameKey, keys)) {
+		const value = data[nameKey] ?? ""
+
+		return {
+			id: data[WorkKey.Category] ?? "",
+			key: getWorkLabel(WorkKey.Category),
+			sourceKey: WorkKey.Category,
+			subType: WidgetType.Category,
+			type: GridCategory.More,
+			value: capitalizeFirstLetter(value),
+		}
+	}
+
+	return []
+}
+
+function createManifestationTile(data: WorkData): GridItem | [] {
+	if (Number(data[WorkKey.Manifestations]) <= 0) return []
+
+	return {
+		id: data[WorkKey.Work] ?? "",
+		key: "",
+		sourceKey: WorkKey.Manifestations,
+		subType: WidgetType.Manifestation,
+		type: GridCategory.More,
+		value: getWorkLabel(WorkKey.Manifestations),
+	}
 }

@@ -9,9 +9,10 @@ export enum GridCategory {
 }
 
 export interface GridItem {
-	key: string
-	value?: string
 	type: GridCategory
+	key: string
+	value: string
+
 	id?: string
 	note?: string | null
 	subType?: WidgetType

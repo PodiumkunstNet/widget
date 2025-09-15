@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Group Text, Badge } from "@mantine/core"
+import { Group, Text, Badge } from "@mantine/core"
 import { WidgetType } from "@widget/helpers"
 import { WorkKey } from "@widget/types/work"
 import { AgentKey } from "@widget/types/agent"

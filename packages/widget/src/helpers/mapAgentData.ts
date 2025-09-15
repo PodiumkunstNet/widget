@@ -5,7 +5,7 @@ import {
 import { AgentData, AgentKey, getAgentLabel } from "../types/agent"
 import { GridCategory, GridItem } from "../types/grid"
 
-const keysToExclude = ["manifestation", "work", AgentKey.Agent, "title"]
+const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
 
 export function mapAgentData(data: AgentData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
@@ -32,6 +32,18 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 					value,
 					type: GridCategory.Static,
 					sourceKey: key,
+				}
+			}
+
+			if (
+				key == AgentKey.Organisation
+			) {
+				return {
+					key: getAgentLabel(key),
+					value,
+					type: GridCategory.More,
+					sourceKey: key,
+					subType: WidgetType.Agent,
 				}
 			}
 
