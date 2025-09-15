@@ -1,6 +1,6 @@
 import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
-import { endpointsBySubType, mappingFunctionBySubType, WidgetSubType } from "../types/mainWidgetData"
+import { widgetHelpers, WidgetSubType } from "../types/mainWidgetData"
 import { defaultMappedData, GridDataState, State, StateContext } from "../state"
 import { useContext } from "react"
 
@@ -9,7 +9,9 @@ import { useContext } from "react"
  * Results can be large, so this function only returns raw data.
  */
 export async function queryWidgetByIri(iri: string, type: WidgetSubType) {
-	const endpoint = endpointsBySubType[type](iri)
+	const helper = widgetHelpers.get(type)
+	const endpoint = helper?.endpoint(iri)
+	if (!endpoint) return { mappedData: null, error: true }
 	const response = await axiosClient.get(endpoint)
 	return response.data
 }
@@ -64,9 +66,12 @@ export function getUseQueryProps(
 			 * can be large (10.000+ items), the mapping is done after the data is
 			 * sliced to the maximum number of items.
 			 */
-			const mappingFunction = mappingFunctionBySubType[type]
 			const slicedData = rawData.slice(0, maxTiles)
-			const data = mappingFunction(slicedData)
+
+			const helper = widgetHelpers.get(type)
+			if (!helper) return defaultMappedData
+
+			const data = helper.mappingFunction(slicedData)
 			if (data.error) throw new Error("Error mapping widget data")
 
 			return data.mappedData ?? defaultMappedData

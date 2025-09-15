@@ -8,7 +8,7 @@ export type ManifistationType = {
 	type: string
 }
 
-export function mapManifistationsData(
+export function mapManifistationData(
 	data: ManifistationType[],
 ): MappedWidgetType {
 	if (!data) {

@@ -3,13 +3,13 @@ import {
 	MappedWidgetType,
 	WidgetSubType,
 } from "../types/mainWidgetData"
-import { AgentCategory } from "../types/categories"
+import { AgentProperties } from "../types/categories"
 import { GridCategory, GridItem } from "../types/grid"
 import { AGENT_FIELD_LABELS } from "../constants/fieldLabels"
 
-const keysToExclude = ["manifestation", "work", AgentCategory.Agent, "title"]
+const keysToExclude = ["manifestation", "work", AgentProperties.Agent, "title"]
 
-export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
+export function mapAgentData(data: MainWidgetType): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
 			mappedData: null,
@@ -23,11 +23,11 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 		.filter(([key, value]) => value != null && !keysToExclude.includes(key))
 		.map(([key, value]) => {
 			if (
-				key == AgentCategory.Role ||
-				key == AgentCategory.Datebirth ||
-				key == AgentCategory.Placebirth ||
-				key == AgentCategory.Datedeath ||
-				key == AgentCategory.Placedeath
+				key == AgentProperties.Role ||
+				key == AgentProperties.Datebirth ||
+				key == AgentProperties.Placebirth ||
+				key == AgentProperties.Datedeath ||
+				key == AgentProperties.Placedeath
 			) {
 				return {
 					key: AGENT_FIELD_LABELS[key],
@@ -37,7 +37,7 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 				}
 			}
 
-			if (key == AgentCategory.Note) {
+			if (key == AgentProperties.Note) {
 				return {
 					key: AGENT_FIELD_LABELS[key],
 					value: "Bio",
@@ -55,14 +55,14 @@ export function mapAgentWidgetData(data: MainWidgetType): MappedWidgetType {
 		console.warn("Some keys are not handled!", warnings)
 	}
 
-	if (data[AgentCategory.Agent]) {
+	if (data[AgentProperties.Agent]) {
 		items.push({
 			key: "Meer werk van",
 			value: data?.title ?? undefined,
 			type: GridCategory.More,
 			subType: WidgetSubType.WorksForAgent,
 			id: data?.agent || "",
-			sourceKey: AgentCategory.Agent,
+			sourceKey: AgentProperties.Agent,
 		})
 	}
 

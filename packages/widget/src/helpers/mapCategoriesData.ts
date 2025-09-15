@@ -8,7 +8,7 @@ export type CategoryType = {
 	worktitle: string
 }
 
-export function mapCategoriesData(data: CategoryType[]): MappedWidgetType {
+export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
 	if (!data) {
 		return {
 			mappedData: null,

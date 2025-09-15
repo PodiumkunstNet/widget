@@ -23,7 +23,7 @@ const keysInfo = ["note"]
 const keysStatic = ["alttitle", "date"] as const
 const keyToGetName = ["composer", "librettist", "choreographer"] as const
 
-export function mapMainSectionWidgetData(
+export function mapWorkData(
 	data: MainWidgetType,
 ): MappedWidgetType {
 	if (!data || typeof data !== "object") {

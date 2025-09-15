@@ -8,7 +8,7 @@
 //   [GridCategories.Static]: 'Verdieping',
 // } as const;
 
-export enum AgentCategory {
+export enum AgentProperties {
   Role = 'role',
   Datebirth = 'datebirth',
   Placebirth = 'placebirth',
