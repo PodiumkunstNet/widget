@@ -11,12 +11,13 @@ const keysToExclude = [
 	WorkKey.Composername,
 	WorkKey.Librettistname,
 	WorkKey.Choreographername,
+	WorkKey.Collectiveagentname
 ]
 
 /**
  * These keys render 2 tiles: one for the agent, one for works by that agent
  */
-const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer]
+const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent]
 
 export function mapWorkData(data: WorkData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
@@ -36,7 +37,7 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 
 			/** Map the agent data to 2 tiles */
 			if (agentTiles.includes(key)) {
-				return createAgentTiles(key, value, keys)
+				return createAgentTiles(key, data, keys)
 			}
 
 			if (key == WorkKey.Category) {
@@ -51,6 +52,7 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 				return createInformationTile(key, value)
 			}
 
+			console.warn(`No explicit mapping for work key: ${key}`)
 			return createStaticTile(key, value)
 		})
 
@@ -71,7 +73,7 @@ function keyExists(key: string, keys: WorkKey[]): key is WorkKey {
 
 function createAgentTiles(
 	key: WorkKey,
-	value: string,
+	data: WorkData,
 	keys: WorkKey[],
 ): GridItem[] {
 	const nameKey = `${key}name`
@@ -79,20 +81,20 @@ function createAgentTiles(
 
 	return [
 		{
-			id: value ?? "",
+			id: data[key] ?? "",
 			key: getLabelByFieldAndSubType(key, WidgetType.Agent),
 			sourceKey: nameKey,
 			subType: WidgetType.Agent,
 			type: GridCategory.More,
-			value,
+			value: data[nameKey]!,
 		},
 		{
-			id: value ?? "",
+			id: data[key] ?? "",
 			key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
 			sourceKey: nameKey,
 			subType: WidgetType.WorksForAgent,
 			type: GridCategory.More,
-			value,
+			value: data[nameKey]!,
 		},
 	]
 }
