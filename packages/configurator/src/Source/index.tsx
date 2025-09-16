@@ -85,7 +85,15 @@ export function Source() {
 				id: "title" as const,
 				label: "Key",
 				width: "20%",
-				render: (item: any) => <code>{item.key}</code>,
+				render: (item: any) => {
+					const k = item?.key
+					const isEmpty = k == null || (typeof k === 'string' && k.trim() === '')
+					return isEmpty ? (
+						<Text c="red">Titel niet gedefinieerd</Text>
+					) : (
+						<code>{k}</code>
+					)
+				},
 			},
 			{
 				id: "sourceValue" as const,
