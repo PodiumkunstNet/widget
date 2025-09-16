@@ -1,9 +1,9 @@
 import { Text } from '../Text';
 import { cn } from '../../utils/cn';
-import { GridItem } from '../../types/grid';
+import { Tile } from '../../types/grid';
 
 interface Props {
-  item: GridItem
+  item: Tile
   isSubCategoryView?: boolean
 }
 

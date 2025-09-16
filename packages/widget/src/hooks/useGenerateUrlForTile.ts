@@ -1,9 +1,9 @@
-import { GridCategory, type GridItem } from "../types/grid"
+import { TileType, type Tile } from "../types/grid"
 import { useParams } from "react-router-dom"
 
 export function useURL(
 	isSubCategoryView: boolean | undefined,
-	item?: GridItem,
+	item?: Tile,
 ) {
 	const params = useParams()
 
@@ -15,9 +15,9 @@ export function useURL(
 	/**
 	 * Adjust URL for Information and More categories
 	 */
-	if (item?.type === GridCategory.More) {
+	if (item?.type === TileType.More) {
 		url = `/widget/more?id=${item?.id}&type=${item?.subType}`
-	} else if (item?.type === GridCategory.Information) {
+	} else if (item?.type === TileType.Information) {
 		const parentId = params?.id
 		const leftPart = isSubCategoryView
 			? `/widget/more/${parentId}`

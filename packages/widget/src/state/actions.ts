@@ -1,4 +1,4 @@
-import { GridItem } from "../types/grid"
+import { Tile } from "../types/grid"
 import { AppOptions } from "../utils/app-options"
 
 export enum Actions {
@@ -14,6 +14,6 @@ export type Action =
 	| {
 		type: Actions.SetInfoItem
 		payload: {
-			item: GridItem | undefined
+			item: Tile | undefined
 		}
 	}

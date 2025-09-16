@@ -1,4 +1,4 @@
-import { GridSection } from "./GridSection/GridSection"
+import cx from 'clsx'
 import Loader from "../../components/Loader/Loader"
 import ErrorPreview from "../../components/Preview/ErrorPreview"
 
@@ -6,11 +6,17 @@ import { useContext, useEffect } from "react"
 import { GridDataContext } from "../../state"
 import { sessionStore } from "../../hooks/useSessionStorage"
 
-type Props = {
+import { InformationTile } from './tiles/InformationTile'
+import { GenericTile } from './tiles/GenericTile'
+import { TileType } from '../../types/grid'
+
+import classes from "./index.module.css"
+
+interface Props {
 	isSubCategoryView: boolean
 }
 
-export const Grid = ({ isSubCategoryView }: Props) => {
+export function Grid({ isSubCategoryView }: Props) {
 	const {
 		items,
 		isLoading,
@@ -39,9 +45,23 @@ export const Grid = ({ isSubCategoryView }: Props) => {
 	}
 
 	return (
-		<GridSection
-			items={items}
-			isSubCategoryView={isSubCategoryView}
-		/>
+		<ul
+			className={cx(classes.gridSection, classes.small, { 
+				[classes.isSub]: isSubCategoryView,
+			})}
+		>
+			{items.map((item, index) => (
+				item.type === TileType.Information
+				? <InformationTile
+					item={item}
+					key={index}
+				/>
+				: <GenericTile
+					item={item}
+					isSubCategoryView={isSubCategoryView}
+					key={index}
+				/>
+			))}
+		</ul>
 	)
 }

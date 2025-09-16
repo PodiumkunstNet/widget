@@ -13,6 +13,11 @@ const options: KeyframeAnimationOptions = {
 	fill: 'forwards',
 }
 
+/**
+ * ######################################################################################
+ * The TileTurner is currently not in use, but it can be used to create a tile that flips
+ * ######################################################################################
+ */
 export const TileTurner = memo(_TileTurner, () => true)
 function _TileTurner({
 	back,

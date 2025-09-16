@@ -1,11 +1,11 @@
 import { createContext, Dispatch } from "react"
 import type { Action } from "./actions"
-import { GridItem } from "../types/grid"
+import { Tile } from "../types/grid"
 import { WidgetType } from "../helpers"
 
 // Define the shape of the state
 export interface State {
-	infoItem: GridItem | undefined
+	infoItem: Tile | undefined
 	currentPage: number
 
 	// Sync options with AppOptions in utils/set-options.ts
@@ -43,7 +43,7 @@ export const DispatchContext = createContext<Dispatch<Action>>(() => {})
 
 export interface MappedData {
 	title: string
-	items: GridItem[]
+	items: Tile[]
 }
 
 export const defaultMappedData: MappedData = {

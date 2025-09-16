@@ -1,4 +1,4 @@
-import { GridCategory, GridItem } from "../types/grid"
+import { TileType, Tile } from "../types/grid"
 import { MappedWidgetType, WidgetType } from "../helpers"
 
 export type CategoryType = {
@@ -16,12 +16,12 @@ export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
 		}
 	}
 
-	const items: GridItem[] = []
+	const items: Tile[] = []
 	data.forEach((item) => {
 		items.push({
 			key: "",
 			value: item.worktitle,
-			type: GridCategory.More,
+			type: TileType.More,
 			subType: WidgetType.Work,
 			id: item.work,
 			sourceKey: "worktitle",

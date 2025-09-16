@@ -3,7 +3,7 @@ import {
 	WidgetType,
 } from "."
 import { AgentData, AgentKey, getAgentLabel } from "../types/agent"
-import { GridCategory, GridItem } from "../types/grid"
+import { TileType, Tile } from "../types/grid"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
 
@@ -17,7 +17,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 
 	const warnings: Record<string, string | null | undefined> = {}
 
-	const items: GridItem[] = Object.entries(data)
+	const items: Tile[] = Object.entries(data)
 		.filter(([key, value]) => value != null && !keysToExclude.includes(key))
 		.map(([key, value]) => {
 			if (
@@ -30,7 +30,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 				return {
 					key: getAgentLabel(key),
 					value,
-					type: GridCategory.Static,
+					type: TileType.Static,
 					sourceKey: key,
 				}
 			}
@@ -41,7 +41,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 				return {
 					key: getAgentLabel(key),
 					value,
-					type: GridCategory.More,
+					type: TileType.More,
 					sourceKey: key,
 					subType: WidgetType.Agent,
 				}
@@ -52,14 +52,14 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 					key: getAgentLabel(key),
 					value: "Bio",
 					note: value,
-					type: GridCategory.Information,
+					type: TileType.Information,
 					sourceKey: key,
 				}
 			}
 
 			warnings[key] = value
 		})
-		.filter((item) => item != null) as GridItem[]
+		.filter((item) => item != null) as Tile[]
 
 	if (Object.keys(warnings).length > 0) {
 		console.warn("Some keys are not handled!", warnings)
@@ -69,7 +69,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 		items.push({
 			key: "Meer werk van",
 			value: data?.title ?? "",
-			type: GridCategory.More,
+			type: TileType.More,
 			subType: WidgetType.WorksForAgent,
 			id: data?.agent || "",
 			sourceKey: AgentKey.Agent,

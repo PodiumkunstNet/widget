@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 
 import { getUseQueryProps, useWidgetByIri } from "../hooks/useWidgetByIri"
-import { GridItem } from "../types/grid"
+import { Tile } from "../types/grid"
 import { GridDataState, State } from "../state"
 import { AppOptions } from "../utils/app-options"
 import { Actions } from "../state/actions"
@@ -21,7 +21,7 @@ export function useGridData(options: State['options']) {
 	useEffect(() => {
 		if (!data || import.meta.env.DEV) return
 
-		const ps = (data.items ?? []).map(async (tile: GridItem) => {
+		const ps = (data.items ?? []).map(async (tile: Tile) => {
 			if (tile?.id && tile?.subType) {
 				const useQueryProps = getUseQueryProps(tile.id, tile.subType, options.maxTiles)
 				return queryClient?.prefetchQuery(useQueryProps)
@@ -54,7 +54,7 @@ export function useInitAppOptions(dispatch: React.Dispatch<any>) {
 	}, [])
 }
 
-export function useSetCSSSizeVars(items: GridItem[], options: State['options']) {
+export function useSetCSSSizeVars(items: Tile[], options: State['options']) {
 	useEffect(() => {
 		if (!items || items.length === 0) return
 
@@ -72,7 +72,7 @@ export function useSetCSSSizeVars(items: GridItem[], options: State['options']) 
 	}, [options, items])
 }
 
-function getGridSectionSizes(items: GridItem[], options: State['options']) {
+function getGridSectionSizes(items: Tile[], options: State['options']) {
 	const isPortrait = window.innerHeight > window.innerWidth
 	let singleSize = 0 // single size is the size of one column in potrait mode and one row in landscape mode
 	let totalSize = 0 // total size is the size of the whole grid section

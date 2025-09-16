@@ -1,4 +1,4 @@
-import { GridCategory, GridItem } from "../types/grid"
+import { TileType, Tile } from "../types/grid"
 import { MappedWidgetType } from "../helpers"
 
 export type ManifistationType = {
@@ -18,7 +18,7 @@ export function mapManifistationData(
 		}
 	}
 
-	const items: GridItem[] = []
+	const items: Tile[] = []
 	data.forEach((item) => {
 		const key =
 			item.type && item.date
@@ -29,7 +29,7 @@ export function mapManifistationData(
 		items.push({
 			key,
 			value: item.title,
-			type: GridCategory.Static,
+			type: TileType.Static,
 			id: item.manifestation,
 			sourceKey: "title",
 		})

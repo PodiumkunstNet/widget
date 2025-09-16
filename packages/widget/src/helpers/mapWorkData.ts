@@ -1,5 +1,5 @@
 import { MappedWidgetType, WidgetType } from "."
-import { GridCategory, GridItem } from "../types/grid"
+import { TileType, Tile } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
 import { getLabelByFieldAndSubType } from "../constants/fieldLabels"
 import { getWorkLabel, WorkData, WorkKey } from "../types/work"
@@ -29,9 +29,9 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 
 	const keys = Object.keys(data) as WorkKey[]
 
-	const items: GridItem[] = keys
+	const items: Tile[] = keys
 		.filter((key) => data[key] != null && !keysToExclude.includes(key))
-		.flatMap<GridItem>((key) => {
+		.flatMap<Tile>((key) => {
 			/** We know the value exists */
 			const value = data[key]!
 
@@ -56,7 +56,7 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 			return createStaticTile(key, value)
 		})
 
-	const filteredResults = items.filter((item) => item !== null) as GridItem[]
+	const filteredResults = items.filter((item) => item !== null) as Tile[]
 
 	return {
 		mappedData: {
@@ -75,7 +75,7 @@ function createAgentTiles(
 	key: WorkKey,
 	data: WorkData,
 	keys: WorkKey[],
-): GridItem[] {
+): Tile[] {
 	const nameKey = `${key}name`
 	if (!keyExists(nameKey, keys)) return []
 
@@ -85,7 +85,7 @@ function createAgentTiles(
 			key: getLabelByFieldAndSubType(key, WidgetType.Agent),
 			sourceKey: nameKey,
 			subType: WidgetType.Agent,
-			type: GridCategory.More,
+			type: TileType.More,
 			value: data[nameKey]!,
 		},
 		{
@@ -93,29 +93,29 @@ function createAgentTiles(
 			key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
 			sourceKey: nameKey,
 			subType: WidgetType.WorksForAgent,
-			type: GridCategory.More,
+			type: TileType.More,
 			value: data[nameKey]!,
 		},
 	]
 }
 
-function createStaticTile(key: WorkKey, value: string): GridItem {
+function createStaticTile(key: WorkKey, value: string): Tile {
 	return {
 		id: "",
 		key: getWorkLabel(key),
 		sourceKey: key,
-		type: GridCategory.Static,
+		type: TileType.Static,
 		value,
 	}
 }
 
-function createInformationTile(key: WorkKey, value: string): GridItem {
+function createInformationTile(key: WorkKey, value: string): Tile {
 	return {
 		id: "",
 		key: getWorkLabel(key),
 		note: value,
 		sourceKey: key,
-		type: GridCategory.Information,
+		type: TileType.Information,
 		value: "Synopsis",
 	}
 }
@@ -124,7 +124,7 @@ function createCategoryTile(
 	key: WorkKey,
 	data: WorkData,
 	keys: WorkKey[],
-): GridItem | [] {
+): Tile | [] {
 	const nameKey = `${key}name`
 
 	if (keyExists(nameKey, keys)) {
@@ -135,7 +135,7 @@ function createCategoryTile(
 			key: getWorkLabel(WorkKey.Category),
 			sourceKey: WorkKey.Category,
 			subType: WidgetType.Category,
-			type: GridCategory.More,
+			type: TileType.More,
 			value: capitalizeFirstLetter(value),
 		}
 	}
@@ -143,7 +143,7 @@ function createCategoryTile(
 	return []
 }
 
-function createManifestationTile(data: WorkData): GridItem | [] {
+function createManifestationTile(data: WorkData): Tile | [] {
 	if (Number(data[WorkKey.Manifestations]) <= 0) return []
 
 	return {
@@ -151,7 +151,7 @@ function createManifestationTile(data: WorkData): GridItem | [] {
 		key: "",
 		sourceKey: WorkKey.Manifestations,
 		subType: WidgetType.Manifestation,
-		type: GridCategory.More,
+		type: TileType.More,
 		value: getWorkLabel(WorkKey.Manifestations),
 	}
 }

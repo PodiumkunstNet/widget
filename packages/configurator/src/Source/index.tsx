@@ -7,7 +7,6 @@ import { Anchor, Box, Button, Group, Loader, Paper, Stack, Text, Title, Table, S
 import { useMemo, useState } from "react"
 import { JsonModal } from './json-modal'
 
-// Simple validation page: fetch raw data + map it, then list properties (grid items)
 export function Source() {
 	const [params] = useSearchParams()
 	const iri = params.get("id") ?? ""
@@ -34,8 +33,6 @@ export function Source() {
 
 	const [jsonOpen, setJsonOpen] = useState(false)
 
-	// Missing keys moved to separate component
-
 	// Column visibility state (persisted in localStorage)
 	const allColumns = ["sourceKey", "title", "sourceValue", "value", "type", "subType", "urlId"] as const
 	type ColumnId = typeof allColumns[number]
@@ -48,22 +45,6 @@ export function Source() {
 		subType: true,
 		urlId: true,
 	})
-
-	// useEffect(() => {
-	// 	try {
-	// 		const raw = localStorage.getItem("configurator.source.visibleCols")
-	// 		if (raw) {
-	// 			const parsed = JSON.parse(raw)
-	// 			setVisibleCols((prev) => ({ ...prev, ...parsed }))
-	// 		}
-	// 	} catch {}
-	// }, [])
-
-	// useEffect(() => {
-	// 	try {
-	// 		localStorage.setItem("configurator.source.visibleCols", JSON.stringify(visibleCols))
-	// 	} catch {}
-	// }, [visibleCols])
 
 	const toggleCol = (id: ColumnId) =>
 		setVisibleCols((s) => ({ ...s, [id]: !s[id] }))
@@ -339,7 +320,6 @@ export function Source() {
 				</Stack>
 			</Paper>
 			<JsonModal opened={jsonOpen} onClose={() => setJsonOpen(false)} data={data ?? null} />
-			{/* Placeholder: future validation results / warnings */}
 		</Stack>
 	)
 }

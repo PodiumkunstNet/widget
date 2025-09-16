@@ -1,20 +1,18 @@
-import { GridCategory, type GridItem } from "../../../types/grid"
-import { Props as GridSectionProps } from "./GridSection"
+import { useContext, useEffect, useState } from "react"
+
+import { TileType, type Tile } from "../../../types/grid"
+import { Props } from "./GenericTile"
 
 import { DispatchContext, StateContext } from "../../../state"
-import { useContext, useEffect, useState } from "react"
 import { Actions } from "../../../state/actions"
 import { useRef } from "react"
 
-import gridClasses from "./GridItem.module.css"
-import infoClasses from "./InfoItem.module.css"
 import { Paragraph } from "../../../components/Paragraph"
 import { Page } from "../../../components/Page"
-import { GridItemWrapper } from "./GridItem"
+import { TileWrapper } from "./GenericTile"
 
-type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
-	item: GridItem
-}
+import gridClasses from "./GenericTile.module.css"
+import infoClasses from "./InformationTile.module.css"
 
 const endState: Keyframe = {
 	inset: "4px",
@@ -30,14 +28,14 @@ const animateOptions: KeyframeAnimationOptions = {
 	fill: "forwards",
 }
 
-export function InfoItemView({ item }: Props) {
+export function InformationTile({ item }: Props) {
 	const ref = useRef<HTMLDivElement>(null)
 	const dispatch = useContext(DispatchContext)
 
 	useAnimation(item, ref)
 
 	return (
-		<GridItemWrapper
+		<TileWrapper
 			className={infoClasses.isInformation}
 			item={item}
 			onClick={() => {
@@ -62,16 +60,16 @@ export function InfoItemView({ item }: Props) {
 					<Paragraph>{item.note}</Paragraph>
 				</Page>
 			</div>
-		</GridItemWrapper>
+		</TileWrapper>
 	)
 }
 
-function useAnimation(item: GridItem, ref: React.RefObject<HTMLDivElement>) {
+function useAnimation(item: Tile, ref: React.RefObject<HTMLDivElement>) {
 	const { infoItem } = useContext(StateContext)
 	const [startState, setStartState] = useState<Keyframe>()
 
 	useEffect(() => {
-		if (item.type !== GridCategory.Information || !ref.current) return
+		if (item.type !== TileType.Information || !ref.current) return
 
 		if (infoItem === item) {
 			const gridRect = ref.current.closest("ul")!.getBoundingClientRect()

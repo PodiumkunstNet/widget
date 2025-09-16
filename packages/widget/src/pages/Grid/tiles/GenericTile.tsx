@@ -1,35 +1,42 @@
 import { ReactNode } from "react"
-import { GridCategory, type GridItem } from "../../../types/grid"
+
+import { TileType, type Tile } from "../../../types/grid"
 import { cn } from "../../../utils/cn"
 import { useURL } from "../../../hooks/useGenerateUrlForTile"
 import { useTransitionNavigate } from "../../../hooks/useTransitionNavigate"
-import { Props as GridSectionProps } from "./GridSection"
 
-import classes from "./GridItem.module.css"
 import { sessionStore } from "../../../hooks/useSessionStorage"
 
-type Props = Pick<GridSectionProps, "isSubCategoryView"> & {
-	item: GridItem
+import classes from "./GenericTile.module.css"
+
+// export interface GridSectionProps {
+// 	items: Tile[]
+// 	isSubCategoryView?: boolean
+// 	small?: boolean
+// }
+export interface Props {
+	item: Tile
+	isSubCategoryView?: boolean
 }
 
-export function GridItem({ item, isSubCategoryView = false }: Props) {
+export function GenericTile({ item, isSubCategoryView = false }: Props) {
 	const url = useURL(isSubCategoryView, item)
 	const { navigate } = useTransitionNavigate()
 
 	let onClick
-	if (item.type !== GridCategory.Static) {
+	if (item.type !== TileType.Static) {
 		onClick = () => navigate(url)
 	}
 
 	return (
-		<GridItemWrapper item={item} onClick={onClick}>
+		<TileWrapper item={item} onClick={onClick}>
 			<span className={classes.key}>{item.key}</span>
 			<span className={classes.value}>{item.value}</span>
-		</GridItemWrapper>
+		</TileWrapper>
 	)
 }
 
-export function GridItemWrapper({
+export function TileWrapper({
 	children,
 	className,
 	item,
@@ -37,7 +44,7 @@ export function GridItemWrapper({
 }: {
 	children?: ReactNode
 	className?: string
-	item: GridItem
+	item: Tile
 	onClick?: () => void
 }) {
 	return (
