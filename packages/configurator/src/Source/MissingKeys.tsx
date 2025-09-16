@@ -29,10 +29,9 @@ export function MissingKeys({ type, raw }: Props) {
 		if (!first || !expectedKeys) return []
 		return expectedKeys
 			.filter(({ key: k }) => !(k in first) || first[k] == null || first[k] === "")
-			// .map(({ key }) => ({ key, label: getTileLabel(type, key) }))
 	}, [raw, expectedKeys])
 
-	if (!expectedKeys) return null
+	if (expectedKeys.length === 0) return null
 
 	return (
 		<Group mt="md" gap="xs">

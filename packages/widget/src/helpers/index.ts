@@ -4,43 +4,63 @@ import { mapWorkData } from "./mapWorkData"
 import { mapManifistationData } from "./mapManifistationsData"
 import { mapWorkForAgentData } from "./mapWorksForAgentData"
 import { MappedData } from "../state"
-// import { WorkKey } from "../types/work"
-
-/** 
- * Can we replace this with: Record<WorkKey, string | null | undefined> ?
- */
-// export type MainWidgetType = {
-// 	[WorkKey.Work]: string;
-// 	[WorkKey.Title]?: string | null;
-// 	[WorkKey.Date]?: string | null;
-// 	[WorkKey.Note]?: string | null;
-// 	[WorkKey.Categoryname]?: string | null;
-// 	[WorkKey.Composer]?: string | null;
-// 	[WorkKey.Composername]?: string | null;
-// 	[WorkKey.Librettist]?: string | null;
-// 	[WorkKey.Librettistname]?: string | null;
-// 	[WorkKey.Choreographer]?: string | null;
-// 	[WorkKey.Choreographername]?: string | null;
-// 	// [WorkKey.Alttitle]?: string | null;
-// 	// [WorkKey.Category]?: string | null;
-// 	// [WorkKey.Manifestation]?: string | null;
-// }
 
 export type MappedWidgetType = {
 	mappedData: MappedData | null
 	error: boolean
 }
-
+/**
+ * WidgetType represents the different types of data widgets that can be displayed. Some widgets
+ * represent single entities (like an Agent or a Work), while others represent collections of
+ * entities (like Works for an Agent, or Works in a Category).
+ * 
+ * - The enum string values are the canonical, serialized representation used in URLs (query params) and JSON.
+ * - Keep this in sync with `ensureWidgetType` (string-to-enum parsing) and `widgetHelpers` (endpoint + mapping).
+ */
 export enum WidgetType {
+	/**
+	 * Data about a single Agent (person or organization).
+	 * 
+	 * Example: Mozart, or the New York Philharmonic.
+	 * Mapping: {@link mapAgentData}
+	 */
 	Agent = "agent",
+
+	/**
+	 * Data about a single Work.
+	 * 
+	 * Example: The Magic Flute, Symphony No. 41.
+	 * Mapping: {@link mapWorkData}
+	 */
 	Work = "work",
+
+	/**
+	 * A collection of Works associated with a given Agent.
+	 * 
+	 * Example: All works composed by Mozart.
+	 * Mapping: {@link mapWorkForAgentData}
+	 */
 	WorksForAgent = "worksForAgent",
+
+	/**
+	 * A collection of Works grouped by a Category.
+	 * 
+	 * Example: All works in the "muziekwerk" category.
+	 * Mapping: {@link mapCategoryData}
+	 */
 	Category = "category",
+
+	/**
+	 * Manifestations of a Work.
+	 * 
+	 * Example: All manifestations of "The Magic Flute".
+	 * Mapping: {@link mapManifistationData}
+	 */
 	Manifestation = "manifestations",
 }
 
 /**
- * Ensure a string is a WidgetType, for example when parsing from a query param
+ * Parse a string into a `WidgetType` (case-insensitive), for example from a query param.
  */
 export function ensureWidgetType(type?: string | null) {
 	type = type?.toLowerCase()
