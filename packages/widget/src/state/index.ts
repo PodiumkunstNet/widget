@@ -6,6 +6,8 @@ import { WidgetType } from "../helpers"
 // Define the shape of the state
 export interface State {
 	infoItem: Tile | undefined
+	/** Viewport-relative rect to animate from when opening info overlay */
+	infoFromRect?: { top: number; left: number; width: number; height: number } | undefined
 	currentPage: number
 
 	// Sync options with AppOptions in utils/set-options.ts
@@ -24,6 +26,7 @@ export interface State {
 // Define the initial state
 export const initialState: State = {
 	infoItem: undefined,
+	infoFromRect: undefined,
 	currentPage: 2,
 	options: {
 		borderWidth: 2,

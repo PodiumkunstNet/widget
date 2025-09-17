@@ -63,5 +63,6 @@ export function Grid({ isSubCategoryView }: Props) {
 				/>
 			))}
 		</ul>
+    
 	)
 }

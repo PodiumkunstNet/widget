@@ -30,8 +30,9 @@
 
 .key {
 	color: var(--color-current);
-	font-size: .625rem;
+	font-size: .75rem;
 	text-align: center;
+	text-transform: uppercase;
 }
 
 .value {

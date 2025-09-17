@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 
-import { TileType, type Tile } from "../../../types/grid"
+// import { TileType, type Tile } from "../../../types/grid"
 import { Props } from "./GenericTile"
 
-import { DispatchContext, StateContext } from "../../../state"
+import { DispatchContext } from "../../../state"
 import { Actions } from "../../../state/actions"
 import { useRef } from "react"
 
@@ -14,35 +14,27 @@ import { TileWrapper } from "./GenericTile"
 import gridClasses from "./GenericTile.module.css"
 import infoClasses from "./InformationTile.module.css"
 
-const endState: Keyframe = {
-	inset: "4px",
-	position: "absolute",
-	borderColor: "rgba(var(--color-current-rgb), 1)",
-}
-
-const animateOptions: KeyframeAnimationOptions = {
-	duration: 400,
-	// duration: 4000,
-	// duration: 4000000000,
-	easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
-	fill: "forwards",
-}
+// No local animation; overlay handles FLIP animation
 
 export function InformationTile({ item }: Props) {
 	const ref = useRef<HTMLDivElement>(null)
 	const dispatch = useContext(DispatchContext)
 
-	useAnimation(item, ref)
+	// In-viewport overlay will handle animation; keep tile static
 
 	return (
 		<TileWrapper
 			className={infoClasses.isInformation}
 			item={item}
 			onClick={() => {
+				// Get viewport rect for FLIP animation
+				const li = ref.current?.closest("li") as HTMLElement | null
+				const r = li?.getBoundingClientRect()
 				dispatch({
 					type: Actions.SetInfoItem,
 					payload: {
 						item,
+						fromRect: r ? { top: r.top, left: r.left, width: r.width, height: r.height } : undefined
 					},
 				})
 			}}
@@ -57,53 +49,10 @@ export function InformationTile({ item }: Props) {
 						</div>
 					}
 				>
+					{/* Note content renders in overlay; keep a subtle hint for accessibility */}
 					<Paragraph>{item.note}</Paragraph>
 				</Page>
 			</div>
 		</TileWrapper>
 	)
-}
-
-function useAnimation(item: Tile, ref: React.RefObject<HTMLDivElement>) {
-	const { infoItem } = useContext(StateContext)
-	const [startState, setStartState] = useState<Keyframe>()
-
-	useEffect(() => {
-		if (item.type !== TileType.Information || !ref.current) return
-
-		if (infoItem === item) {
-			const gridRect = ref.current.closest("ul")!.getBoundingClientRect()
-			const itemRect = ref.current.closest("li")!.getBoundingClientRect()
-			const startState: Keyframe = {
-				top: `${itemRect.top - gridRect.top - 2}px`,
-				left: `${itemRect.left - gridRect.left - 2}px`,
-				bottom: `${gridRect.bottom - itemRect.bottom - 2}px`,
-				right: `${gridRect.right - itemRect.right - 2}px`,
-				position: "absolute",
-				borderColor: "rgba(var(--color-current-rgb), 0)",
-			}
-
-			setStartState(startState)
-
-			ref.current?.classList.add("detached")
-			const animation = ref.current.animate([startState, endState], {
-				...animateOptions,
-			})
-			animation?.finished.then(() => {
-				ref.current?.classList.add("full-screen")
-			})
-		}
-	}, [infoItem, item])
-
-	useEffect(() => {
-		if (startState != null && infoItem == null) {
-			ref.current?.classList.remove("full-screen")
-			const animation = ref.current?.animate(
-				[endState, startState], animateOptions,
-			)
-			animation?.finished.then(() => {
-				ref.current?.classList.remove("detached")
-			})
-		}
-	}, [startState, infoItem])
 }

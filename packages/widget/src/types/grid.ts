@@ -1,5 +1,7 @@
 import { WidgetType } from "../helpers"
+// @ts-ignore
 import { type InformationTile } from "../pages/Grid/tiles/InformationTile"
+// @ts-ignore
 import { type GenericTile } from "../pages/Grid/tiles/GenericTile"
 
 export enum TileType {

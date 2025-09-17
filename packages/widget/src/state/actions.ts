@@ -15,5 +15,6 @@ export type Action =
 		type: Actions.SetInfoItem
 		payload: {
 			item: Tile | undefined
+			fromRect?: { top: number; left: number; width: number; height: number }
 		}
 	}

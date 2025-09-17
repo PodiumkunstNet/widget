@@ -22,7 +22,8 @@ export function stateReducer(state: State, action: Action): State {
 		case Actions.SetInfoItem: {
 			nextState = {
 				...nextState,
-				infoItem: action.payload.item
+				infoItem: action.payload.item,
+				infoFromRect: action.payload.fromRect
 			}	
 			break
 		}
