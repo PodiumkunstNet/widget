@@ -4,7 +4,7 @@ import { Header } from "./Header"
 import classes from "./index.module.css"
 import { useLocation } from "react-router-dom"
 import { cn } from "../../utils/cn"
-import { InfoOverlay } from "../InfoOverlay"
+import { InformationOverlay } from "../InfoOverlay"
 
 /**
  * Dummy Layout for now, could come in handy later, but if unused, remove it
@@ -17,6 +17,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
 	return (
 		<div className={cn(
+			"container",
 			classes.container,
 			{ [classes.fullpage]: isStaticPage },
 			{ [classes.isSub]: isSub },
@@ -24,9 +25,7 @@ export function Layout({ children }: { children: ReactNode }) {
 			<Header staticPage={isStaticPage} />
     		<main>
 					{children}
-					<InfoOverlay />
-				{/* Scoped portal root for overlays that should be constrained to the widget viewport */}
-				<div id="widget-portal-root" />
+					<InformationOverlay />
 			</main>
 		</div>
 	)
