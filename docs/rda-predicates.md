@@ -17,10 +17,11 @@ Predicate | Label (RDA) | Description (concise)
 [`rdaw:P10064`](https://rdaregistry.info/Elements/w/P10064) | Intended audience | Audience or user group the work is aimed at.
 [`rdaw:P10066`](https://rdaregistry.info/Elements/w/P10066) | Language of work | Language(s) in which the work is expressed.
 [`rdaw:P10069`](https://rdaregistry.info/Elements/w/P10069) | Key or mode | Musical key/mode applicable to a musical work (if musical; else rarely used).
+[`rdaw:P10153`](https://rdaregistry.info/Elements/w/P10153) | Work examined or judged | Relates a work to a work that is examined or judged by a work.
 [`rdaw:P10205`](https://rdaregistry.info/Elements/w/P10205) | History of work | Note summarizing historical background of the work.
-[`rdaw:P10219`](https://rdaregistry.info/Elements/w/P10219) | Identifier for work | Alphanumeric string assigned to uniquely identify the work.
-[`rdaw:P10223`](https://rdaregistry.info/Elements/w/P10223) | Other distinguishing characteristic of work | Additional distinguishing attribute not covered by specific elements.
-[`rdaw:P10287`](https://rdaregistry.info/Elements/w/P10287) | Variant title of work | Alternative title form differing from the preferred title.
+[`rdaw:P10219`](https://rdaregistry.info/Elements/w/P10219) | has identifier for work | Relates a work to an assigned identifier (string or URI).
+[`rdaw:P10223`](https://rdaregistry.info/Elements/w/P10223) | has preferred title of work | Relates a work to its preferred title as a nomen.
+[`rdaw:P10287`](https://rdaregistry.info/Elements/w/P10287) | has variant title of work | Relates a work to a variant title as a nomen.
 [`rdaw:P10315`](https://rdaregistry.info/Elements/w/P10315) | Medium of performance (representative) | Representative medium of performance for a musical work.
 [`rdaw:P10330`](https://rdaregistry.info/Elements/w/P10330) | Keyword / index term of work | Uncontrolled or controlled topical/index term associated with the work.
 [`rdaw:P10351`](https://rdaregistry.info/Elements/w/P10351) | Representative expression attribute | Expression-level characteristic applied representatively to identify the work.
