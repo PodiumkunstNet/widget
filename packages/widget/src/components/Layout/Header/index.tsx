@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react"
+import clsx from "clsx"
 
 // import ArrowBack from "../../../../public/visuals/icons/arrow-back.svg?react"
 
@@ -21,10 +22,9 @@ import { useLocation } from "react-router-dom"
 type Props = {
 	// isSubCategoryView?: boolean
 	staticPage?: boolean
-	small?: boolean
 }
 
-export function Header({ staticPage = false, small = true }: Props) {
+export function Header({ staticPage = false }: Props) {
 	const dispatch = useContext(DispatchContext)
 	const { title, id, type, items } = useContext(GridDataContext)
 	const { infoItem, options } = useContext(StateContext)
@@ -109,39 +109,32 @@ export function Header({ staticPage = false, small = true }: Props) {
 			</section>
 
 			<section className={classes.main}>
-				{
-					!staticPage && (
-						<div className={classes.h2Container}>
-							<div className={classes.h2Top} />
-							<h2>
-								<span>
-									{savedTitle && isSubCategoryView
-										? savedTitle
-										: `Meer over ${title}`}
-								</span>
-								<Paginator
-									id={id}
-									pages={(Math.ceil(items.length / options.maxRows)) -  options.maxColumns}
-									small={small}
-								/>
-							</h2>
-							<div className={classes.h2Bottom}>
-								<div />
-								<div />
-							</div>
-						</div>
-					)
-				}
+				{!staticPage && (
+					<h2>
+						{savedTitle && isSubCategoryView ? (
+							<span>{savedTitle}</span>
+						) : (
+							<span>
+								<span className={classes.dimmed}>meer over</span>{" "}
+								{title}
+							</span>
+						)}
+					</h2>
+				)}
 			</section>
+
+			<Paginator
+				id={id}
+				pages={
+					Math.ceil(items.length / options.maxRows) -
+					options.maxColumns
+				}
+			/>
 		</header>
 	)
 }
 
-function Paginator({ id, pages, small }: {
-	id: string | undefined
-	pages: number
-	small?: boolean
-}) {
+function Paginator({ id, pages }: { id: string | undefined; pages: number }) {
 	const [currentPage, setCurrentPage] = useState(0)
 
 	useEffect(() => {
@@ -157,96 +150,39 @@ function Paginator({ id, pages, small }: {
 
 	if (pages < 1) return null
 
+	const hasPrev = currentPage > 0
+	const hasNext = currentPage < pages
+
 	return (
-		<ul
-			className={cn(classes.paginator, {
-				[classes.small]: small,
-			})}
-		>
-			{currentPage > 0 ? (
-				<li onClick={() => setCurrentPage((p) => p - 1)}>
-					<IconCaretLeftFilled size={18} color="white" />
-				</li>
-			) : (
-				<li>
-					<IconCaretLeftFilled
-						size={18}
-						color="rgba(255, 255, 255, 0.33)"
-					/>
-				</li>
-			)}
-			{currentPage < pages ? (
-				<li onClick={() => setCurrentPage((p) => p + 1)}>
-					<IconCaretRightFilled size={18} color="white" />
-				</li>
-			) : (
-				<li>
-					<IconCaretRightFilled
-						size={18}
-						color="rgba(255, 255, 255, 0.33)"
-					/>
-				</li>
-			)}
+		<ul className={cn(classes.paginator, {})}>
+			<li
+				className={clsx(classes.button, { [classes.disabled]: !hasPrev })}
+				onClick={() => {
+					if (!hasPrev) return
+					setCurrentPage((p) => p - 1)
+				}}
+			>
+				<IconCaretLeftFilled
+					size={18}
+					color={hasPrev ? "white" : "rgba(255, 255, 255, 0.33)"}
+				/>
+				<span className={classes.label}>prev</span>
+			</li>
+			<li
+				className={clsx(classes.button, classes.next, {
+					[classes.disabled]: !hasNext,
+				})}
+				onClick={() => {
+					if (!hasNext) return
+					setCurrentPage((p) => p + 1)
+				}}
+			>
+				<span className={classes.label}>next</span>
+				<IconCaretRightFilled
+					size={18}
+					color={hasNext ? "white" : "rgba(255, 255, 255, 0.33)"}
+				/>
+			</li>
 		</ul>
 	)
 }
-
-// {/* Md block */}
-// <div className="absolute inset-0  hidden items-center justify-center md:flex lg:hidden">
-//   <div className="relative top-6 max-w-[191px]">
-//     <OutliningTopMd width={190} height={13} className={'relative'} />
-//     <div className={mediumClasses}>
-//       <Text
-//         as={'h1'}
-//         intent={'h1'}
-//         className={
-//           'relative left-[-11.5px] break-words uppercase text-primary-white'
-//         }
-//       >
-//         {savedTitle && isSubCategoryView
-//           ? savedTitle
-//           : `Meer over ${title}`}
-//       </Text>
-//       <OutliningRight
-//         className="absolute right-0 top-[-1px]"
-//         // this is a hack to make the outlining right align with the outlining top
-//         height={'101%'}
-//       />
-//     </div>
-//     <OutliningBottomMd
-//       width={190}
-//       height={47}
-//       className={'relative top-[-1px]'}
-//     />
-//   </div>
-// </div>
-
-// {/* Sm block */}
-// <div className="absolute inset-0 flex items-center justify-center md:hidden lg:hidden">
-//   <div className="relative top-6 max-w-[312.5px]">
-//     <OutliningTopSm width={307} height={13} className={'relative '} />
-//     <div className="relative left-[-0.35em] min-w-[312px] pt-4">
-//       <Text
-//         as={'h1'}
-//         intent={'h1'}
-//         className={
-//           'relative left-[-4px] break-words uppercase text-primary-white'
-//         }
-//       >
-//         {savedTitle && isSubCategoryView
-//           ? savedTitle
-//           : `Meer over ${title}`}
-//       </Text>
-//       <OutliningRight
-//         className="absolute right-0 top-[-0.8px]"
-//         // this is a hack to make the outlining right align with the outlining top
-//         height={'101%'}
-//       />
-//     </div>
-//     <OutliningBottomSm
-//       width={307}
-//       height={47}
-//       className={'relative top-[-1px]'}
-//     />
-//   </div>
-// </div>

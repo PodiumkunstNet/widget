@@ -16,16 +16,19 @@ export function Layout({ children }: { children: ReactNode }) {
 	const isSub = location.pathname.startsWith("/widget/more")
 
 	return (
-		<div className={cn(
-			"container",
-			classes.container,
-			{ [classes.fullpage]: isStaticPage },
-			{ [classes.isSub]: isSub },
-		)}>
+		<div
+			className={cn("container", classes.container, {
+				[classes.fullpage]: isStaticPage,
+				[classes.isSub]: isSub,
+				small: window.innerWidth <= 360,
+				medium: window.innerWidth > 640 && window.innerWidth <= 900,
+				large: window.innerWidth > 900,
+			})}
+		>
 			<Header staticPage={isStaticPage} />
-    		<main>
-					{children}
-					<InformationOverlay />
+			<main>
+				{children}
+				<InformationOverlay />
 			</main>
 		</div>
 	)
