@@ -24,6 +24,20 @@
 	border-left-width: 0px;
 }
 
+/**
+* The background of the grid is the primary color. We can use color-mix
+* or a transparent white to create a similar effect.
+* background-color: color-mix(in srgb, white, var(--color-primary) 15%);
+*/
+.gridItem:hover {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* .gridItem:hover .key,
+.gridItem:hover .value {
+	color: var(--color-black);
+} */
+
 .gridItem a {
 	padding: 1rem;
 }
@@ -56,37 +70,14 @@
 	cursor: default;
 }
 
-.staticBox {
-	flex-direction: column;
+.gridItem.static:hover {
+	background-color: white;
 }
 
-/* .gridItem.more {
-	position: relative;
-} */
-
-.gridItem.more:hover {
-	background: var(--color-current);
-	transition: all 300ms ease-out;
-}
-
-.gridItem.more:hover .key,
+/* .gridItem.more:hover .key,
 .gridItem.more:hover .value {
 	color: var(--color-white);
-}
-
-/**
-* The background of the grid is the primary color. We can use color-mix
-* or a transparent white to create a similar effect.
-* background-color: color-mix(in srgb, white, var(--color-primary) 15%);
-*/
-.gridItem.static:hover {
-	background-color: rgba(255, 255, 255, 0.9);
-}
-
-.gridItem.static:hover .key,
-.gridItem.static:hover .value {
-	color: var(--color-black);
-}
+} */
 
 /**
  * TEMPORARY. TODO.
