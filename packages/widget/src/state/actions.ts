@@ -4,6 +4,7 @@ import { AppOptions } from "../utils/app-options"
 export enum Actions {
 	Init = "INIT",
 	SetInfoItem = "SET_INFO_ITEM",
+	ToggleAboutPage = "TOGGLE_ABOUT_PAGE",
 }
 
 export type Action =
@@ -17,4 +18,7 @@ export type Action =
 			item: Tile | undefined
 			fromRect?: { top: number; left: number; width: number; height: number }
 		}
+	}
+	| {
+		type: Actions.ToggleAboutPage
 	}

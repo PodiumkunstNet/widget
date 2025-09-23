@@ -1,7 +1,7 @@
 import { Page } from "../../components/Page"
 import { Paragraph } from "../../components/Paragraph"
 
-import "./index.module.css"
+import classes from "./index.module.css"
 
 export function AboutPage() {
 	return (
@@ -32,7 +32,7 @@ export function AboutPage() {
 function PodiumkunstLink() {
 	return (
 		<a
-			className="underline"
+			className={classes.link}
 			href="https://www.podiumkunst.net/"
 			target="_blank"
 		>

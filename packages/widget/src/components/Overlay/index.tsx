@@ -1,18 +1,22 @@
-import { useContext, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
-import { DispatchContext, StateContext } from "../../state"
-import { Actions } from "../../state/actions"
-
 import classes from "./index.module.css"
-import { InformationTileBody } from "../../pages/Grid/tiles/InformationTile"
 
 const DURATION = 400
 const EASING = "cubic-bezier(0.2, 0.8, 0.2, 1)"
 
-export function InformationOverlay() {
-	const { infoItem, infoFromRect } = useContext(StateContext)
-	const dispatch = useContext(DispatchContext)
+export function Overlay(
+	{
+		afterClose,
+		rect: infoFromRect,
+		children
+	}: {
+		afterClose: () => void
+		rect?: { top: number; left: number; width: number; height: number }
+		children: React.ReactNode
+	}
+) {
 
 	const sheetRef = useRef<HTMLDivElement>(null)
 
@@ -20,7 +24,10 @@ export function InformationOverlay() {
 	useEffect(() => {
 		if (!sheetRef.current || !infoFromRect) return
 
-		sheetRef.current.style.setProperty('--animation-duration', `${DURATION}ms`)
+		sheetRef.current.style.setProperty(
+			"--animation-duration",
+			`${DURATION}ms`,
+		)
 
 		// Lock body scroll
 		const prevOverflow = document.body.style.overflow
@@ -64,10 +71,10 @@ export function InformationOverlay() {
 	}, [infoFromRect])
 
 	const close = () => {
-		if (!sheetRef.current) {
-			dispatch({ type: Actions.SetInfoItem, payload: { item: undefined } })
-			return
-		}
+		if (!sheetRef.current) return afterClose()
+		// 	dispatch({ type: Actions.SetInfoItem, payload: { item: undefined } })
+		// 	return
+		// }
 
 		const targetRect = getTargetRect()
 
@@ -96,15 +103,10 @@ export function InformationOverlay() {
 			easing: EASING,
 			fill: "forwards",
 		})
-		anim?.finished.finally(() => {
-			dispatch({
-				type: Actions.SetInfoItem,
-				payload: { item: undefined, fromRect: undefined },
-			})
-		})
+		anim?.finished.finally(afterClose)
 	}
 
-	if (!infoItem) return null
+	if (!infoFromRect) return null
 
 	return createPortal(
 		<div
@@ -114,7 +116,7 @@ export function InformationOverlay() {
 			onClick={() => {
 				if (sheetRef.current?.classList.contains(classes.closing)) return
 
-				close() 
+				close()
 				sheetRef.current?.classList.add(classes.closing)
 			}}
 		>
@@ -124,7 +126,7 @@ export function InformationOverlay() {
 					height: "100%",
 				}}
 			>
-				<InformationTileBody item={infoItem!} />
+				{children}
 			</div>
 		</div>,
 		document.getElementById("root")?.querySelector(".container")!,

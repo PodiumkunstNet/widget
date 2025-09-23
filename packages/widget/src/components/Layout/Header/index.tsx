@@ -1,15 +1,11 @@
 import { useContext, useEffect, useState } from "react"
 import clsx from "clsx"
 
-// import ArrowBack from "../../../../public/visuals/icons/arrow-back.svg?react"
-
 import { cn } from "../../../utils/cn"
-import { ariaLabels } from "../../../constants/ariaLables"
 import { useTransitionNavigate } from "../../../hooks/useTransitionNavigate"
 import { sessionStore } from "../../../hooks/useSessionStorage"
 import { DispatchContext, GridDataContext, StateContext } from "../../../state"
 import { Actions } from "../../../state/actions"
-import { Logo } from "../../Logo"
 
 import classes from "./index.module.css"
 import {
@@ -45,11 +41,20 @@ export function Header({ staticPage = false }: Props) {
 			})}
 		>
 			<section className={classes.top}>
-				<Logo
-					aria-hidden={true}
-					aria-label={ariaLabels.logo}
-					onClick={() => navigate("/about")}
-				/>
+				<button
+					className={classes.logoButton}
+					onClick={() =>
+						dispatch({
+							type: Actions.ToggleAboutPage,
+						})
+					}
+				>
+					<img
+						id="logo"
+						src="/PodiumkunstLogo-Large.png"
+						alt="Podiumkunst.net logo"
+					/>
+				</button>
 				<nav>
 					<ul>
 						{!staticPage && isSubCategoryView && homeURL && (
@@ -57,10 +62,6 @@ export function Header({ staticPage = false }: Props) {
 								<button
 									onClick={() => {
 										navigate(homeURL)
-										dispatch({
-											type: Actions.SetInfoItem,
-											payload: { item: undefined },
-										})
 									}}
 								>
 									{/* <ArrowBack /> */}
@@ -126,8 +127,7 @@ export function Header({ staticPage = false }: Props) {
 			<Paginator
 				id={id}
 				pages={
-					Math.ceil(items.length / options.maxRows) -
-					options.maxColumns
+					Math.ceil(items.length / options.maxRows) - options.maxColumns
 				}
 			/>
 		</header>

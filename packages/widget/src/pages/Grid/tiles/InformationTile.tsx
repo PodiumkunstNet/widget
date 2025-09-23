@@ -13,7 +13,7 @@ import { TileWrapper } from "./GenericTile"
 // @ts-ignore
 import { Layout } from "../../../components/Layout"
 // @ts-ignore
-import { InformationOverlay } from "../../../components/InfoOverlay"
+import { Overlay } from "../../../components/InfoOverlay"
 
 import gridClasses from "./GenericTile.module.css"
 import infoClasses from "./InformationTile.module.css"
@@ -22,7 +22,7 @@ import infoClasses from "./InformationTile.module.css"
  * The information tile, is used to display non-interactive text. When the
  * user clicks on it, an overlay with the content appears.
  * 
- * The {@link InformationOverlay} component is rendered in the {@link Layout}
+ * The {@link Overlay} component is rendered in the {@link Layout}
  * based on the infoItem set on the {@link State}
  */
 export function InformationTile({ item }: Props) {

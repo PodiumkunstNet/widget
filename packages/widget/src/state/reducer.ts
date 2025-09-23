@@ -28,6 +28,14 @@ export function stateReducer(state: State, action: Action): State {
 			break
 		}
 
+		case Actions.ToggleAboutPage: {
+			nextState = {
+				...nextState,
+				showAboutPage: !nextState.showAboutPage,
+			}	
+			break
+		}
+
 		default:
 			throw new Error(`Unknown action type`)
 	}

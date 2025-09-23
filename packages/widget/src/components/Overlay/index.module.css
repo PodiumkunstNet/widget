@@ -14,7 +14,9 @@
 }
 
 .sheet :global(.page-content) {
+	opacity: 0;
 	animation: fadeIn var(--animation-duration) ease forwards;
+	animation-delay: calc(var(--animation-duration) / 2);
 }
 
 .sheet.closing :global(.page) {

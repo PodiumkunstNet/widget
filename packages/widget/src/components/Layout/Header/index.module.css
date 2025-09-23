@@ -46,6 +46,10 @@
 	gap: 1rem;
 }
 
+.top .logoButton {
+	cursor: pointer;
+}
+
 .buttonWrapper {
 	border-bottom: 2px solid var(--color-white);
 	padding: 2px 0;

@@ -10,6 +10,8 @@ export interface State {
 	infoFromRect?: { top: number; left: number; width: number; height: number } | undefined
 	currentPage: number
 
+	showAboutPage: boolean
+
 	// Sync options with AppOptions in utils/set-options.ts
 	options: {
 		borderWidth: number
@@ -25,6 +27,7 @@ export interface State {
 
 // Define the initial state
 export const initialState: State = {
+	showAboutPage: false,
 	infoItem: undefined,
 	infoFromRect: undefined,
 	currentPage: 2,

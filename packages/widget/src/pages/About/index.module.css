@@ -1,3 +1,13 @@
 :global(.paragraph):last-child {
 	margin-bottom: 0;
 }
+
+.link {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.link:hover {
+	text-underline-offset: 2px;
+	text-decoration-thickness: 2px;	
+}
