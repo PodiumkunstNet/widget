@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { cn } from "../../utils/cn"
+import cn from "clsx"
 
 import classes from "./index.module.css"
 

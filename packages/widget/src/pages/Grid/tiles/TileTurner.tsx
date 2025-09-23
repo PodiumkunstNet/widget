@@ -1,5 +1,5 @@
 import { memo, ReactNode, useRef } from "react"
-import { cn } from "../../../utils/cn"
+import cn from "clsx"
 
 import classes from './TileTurner.module.css'
 

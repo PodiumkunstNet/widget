@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import clsx from "clsx"
 
-import { cn } from "../../../utils/cn"
+import cn from "clsx"
 import { useTransitionNavigate } from "../../../hooks/useTransitionNavigate"
 import { sessionStore } from "../../../hooks/useSessionStorage"
 import { DispatchContext, GridDataContext, StateContext } from "../../../state"

@@ -1,4 +1,4 @@
-import { cn } from '../../utils/cn'
+import cn from "clsx"
 import { Text } from '../Text'
 import LogoSvg from '../LogoSvg'
 

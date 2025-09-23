@@ -1,7 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '../utils/cn';
+import cn from "clsx"
 
 // transition-opacity ease-in duration-700 opacity-0 hover:opacity-100
 

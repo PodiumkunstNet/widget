@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 
 import { TileType, type Tile } from "../../../types/grid"
-import { cn } from "../../../utils/cn"
+import cn from "clsx"
 import { useURL } from "../../../hooks/useGenerateUrlForTile"
 import { useTransitionNavigate } from "../../../hooks/useTransitionNavigate"
 
