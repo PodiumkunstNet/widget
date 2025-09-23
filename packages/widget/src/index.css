@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss"; */
 
 @font-face {
   font-family: 'EuclidTriangle';
@@ -26,6 +26,19 @@
 	--color-primary-rgb: var(--color-orange-rgb);
 	--color-secondary: var(--color-blue);
 	--color-secondary-rgb: var(--color-blue-rgb);
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+button {
+	border: none;
+	background: none;
+	padding: 0;
+	cursor: pointer;
 }
 
 .font-euclid {
