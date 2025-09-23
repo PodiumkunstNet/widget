@@ -11,20 +11,18 @@ import classes from "./index.module.css"
 import {
 	IconCaretLeftFilled,
 	IconCaretRightFilled,
-	IconX,
 } from "@tabler/icons-react"
 import { useLocation } from "react-router-dom"
 
 type Props = {
-	// isSubCategoryView?: boolean
 	staticPage?: boolean
 }
 
 export function Header({ staticPage = false }: Props) {
 	const dispatch = useContext(DispatchContext)
 	const { title, id, type, items } = useContext(GridDataContext)
-	const { infoItem, options } = useContext(StateContext)
-	const { navigate, back } = useTransitionNavigate()
+	const { options } = useContext(StateContext)
+	const { navigate } = useTransitionNavigate()
 
 	const savedTitle = sessionStore.getTitle(id, type)
 	const homeURL = sessionStore.getHomeURL()
@@ -42,35 +40,34 @@ export function Header({ staticPage = false }: Props) {
 		>
 			<section className={classes.top}>
 				<button
-					className={classes.logoButton}
-					onClick={() =>
-						dispatch({
-							type: Actions.ToggleAboutPage,
-						})
-					}
+					className={clsx({ [classes.logoButton]: isSubCategoryView })}
+					onClick={() => {
+						if (!isSubCategoryView || homeURL == null) return
+						navigate(homeURL)
+					}}
 				>
 					<img
-						id="logo"
 						src="/PodiumkunstLogo-Large.png"
 						alt="Podiumkunst.net logo"
 					/>
 				</button>
 				<nav>
 					<ul>
-						{!staticPage && isSubCategoryView && homeURL && (
-							<li className={classes.buttonWrapper}>
-								<button
-									onClick={() => {
-										navigate(homeURL)
-									}}
-								>
-									{/* <ArrowBack /> */}
-									{/* <IconHomeFilled size={16} /> */}
-									Start
-								</button>
-							</li>
-						)}
-						{(staticPage || infoItem != null || isSubCategoryView) && (
+						<li className={classes.buttonWrapper}>
+							<button
+								id="logo"
+								onClick={() =>
+									dispatch({
+										type: Actions.ToggleAboutPage,
+									})
+								}
+							>
+								{/* <ArrowBack /> */}
+								{/* <IconHomeFilled size={16} /> */}
+								Over ons
+							</button>
+						</li>
+						{/* {(staticPage || infoItem != null || isSubCategoryView) && (
 							<li
 								className={cn(
 									classes.buttonWrapper,
@@ -104,7 +101,7 @@ export function Header({ staticPage = false }: Props) {
 									)}
 								</button>
 							</li>
-						)}
+						)} */}
 					</ul>
 				</nav>
 			</section>

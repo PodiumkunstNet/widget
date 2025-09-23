@@ -9,10 +9,12 @@ const EASING = "cubic-bezier(0.2, 0.8, 0.2, 1)"
 export function Overlay(
 	{
 		afterClose,
+		fade = false,
 		rect: infoFromRect,
 		children
 	}: {
 		afterClose: () => void
+		fade?: boolean
 		rect?: { top: number; left: number; width: number; height: number }
 		children: React.ReactNode
 	}
@@ -40,6 +42,7 @@ export function Overlay(
 			height: `${infoFromRect.height}px`,
 			borderColor: "rgba(var(--color-current-rgb), 0)",
 			boxShadow: "0 0 0 0 rgba(var(--color-black-rgb), 0)",
+			opacity: fade ? 0 : 1,
 		} as Keyframe
 
 		const targetRect = getTargetRect()
@@ -51,6 +54,7 @@ export function Overlay(
 			height: `${targetRect.height}px`,
 			borderColor: "rgba(var(--color-black-rgb), 1)",
 			boxShadow: "0 0 0 400px rgba(var(--color-black-rgb), 0.6)",
+			opacity: 1,
 		} as Keyframe
 
 		const el = sheetRef.current
@@ -85,6 +89,7 @@ export function Overlay(
 			height: `${targetRect.height}px`,
 			borderColor: "rgba(var(--color-black-rgb), 1)",
 			boxShadow: "0 0 0 400px rgba(var(--color-black-rgb), 0.6)",
+			opacity: fade ? 1 : 1,
 		} as Keyframe
 
 		const to = infoFromRect ?? targetRect
@@ -95,6 +100,7 @@ export function Overlay(
 			height: `${to.height}px`,
 			borderColor: "rgba(var(--color-current-rgb), 0)",
 			boxShadow: "0 0 0 0 rgba(var(--color-black-rgb), 0)",
+			opacity: fade ? 0 : 1,
 		} as Keyframe
 
 		const el = sheetRef.current

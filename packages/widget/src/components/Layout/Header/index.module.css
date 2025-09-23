@@ -39,6 +39,7 @@
 .top nav {
 	color: var(--color-white);
 	/* display: flex; */
+	align-self: start;
 }
 
 .top nav ul {
@@ -51,30 +52,27 @@
 }
 
 .buttonWrapper {
-	border-bottom: 2px solid var(--color-white);
-	padding: 2px 0;
 	transition: all .3s cubic-bezier(0.4, 0, 1, 1);
 }
 
-.top nav button {
+.buttonWrapper:hover {
+	text-decoration: underline;
+	text-underline-offset: 4px;
+	text-decoration-thickness: 2px;
+}
+
+.buttonWrapper button {
 	align-items: center;
 	cursor: pointer;
 	display: flex;
 	font-family: var(--font-sans);
 	font-size: .875rem;
-	font-weight: bold;
 	gap: .5rem;
+	justify-content: start;
 }
 
-.top nav button.backButton {
+.buttonWrapper button.backButton {
 	gap: 0.25rem;
-}
-
-.buttonWrapper:hover {
-	background-color: var(--color-white);
-	color: var(--color-current);
-	padding-left: .5rem;
-	padding-right: .5rem;
 }
 
 .paginator {

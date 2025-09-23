@@ -26,7 +26,7 @@ export function Layout({ children }: { children: ReactNode }) {
 		const el = document.getElementById("logo")
 		if (!el) return undefined
 		const rect = el.getBoundingClientRect()
-		rect.width = rect.width / 2
+		// rect.width = rect.width / 2
 		setRect(rect)
 	}, [])
 
@@ -61,6 +61,7 @@ export function Layout({ children }: { children: ReactNode }) {
 								type: Actions.ToggleAboutPage,
 							})
 						}}
+						fade
 						rect={logoRect}
 					>
 						<AboutPage />
