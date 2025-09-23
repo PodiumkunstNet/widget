@@ -53,7 +53,7 @@ export function Overlay(
 			width: `${targetRect.width}px`,
 			height: `${targetRect.height}px`,
 			borderColor: "rgba(var(--color-black-rgb), 1)",
-			boxShadow: "0 0 0 400px rgba(var(--color-black-rgb), 0.6)",
+			boxShadow: "0 0 0 100vw rgba(var(--color-black-rgb), 0.6)",
 			opacity: 1,
 		} as Keyframe
 
@@ -88,7 +88,7 @@ export function Overlay(
 			width: `${targetRect.width}px`,
 			height: `${targetRect.height}px`,
 			borderColor: "rgba(var(--color-black-rgb), 1)",
-			boxShadow: "0 0 0 400px rgba(var(--color-black-rgb), 0.6)",
+			boxShadow: "0 0 0 100vw rgba(var(--color-black-rgb), 0.6)",
 			opacity: fade ? 1 : 1,
 		} as Keyframe
 

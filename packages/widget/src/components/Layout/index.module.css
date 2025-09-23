@@ -17,6 +17,13 @@
 	--color-current-rgb: var(--secondary-color-rgb);
 }
 
+/**
+ * Overlay active, disable interactions with main content
+ */
+.container.withOverlay main {
+	pointer-events: none;
+}
+
 .container main {
 	height: 100%;
 	min-height: 0;

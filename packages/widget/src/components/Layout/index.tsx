@@ -3,7 +3,7 @@ import { Header } from "./Header"
 
 import classes from "./index.module.css"
 import { useLocation } from "react-router-dom"
-import { cn } from "../../utils/cn"
+import cn from "clsx"
 import { Overlay } from "../Overlay"
 import { DispatchContext, StateContext } from "../../state"
 import { InformationTileBody } from "../../pages/Grid/tiles/InformationTile"
@@ -20,6 +20,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
 	const isStaticPage = location.pathname.startsWith("/about")
 	const isSub = location.pathname.startsWith("/widget/more")
+	const withOverlay = infoItem != null || showAboutPage
 	
 	const [logoRect, setRect] = useState<DOMRect | undefined>(undefined)
 	useEffect(() => {
@@ -38,6 +39,7 @@ export function Layout({ children }: { children: ReactNode }) {
 				small: window.innerWidth <= 360,
 				medium: window.innerWidth > 640 && window.innerWidth <= 900,
 				large: window.innerWidth > 900,
+				[classes.withOverlay]: withOverlay,
 			})}
 		>
 			<Header staticPage={isStaticPage} />
