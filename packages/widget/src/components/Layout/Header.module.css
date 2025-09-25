@@ -29,7 +29,7 @@
 	font-weight: normal;
 }
 
-.logo, .mainmenu {
+.logo, .mainmenu  {
 	background-color: var(--color-current);
 	padding: .5rem;
 	padding-bottom: .25rem;
@@ -106,7 +106,7 @@
 	}
 
 	.h2Container h2 {
-		font-size: 1.25rem;
+		font-size: 1.1rem;
 	}
 }
 
@@ -114,5 +114,9 @@
 :global(.container.large) {
 	.logo img {
 		height: 48px;
+	}
+
+	.h2Container h2 {
+		font-size: 1.25rem;
 	}
 }

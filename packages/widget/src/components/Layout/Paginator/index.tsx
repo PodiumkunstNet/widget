@@ -3,8 +3,10 @@ import clsx from "clsx"
 
 import { IconCaretLeftFilled, IconCaretRightFilled } from "@tabler/icons-react"
 
-import classes from "./index.module.css"
 import { State } from "../../../state"
+import { useGridData } from "../../../Providers/hooks"
+
+import classes from "./index.module.css"
 
 interface Props {
 	id: string | undefined
@@ -50,6 +52,8 @@ export function Paginator({ id, maxItems, options }: Props) {
 	const hasNext = landscape
 		? currentPage < maxItems - options.maxRows
 		: currentPage < maxItems - options.maxColumns
+
+	if (hasNext === false && hasPrev === false) return null
 
 	return (
 		<>
