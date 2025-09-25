@@ -11,13 +11,14 @@ const keysToExclude = [
 	WorkKey.Composername,
 	WorkKey.Librettistname,
 	WorkKey.Choreographername,
-	WorkKey.Collectiveagentname
+	WorkKey.Collectiveagentname,
+	WorkKey.Authorname,
 ]
 
 /**
  * These keys render 2 tiles: one for the agent, one for works by that agent
  */
-const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent]
+const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent, WorkKey.Author]
 
 export function mapWorkData(data: WorkData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
@@ -100,9 +101,14 @@ function createAgentTiles(
 }
 
 function createStaticTile(key: WorkKey, value: string): Tile {
+	const label = getWorkLabel(key)
+	if (!label) {
+		console.error("No label found for work key:", key)
+	}
+
 	return {
 		id: "",
-		key: getWorkLabel(key),
+		key: label,
 		sourceKey: key,
 		type: TileType.Static,
 		value,
