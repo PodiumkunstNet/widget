@@ -2,8 +2,6 @@
 	--color-current: var(--primary-color);
 	--color-current-rgb: var(--primary-color-rgb);
 	background: var(--color-current);
-	display: grid;
-	grid-template-columns: 1fr 2fr;
 
 	width: 100dvw;
 	height: 100dvh;
@@ -61,30 +59,37 @@
   }
 }
 
-@media (orientation: portrait) {
+/* @media (orientation: portrait) {
 	.container {
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr 3fr;
 	}
 }
 
+@media (orientation: landscape) {
+	.container {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 5fr;
+	}
+} */
+
 /* MEDIUM, PORTRAIT */
-@media (orientation: portrait) and (max-height: 640px) {
+/* @media (orientation: portrait) and (max-height: 640px) {
 	.container {
 		grid-template-rows: 1fr 4fr;
 	}
-}
+} */
 
 /* SMALL, PORTRAIT */
-@media (orientation: portrait) and (max-height: 360px) {
+/* @media (orientation: portrait) and (max-height: 360px) {
 	.container {
 		grid-template-rows: 1fr 5fr;
 	}
-}
+} */
 
-/* SMALL, LANDSCAPE */
+/* SMALL, LANDSCAPE
 @media (orientation: landscape) and (max-width: 360px) {
 	.container {
 		grid-template-columns: 2fr 5fr;
 	}
-}
+} */

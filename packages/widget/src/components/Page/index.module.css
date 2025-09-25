@@ -1,11 +1,11 @@
 .page {
-	/* background: var(--color-white); */
+	box-sizing: border-box;
 	padding: 3rem 2.5rem;
 	text-align: center;
 	color: var(--color-black);
 	font-family: var(--font-serif);
 	display: grid;
-	grid-template-rows: 4rem 4fr;
+	grid-template-rows: 4rem 1fr;
 	height: 100%;
 }
 
@@ -23,6 +23,8 @@
 	font-family: var(--font-serif);
 	font-size: 1.25rem;
 	font-weight: bold;
+	margin: 0;
+	align-self: center;
 }
 
 .content {
@@ -35,4 +37,16 @@
 	padding-right: 1rem;
 	margin-right: -1rem;
 	text-align: justify;
+}
+
+:global(.container.small) .page {
+	padding: 1rem;
+}
+
+:global(.container.small) .page h2 {
+	font-size: 1rem;
+}
+
+:global(.container.small) .page p {
+	font-size: .875rem;
 }

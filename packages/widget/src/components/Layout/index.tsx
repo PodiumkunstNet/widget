@@ -1,30 +1,40 @@
 import { ReactNode, useContext, useEffect, useState } from "react"
-import { Header } from "./Header"
+import { Paginator } from "./Header"
 
 import classes from "./index.module.css"
 import { useLocation } from "react-router-dom"
 import cn from "clsx"
 import { Overlay } from "../Overlay"
-import { DispatchContext, StateContext } from "../../state"
+import { DispatchContext, GridDataContext, StateContext } from "../../state"
 import { InformationTileBody } from "../../pages/Grid/tiles/InformationTile"
 import { AboutPage } from "../../pages/About"
 import { Actions } from "../../state/actions"
+import { Logo } from "./Logo"
+import { MainMenu } from "./MainMenu"
+import { Heading } from "./Heading"
 
 /**
  * Dummy Layout for now, could come in handy later, but if unused, remove it
  */
 export function Layout({ children }: { children: ReactNode }) {
 	const dispatch = useContext(DispatchContext)
-	const { infoItem, infoFromRect, showAboutPage } = useContext(StateContext)
+	const { infoItem, infoFromRect, showAboutPage, options } =
+		useContext(StateContext)
+	const { id, items, type, title } = useContext(GridDataContext)
 	const location = useLocation()
 
-	const isStaticPage = location.pathname.startsWith("/about")
+	const isSmall = window.innerWidth <= 240 || window.innerHeight <= 240
+	const isMedium =
+		(window.innerWidth > 240 && window.innerWidth <= 480) ||
+		(window.innerHeight > 240 && window.innerHeight <= 480)
+	const isLarge = window.innerWidth > 480 || window.innerHeight > 480
+
 	const isSub = location.pathname.startsWith("/widget/more")
 	const withOverlay = infoItem != null || showAboutPage
-	
+
 	const [logoRect, setRect] = useState<DOMRect | undefined>(undefined)
 	useEffect(() => {
-		const el = document.getElementById("logo")
+		const el = document.getElementById("about")
 		if (!el) return undefined
 		const rect = el.getBoundingClientRect()
 		// rect.width = rect.width / 2
@@ -34,16 +44,23 @@ export function Layout({ children }: { children: ReactNode }) {
 	return (
 		<div
 			className={cn("container", classes.container, {
-				[classes.fullpage]: isStaticPage,
 				[classes.isSub]: isSub,
-				small: window.innerWidth <= 360,
-				medium: window.innerWidth > 640 && window.innerWidth <= 900,
-				large: window.innerWidth > 900,
+				small: isSmall,
+				medium: !isSmall && isMedium,
+				large: !isSmall && !isMedium && isLarge,
 				[classes.withOverlay]: withOverlay,
 			})}
 		>
-			<Header staticPage={isStaticPage} />
-			<main>
+			<Logo />
+			<MainMenu />
+			<Heading title={title} id={id} type={type} />
+			<Paginator
+				id={id}
+				pages={
+					Math.ceil(items.length / options.maxRows) - options.maxColumns
+				}
+			/>
+			<main className={classes.main}>
 				{children}
 				<Overlay
 					rect={infoFromRect}

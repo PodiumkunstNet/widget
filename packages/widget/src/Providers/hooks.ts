@@ -77,15 +77,20 @@ function getGridSectionSizes(items: Tile[], options: State['options']) {
 	let singleSize = 0 // single size is the size of one column in potrait mode and one row in landscape mode
 	let totalSize = 0 // total size is the size of the whole grid section
 
+	const rect = document.querySelector('.container > main')?.getBoundingClientRect()
+	if (rect == null) return [0, 0]
+
 	if (isPortrait) {
-		const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
+		// const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
+		const availableColumnSpace = (rect.width - (options.borderWidth * (options.maxColumns + 1)))
 		singleSize = availableColumnSpace / options.maxColumns // column width
 
 		const columns = Math.ceil(items.length / options.maxRows)
 
 		totalSize = (singleSize * columns) + (options.borderWidth * (columns + 1))
 	} else {
-		const availableRowSpace = (window.innerHeight - (options.borderWidth * (options.maxRows + 1)))
+		// const availableRowSpace = (window.innerHeight - (options.borderWidth * (options.maxRows + 1)))
+		const availableRowSpace = (rect.height - (options.borderWidth * (options.maxRows + 1)))
 		singleSize = availableRowSpace / options.maxRows // row height
 
 		const rows = Math.ceil(items.length / options.maxColumns)
