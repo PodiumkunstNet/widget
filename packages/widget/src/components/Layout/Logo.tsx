@@ -2,7 +2,7 @@ import clsx from "clsx"
 import { useTransitionNavigate } from "../../hooks/useTransitionNavigate"
 import { sessionStore } from "../../hooks/useSessionStorage"
 
-import classes from "./Header/index.module.css"
+import classes from "./Header.module.css"
 
 export function Logo() {
 	const { navigate } = useTransitionNavigate()

@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { DispatchContext } from "../../state"
 import { Actions } from "../../state/actions"
 
-import classes from "./Header/index.module.css"
+import classes from "./Header.module.css"
 
 export function MainMenu() {
 	const dispatch = useContext(DispatchContext)

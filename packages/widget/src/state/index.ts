@@ -61,6 +61,7 @@ export interface GridDataState extends MappedData {
 	isLoading: boolean
 	isError: boolean
 	id: string | undefined
+	maxItems: number
 	type: WidgetType | undefined
 }
 
@@ -68,6 +69,7 @@ const initialGridDataState: GridDataState = {
 	isLoading: false,
 	isError: false,
 	id: undefined,
+	maxItems: 0,
 	type: undefined,
 	...defaultMappedData
 }

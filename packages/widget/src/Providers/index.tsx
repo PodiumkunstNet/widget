@@ -6,14 +6,13 @@ import {
 } from "../state"
 import { ReactNode, useReducer } from "react"
 import { stateReducer } from "../state/reducer"
-import { useInitAppOptions, useGridData, useSetCSSSizeVars } from "./hooks"
+import { useInitAppOptions, useGridData } from "./hooks"
 
 export function Providers({ children }: { children: ReactNode }) {
 	const [state, dispatch] = useReducer(stateReducer, initialState)
 
 	useInitAppOptions(dispatch)
 	const gridData = useGridData(state?.options)
-	useSetCSSSizeVars(gridData.items, state.options)
 
 	return (
 		<DispatchContext.Provider value={dispatch}>

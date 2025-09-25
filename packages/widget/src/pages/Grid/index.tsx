@@ -12,14 +12,14 @@ import { TileType } from "../../types/grid"
 
 import classes from "./index.module.css"
 
-import { useSetCSSSizeVars } from "../../Providers/hooks"
+import { useGridData } from "../../Providers/hooks"
 
 interface Props {
 	isSubCategoryView: boolean
 }
 
 /**
- * The CSS variables for the grid are set in {@link useSetCSSSizeVars} 
+ * The CSS variables for the grid are set in {@link useGridData} 
  */
 export function Grid({ isSubCategoryView }: Props) {
 	const { items, isLoading, isError, id, type } = useContext(GridDataContext)

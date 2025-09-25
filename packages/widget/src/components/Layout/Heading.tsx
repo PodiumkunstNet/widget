@@ -1,7 +1,7 @@
 import { sessionStore } from "../../hooks/useSessionStorage"
 import { GridDataState } from "../../state"
 
-import classes from "./Header/index.module.css"
+import classes from "./Header.module.css"
 
 export function Heading({
 	title, id, type

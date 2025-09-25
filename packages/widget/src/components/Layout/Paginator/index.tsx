@@ -4,8 +4,24 @@ import clsx from "clsx"
 import { IconCaretLeftFilled, IconCaretRightFilled } from "@tabler/icons-react"
 
 import classes from "./index.module.css"
+import { State } from "../../../state"
 
-export function Paginator({ id, pages }: { id: string | undefined; pages: number }) {
+interface Props {
+	id: string | undefined
+
+	/**
+	 * The number of items that are in a row/column, depending on the orientation
+	 * In landscape mode, this is the number of rows (maxRows), in portrait mode,
+	 * this is the number of columns (maxColumns)
+	 * 
+	 * @see {@link useGridData}
+	 */
+	maxItems: number
+
+	options: State["options"]
+}
+
+export function Paginator({ id, maxItems, options }: Props) {
 	const [currentPage, setCurrentPage] = useState(0)
 
 	useEffect(() => {
@@ -19,10 +35,21 @@ export function Paginator({ id, pages }: { id: string | undefined; pages: number
 		)
 	}, [currentPage])
 
-	if (pages < 1) return null
+	if (maxItems < 1) return null
 
 	const hasPrev = currentPage > 0
-	const hasNext = currentPage < pages
+
+	/**
+	 * The paginator doesn't move whole pages, but move just one row/column at a time.
+	 * So in portrait mode, it moves one row at a time, and in landscape mode, it moves one column at a time.
+	 *
+	 * Example: landscape mode, maxColumns = 3, maxItems = 7, currentPage can be 0,1,2,3,4
+	 * Example: portrait mode, maxRows = 4, maxItems = 10, currentPage can be 0,1,2,3,4,5,6
+	 */
+	const landscape = window.innerWidth > window.innerHeight
+	const hasNext = landscape
+		? currentPage < maxItems - options.maxRows
+		: currentPage < maxItems - options.maxColumns
 
 	return (
 		<>

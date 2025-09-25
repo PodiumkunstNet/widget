@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -7,6 +7,7 @@ import { Tile } from "../types/grid"
 import { GridDataState, State } from "../state"
 import { AppOptions } from "../utils/app-options"
 import { Actions } from "../state/actions"
+import { Paginator } from "../components/Layout/Paginator"
 
 export function useGridData(options: State['options']) {
 	const [params] = useSearchParams()
@@ -31,12 +32,15 @@ export function useGridData(options: State['options']) {
 		Promise.all(ps)
 	}, [data?.items])
 
+	const maxItems = useSetCSSSizeVars(data?.items, options)
+
 	return {
 		isLoading,
 		isError,
 		title: data?.title ?? '',
 		items: data?.items ?? [],
 		id,
+		maxItems,
 		type
 	}
 }
@@ -54,11 +58,14 @@ export function useInitAppOptions(dispatch: React.Dispatch<any>) {
 	}, [])
 }
 
-export function useSetCSSSizeVars(items: Tile[], options: State['options']) {
+function useSetCSSSizeVars(items: Tile[] | undefined, options: State['options']) {
+	const [maxItems, setMaxItems] = useState(0)
+
 	useEffect(() => {
 		if (!items || items.length === 0) return
 
-		const [totalSize, singleSize] = getGridSectionSizes(items, options)
+		const { totalSize, singleSize, maxItems } = getGridSectionSizes(items, options)
+		setMaxItems(maxItems)
 
 		document.documentElement.style.setProperty(
 			'--total-size',
@@ -70,33 +77,36 @@ export function useSetCSSSizeVars(items: Tile[], options: State['options']) {
 			singleSize + 'px'
 		)
 	}, [options, items])
+
+	return maxItems
 }
 
 function getGridSectionSizes(items: Tile[], options: State['options']) {
 	const isPortrait = window.innerHeight > window.innerWidth
 	let singleSize = 0 // single size is the size of one column in potrait mode and one row in landscape mode
 	let totalSize = 0 // total size is the size of the whole grid section
+	let maxItems = 0 // max items that are in a row/column, depending on the orientation
 
 	const rect = document.querySelector('.container > main')?.getBoundingClientRect()
-	if (rect == null) return [0, 0]
+	if (rect == null) return { totalSize: 0, singleSize: 0, maxItems: 0 }
 
 	if (isPortrait) {
-		// const availableColumnSpace = (window.innerWidth - (options.borderWidth * (options.maxColumns + 1)))
 		const availableColumnSpace = (rect.width - (options.borderWidth * (options.maxColumns + 1)))
 		singleSize = availableColumnSpace / options.maxColumns // column width
 
-		const columns = Math.ceil(items.length / options.maxRows)
+		/** Calculate the max items that are in a column. This number is used in the {@link Paginator} */
+		maxItems = Math.ceil(items.length / options.maxRows)
 
-		totalSize = (singleSize * columns) + (options.borderWidth * (columns + 1))
+		totalSize = (singleSize * maxItems) + (options.borderWidth * (maxItems + 1))
 	} else {
-		// const availableRowSpace = (window.innerHeight - (options.borderWidth * (options.maxRows + 1)))
 		const availableRowSpace = (rect.height - (options.borderWidth * (options.maxRows + 1)))
 		singleSize = availableRowSpace / options.maxRows // row height
 
-		const rows = Math.ceil(items.length / options.maxColumns)
+		/** Calculate the max items that are in a row. This number is used in the {@link Paginator} */
+		maxItems = Math.ceil(items.length / options.maxColumns)
 
-		totalSize = (singleSize * rows) + (options.borderWidth * (rows + 1))
+		totalSize = (singleSize * maxItems) + (options.borderWidth * (maxItems + 1))
 	}
 
-	return [totalSize, singleSize]
+	return { totalSize, singleSize, maxItems }
 }
