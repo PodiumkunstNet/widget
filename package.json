@@ -8,7 +8,7 @@
 		"dev:widget": "(cd packages/widget && vite dev)",
 		"dev:configurator": "(cd packages/configurator && vite dev)",
 		"lint": "eslint .",
-		"preview": "vite preview",
+		"preview:widget": "(cd packages/widget && npm run build && vite preview)",
 		"types:configurator": "(cd packages/configurator && npm run types)",
 		"types:widget": "(cd packages/widget && npm run types)"
 	},
