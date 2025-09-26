@@ -1,12 +1,15 @@
-import {
-	MappedWidgetType,
-	WidgetType,
-} from "."
-import { AgentData, AgentKey, getAgentLabel } from "../types/agent"
+import { MappedWidgetType, WidgetType } from "."
+import { getTileLabel } from "../types"
+import { AgentData, AgentKey } from "../types/agent"
 import { TileType, Tile } from "../types/grid"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
 
+/**
+ * TODO	make mapping of data to tiles more generic. Don't use lists in if-statements,
+ * 		but a mapping object saying it is a static/more/information tile and if it has a subType.
+ *			There could also be "custom" tiles where the mapping function can be passed in as a prop.
+ */
 export function mapAgentData(data: AgentData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
@@ -22,13 +25,14 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 		.map(([key, value]) => {
 			if (
 				key == AgentKey.Role ||
-				key == AgentKey.Datebirth ||
 				key == AgentKey.Placebirth ||
-				key == AgentKey.Datedeath ||
-				key == AgentKey.Placedeath
+				key == AgentKey.Placedeath ||
+				key == AgentKey.Origin ||
+				key == AgentKey.Periodactivity ||
+				key == AgentKey.Keywords
 			) {
 				return {
-					key: getAgentLabel(key),
+					key: getTileLabel(WidgetType.Agent, key),
 					value,
 					type: TileType.Static,
 					sourceKey: key,
@@ -36,10 +40,20 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 			}
 
 			if (
-				key == AgentKey.Organisation
+				key == AgentKey.Datebirth ||
+				key == AgentKey.Datedeath
 			) {
 				return {
-					key: getAgentLabel(key),
+					key: getTileLabel(WidgetType.Agent, key),
+					value: formatDutchDate(value as string),
+					type: TileType.Static,
+					sourceKey: key,
+				}
+			}
+
+			if (key == AgentKey.Organisation) {
+				return {
+					key: getTileLabel(WidgetType.Agent, key),
 					value,
 					type: TileType.More,
 					sourceKey: key,
@@ -49,7 +63,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 
 			if (key == AgentKey.Note) {
 				return {
-					key: getAgentLabel(key),
+					key: getTileLabel(WidgetType.Agent, key),
 					value: "Bio",
 					note: value,
 					type: TileType.Information,
@@ -79,8 +93,23 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 	return {
 		mappedData: {
 			title: data.title ?? "",
-			items
+			items,
 		},
 		error: false,
 	}
+}
+
+// Create a function which takes a Dutch date ("DD-MM-YYYY") and returns 
+// a human readable version 12 maart 2023
+const months = [
+	"januari", "februari", "maart", "april", "mei", "juni",
+	"juli", "augustus", "september", "oktober", "november", "december"
+]
+
+function formatDutchDate(dateString: string): string {
+	const [day, month, year] = dateString.split("-").map(Number)
+
+	if (month < 1 || month > 12) return dateString // Invalid month
+
+	return `${day} ${months[month - 1]} ${year}`
 }

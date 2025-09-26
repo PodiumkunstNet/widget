@@ -7,21 +7,27 @@ export enum AgentKey {
 	Agent = "agent",
 	Datebirth = "datebirth",
 	Datedeath = "datedeath",
+	Keywords = "keywords",
 	Note = "note",
 	Organisation = "organisation",
-	// Organisationname = "organisationname",
+	Origin = "origin",
+	Periodactivity = "periodactivity",
 	Placebirth = "placebirth",
 	Placedeath = "placedeath",
 	Role = "role",
 	Title = "title",
+
 }
 
 const AgentLabels = {
 	[AgentKey.Agent]: "Agent",
 	[AgentKey.Datebirth]: "Geboortedatum",
 	[AgentKey.Datedeath]: "Sterfdatum",
+	[AgentKey.Keywords]: "Trefwoorden",
 	[AgentKey.Note]: "Meer Informatie",
 	[AgentKey.Organisation]: "Organisatie",
+	[AgentKey.Origin]: "Herkomst",
+	[AgentKey.Periodactivity]: "Actieve periode",
 	[AgentKey.Placebirth]: "Geboorteplaats",
 	[AgentKey.Placedeath]: "Sterfplaats",
 	[AgentKey.Role]: "Rol",
