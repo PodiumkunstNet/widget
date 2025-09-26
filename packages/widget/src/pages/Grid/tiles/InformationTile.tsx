@@ -8,14 +8,14 @@ import { useRef } from "react"
 
 import { Paragraph } from "../../../components/Paragraph"
 import { Page } from "../../../components/Page"
-import { TileWrapper } from "./GenericTile"
+import { TileWrapper } from "./Wrapper"
 
 // @ts-ignore
 import { Layout } from "../../../components/Layout"
 // @ts-ignore
 import { Overlay } from "../../../components/InfoOverlay"
 
-import gridClasses from "./GenericTile.module.css"
+import genericClasses from "./GenericTile.module.css"
 import infoClasses from "./InformationTile.module.css"
 
 /**
@@ -65,8 +65,8 @@ export function InformationTileBody({ item }: { item: Props["item"] }) {
 			className={infoClasses.page}
 			header={
 				<div className={infoClasses.keyValueContainer}>
-					<span className={gridClasses.key}>{item.key}</span>
-					<span className={gridClasses.value}>{item.value}</span>
+					<span className={genericClasses.key}>{item.key}</span>
+					<span className={genericClasses.value}>{item.value}</span>
 				</div>
 			}
 		>
