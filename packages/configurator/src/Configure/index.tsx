@@ -3,7 +3,6 @@ import { useReducer } from "react"
 import { useNavigate } from "react-router-dom"
 import {
 	Button,
-	ColorInput,
 	NumberInput,
 	Radio,
 	Select,
@@ -18,6 +17,7 @@ import { SelectSize } from "./SelectSize"
 
 import classes from "./index.module.css"
 import { extractIriAndType } from "../utils/iri"
+import { SelectColor } from "./SelectColor"
 
 export function Configure() {
 	const [state, dispatch] = useReducer(stateReducer, initialState)
@@ -125,6 +125,7 @@ export function Configure() {
 					Bekijk brondata
 				</Button>
 			</div>
+
 			<SelectSize state={state} dispatch={dispatch} />
 
 			<div>
@@ -150,35 +151,7 @@ export function Configure() {
 				</Stack>
 			</div>
 
-			<div>
-				<h2 className="mb-6">Kleuren</h2>
-				<Stack gap="md">
-					<ColorInput
-						label="Hoofdkleur"
-						value={state.primaryColor}
-						onChangeEnd={(primaryColor) => {
-							dispatch({
-								type: Actions.SetColor,
-								payload: { primaryColor },
-							})
-						}}
-						format="rgb"
-						swatchesPerRow={3}
-					/>
-					<ColorInput
-						label="Ondersteunende kleur"
-						value={state.secondaryColor}
-						onChangeEnd={(secondaryColor) => {
-							dispatch({
-								type: Actions.SetColor,
-								payload: { secondaryColor },
-							})
-						}}
-						format="rgb"
-						swatchesPerRow={3}
-					/>
-				</Stack>
-			</div>
+			<SelectColor state={state} dispatch={dispatch}  />
 
 			<div>
 				<h2 className="mb-6">Aantal rijen en kolommen</h2>

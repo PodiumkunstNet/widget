@@ -1,0 +1,15 @@
+.valid, .invalid {
+	padding: .25rem;
+	font-size: 1rem;
+	white-space: nowrap;
+}
+
+.valid {
+	color: darkgreen;
+	padding-left: 0;
+}
+
+.invalid {
+	color: var(--color-white);
+	background-color: rgb(217, 26, 26);
+}
