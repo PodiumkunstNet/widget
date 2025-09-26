@@ -7,7 +7,6 @@ import {
 	IconMail,
 	IconX,
 } from "@tabler/icons-react"
-import "@mantine/core/styles.css"
 
 import headerClasses from "./Header.module.css"
 import classes from "./MainMenu.module.css"

@@ -37,31 +37,6 @@ export function TileWrapper({
 				</div>
 			}
 			{ children}
-			{/* {item.type === GridCategory.Static ? (
-				<TileTurner
-					back={
-						<Box centerContent>
-							<img src="/oostpool.png" style={{ maxHeight: "100%" }} />
-						</Box>
-					}
-					front={<Box centerContent className={classes.staticBox}>{children}</Box>}
-				/>
-			) : (
-				children
-			)} */}
 		</li>
 	)
-}
-
-{
-	/* {item.type === GridCategory.More && (
-				<div className={classes["dog-ear-wrapper"]}>
-					<div className={classes["dog-ear-shadow"]} />
-					<div className={classes["dog-ear"]}>
-						<Page className={classes.backside}>
-							<img src="/oostpool.png" />
-						</Page>
-					</div>
-				</div>
-			)} */
 }

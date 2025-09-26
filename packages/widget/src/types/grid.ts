@@ -29,6 +29,8 @@ export enum TileType {
 	 * The component for rendering the tile is found in {@link GenericTile}
 	 */
 	Static = "static",
+
+	ExternalLink = "external_link",
 }
 
 export interface Tile {

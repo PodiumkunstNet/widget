@@ -53,6 +53,10 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 				return createInformationTile(key, value)
 			}
 
+			if (key === WorkKey.Source) {
+				return createExternalLinkTile(key, value)
+			}
+
 			console.warn(`No explicit mapping for work key: ${key}`)
 			return createStaticTile(key, value)
 		})
@@ -159,5 +163,16 @@ function createManifestationTile(data: WorkData): Tile | [] {
 		subType: WidgetType.Manifestation,
 		type: TileType.More,
 		value: getWorkLabel(WorkKey.Manifestations),
+	}
+}
+
+function createExternalLinkTile(key: WorkKey, value: string): Tile {
+	return {
+		id: "",
+		key: getWorkLabel(key),
+		value,
+		type: TileType.ExternalLink,
+		sourceKey: key,
+		url: value,
 	}
 }

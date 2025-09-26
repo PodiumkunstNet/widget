@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { GridDataState } from "../state"
 
 export const HOME_URL = 'WidgetHomeURL'
@@ -20,9 +21,9 @@ class SessionStorageManager {
 		return sessionStorage.getItem(HOME_URL)
 	}
 
-	setTitle(id: ID, type: Type, title: string | undefined) {
+	setTitle(id: ID, type: Type, title: ReactNode) {
 		console.log("Setting title in sessionStorage:", id, title)
-		sessionStorage.setItem(createUniqueID(id, type), title ?? "")
+		sessionStorage.setItem(createUniqueID(id, type), typeof title !== "string" ? "" : title)
 	}
 
 	getTitle(id: ID, type: Type) {

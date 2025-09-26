@@ -13,13 +13,14 @@ import { TileType } from "../../types/grid"
 import classes from "./index.module.css"
 
 import { useGridData } from "../../hooks/useGridData"
+import { ExternalLinkTile } from "./tiles/ExternalLinkTile"
 
 interface Props {
 	isSubCategoryView: boolean
 }
 
 /**
- * The CSS variables for the grid are set in {@link useGridData} 
+ * The CSS variables for the grid are set in {@link useGridData}
  */
 export function Grid({ isSubCategoryView }: Props) {
 	const { items, isLoading, isError, id, type } = useContext(GridDataContext)
@@ -47,17 +48,23 @@ export function Grid({ isSubCategoryView }: Props) {
 				[classes.isSub]: isSubCategoryView,
 			})}
 		>
-			{items.map((item, index) =>
-				item.type === TileType.Information ? (
-					<InformationTile item={item} key={index} />
-				) : (
+			{items.map((item, index) => {
+				if (item.type === TileType.Information) {
+					return <InformationTile item={item} key={index} />
+				}
+
+				if (item.type === TileType.ExternalLink) {
+					return <ExternalLinkTile item={item} key={index} />
+				}
+
+				return (
 					<GenericTile
 						item={item}
 						isSubCategoryView={isSubCategoryView}
 						key={index}
 					/>
-				),
-			)}
+				)
+			})}
 		</ul>
 	)
 }

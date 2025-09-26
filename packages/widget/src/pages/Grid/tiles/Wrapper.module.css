@@ -39,16 +39,30 @@
 	color: var(--color-black);
 } */
 
-.gridItem a {
-	padding: 1rem;
-}
 
-.gridItem.static {
+.external_link,
+.static {
 	cursor: default;
 }
 
-.gridItem.static:hover {
+.external_link:hover,
+.static:hover {
 	background-color: white;
+}
+
+.external_link a {
+	color: var(--color-black);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 3px;
+	text-decoration-color: var(--color-current);
+	margin-top: 2px;
+	display: inline-block;
+	padding: 0.25rem;
+}
+
+.external_link a:hover {
+	color: var(--color-white);
+	background-color: var(--color-current);
 }
 
 /* .gridItem.more:hover .key,

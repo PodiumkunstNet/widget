@@ -41,7 +41,7 @@ const WorkLabels = {
 	[WorkKey.Librettistname]: "Librettist",
 	[WorkKey.Manifestations]: "Gebaseerd op dit werk",
 	[WorkKey.Note]: "Informatie",
-	[WorkKey.Source]: "Bron",
+	[WorkKey.Source]: "Externe bron",
 	[WorkKey.Title]: "Titel",
 	[WorkKey.Work]: "Werk",
 } as const satisfies Record<WorkKey, string>
