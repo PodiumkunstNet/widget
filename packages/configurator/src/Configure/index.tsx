@@ -1,5 +1,5 @@
 import { SourceCode } from "./SourceCode"
-import { useReducer } from "react"
+import { Dispatch } from "react"
 import { useNavigate } from "react-router-dom"
 import {
 	Button,
@@ -11,16 +11,20 @@ import {
 } from "@mantine/core"
 
 import { initialState, Orientation, SizeValue } from "../state"
-import { stateReducer } from "../state/reducer"
-import { Actions } from "../state/actions"
+import { Action, Actions } from "../state/actions"
 import { SelectSize } from "./SelectSize"
 
 import classes from "./index.module.css"
 import { extractIriAndType } from "../utils/iri"
 import { SelectColor } from "./SelectColor"
 
-export function Configure() {
-	const [state, dispatch] = useReducer(stateReducer, initialState)
+export function Configure({
+	state,
+	dispatch,
+}: {
+	state: typeof initialState
+	dispatch: Dispatch<Action>
+}) {
 	const navigate = useNavigate()
 
 	return (

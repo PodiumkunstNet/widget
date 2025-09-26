@@ -49,16 +49,10 @@ export function Grid({ isSubCategoryView }: Props) {
 			})}
 		>
 			{items.map((item, index) => {
-				if (item.type === TileType.Information) {
-					return <InformationTile item={item} key={index} />
-				}
-
-				if (item.type === TileType.ExternalLink) {
-					return <ExternalLinkTile item={item} key={index} />
-				}
+				const Tile = getTileComponent(item.type)
 
 				return (
-					<GenericTile
+					<Tile
 						item={item}
 						isSubCategoryView={isSubCategoryView}
 						key={index}
@@ -67,4 +61,10 @@ export function Grid({ isSubCategoryView }: Props) {
 			})}
 		</ul>
 	)
+}
+
+export function getTileComponent(tileType: TileType) {
+	if (tileType === TileType.Information) return InformationTile
+	if (tileType === TileType.ExternalLink) return ExternalLinkTile
+	return GenericTile
 }

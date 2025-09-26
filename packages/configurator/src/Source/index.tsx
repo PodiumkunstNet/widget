@@ -3,11 +3,37 @@ import { useQuery } from "@tanstack/react-query"
 import { queryWidgetByIri } from "@widget/hooks/useWidgetByIri"
 import { widgetHelpers, WidgetType, ensureWidgetType } from "@widget/helpers"
 import { MissingKeys } from "./MissingKeys"
-import { Anchor, Box, Button, Group, Loader, Paper, Stack, Text, Title, Table, ScrollArea, Tooltip, Popover, Checkbox, Divider } from "@mantine/core"
-import { useMemo, useState } from "react"
-import { JsonModal } from './json-modal'
+import {
+	Anchor,
+	Box,
+	Button,
+	Group,
+	Loader,
+	Paper,
+	Stack,
+	Text,
+	Title,
+	Table,
+	ScrollArea,
+	Tooltip,
+	Popover,
+	Checkbox,
+	Divider,
+} from "@mantine/core"
+import { useEffect, useMemo, useState } from "react"
+import { JsonModal } from "./json-modal"
+import { TilePreview } from "./TilePreview"
+import { State } from "../state"
 
-export function Source() {
+export function Source({ state }: { state: State }) {
+	/** Set the --color-current var in CSS for the tiles to render with color */
+	useEffect(() => {
+		document.documentElement.style.setProperty(
+			"--color-current",
+			state.primaryColor,
+		)
+	}, [state.primaryColor])
+
 	const [params] = useSearchParams()
 	const iri = params.get("id") ?? ""
 	const maxTiles = Number(params.get("maxTiles") ?? "50")
@@ -34,13 +60,23 @@ export function Source() {
 	const [jsonOpen, setJsonOpen] = useState(false)
 
 	// Column visibility state (persisted in localStorage)
-	const allColumns = ["sourceKey", "title", "sourceValue", "value", "type", "subType", "urlId"] as const
-	type ColumnId = typeof allColumns[number]
+	const allColumns = [
+		"preview",
+		"sourceKey",
+		"title",
+		"sourceValue",
+		"value",
+		"type",
+		"subType",
+		"urlId",
+	] as const
+	type ColumnId = (typeof allColumns)[number]
 	const [visibleCols, setVisibleCols] = useState<Record<ColumnId, boolean>>({
-		sourceKey: false,
-		title: true,
-		sourceValue: false,
-		value: true,
+		preview: true,
+		sourceKey: true,
+		title: false,
+		sourceValue: true,
+		value: false,
 		type: true,
 		subType: true,
 		urlId: true,
@@ -52,6 +88,12 @@ export function Source() {
 	const columns = useMemo(
 		() => [
 			{
+				id: "preview" as const,
+				label: "Preview",
+				width: "180px",
+				render: (item: any) => <TilePreview item={item} />,
+			},
+			{
 				id: "sourceKey" as const,
 				label: "Source key",
 				width: "16%",
@@ -59,7 +101,9 @@ export function Source() {
 					item.sourceKey ? (
 						<code>{item.sourceKey}</code>
 					) : (
-						<Text size="xs" c="dimmed">?</Text>
+						<Text size="xs" c="dimmed">
+							?
+						</Text>
 					),
 			},
 			{
@@ -68,7 +112,8 @@ export function Source() {
 				width: "20%",
 				render: (item: any) => {
 					const k = item?.key
-					const isEmpty = k == null || (typeof k === 'string' && k.trim() === '')
+					const isEmpty =
+						k == null || (typeof k === "string" && k.trim() === "")
 					return isEmpty ? (
 						<Text c="red">Titel niet gedefinieerd</Text>
 					) : (
@@ -81,14 +126,37 @@ export function Source() {
 				label: "Source value",
 				width: "16%",
 				render: (item: any) => {
-					const first = Array.isArray(data?.raw) ? data?.raw?.[0] : undefined
-					const v = item.sourceKey && first && typeof first === 'object' ? (first as any)[item.sourceKey] : undefined
-					const full = v == null ? '-' : typeof v === 'string' ? v : typeof v === 'object' ? JSON.stringify(v) : String(v)
-					let display = typeof full === 'string' ? full.replace(/\s+/g, ' ').trim() : String(full)
-					if (display.length > 50) display = display.slice(0, 50) + '…'
+					const first = Array.isArray(data?.raw)
+						? data?.raw?.[0]
+						: undefined
+					const v =
+						item.sourceKey && first && typeof first === "object"
+							? (first as any)[item.sourceKey]
+							: undefined
+					const full =
+						v == null
+							? "-"
+							: typeof v === "string"
+							? v
+							: typeof v === "object"
+							? JSON.stringify(v)
+							: String(v)
+					let display =
+						typeof full === "string"
+							? full.replace(/\s+/g, " ").trim()
+							: String(full)
+					if (display.length > 50) display = display.slice(0, 50) + "…"
 					return (
 						<Tooltip label={full} multiline maw={400} withArrow>
-							<span style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
+							<span
+								style={{
+									display: "block",
+									whiteSpace: "nowrap",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+									maxWidth: "100%",
+								}}
+							>
 								{display}
 							</span>
 						</Tooltip>
@@ -133,34 +201,43 @@ export function Source() {
 				id: "subType" as const,
 				label: "SubType",
 				width: "10%",
-				render: (item: any) => item.subType ?? "-",
+				render: (item: any) => (
+					<Stack>
+						
+						{item.subType && (
+							<Button
+								component={Link}
+								to={`/validate?id=${encodeURIComponent(
+									item.id,
+								)}&type=${encodeURIComponent(item.subType)}`}
+								variant="light"
+								size="xs"
+							>
+								{item.subType}
+							</Button>
+						)}
+					</Stack>
+				),
 			},
 			{
 				id: "urlId" as const,
 				label: "URL / ID",
 				width: "20%",
 				render: (item: any) => {
-					const showOpen = item?.type === 'more' && typeof item?.id === 'string' && item?.subType
-					const openBtn = showOpen ? (
-						<Button
-							component={Link}
-							to={`/validate?id=${encodeURIComponent(item.id)}&type=${encodeURIComponent(item.subType)}`}
-							variant="light"
-							size="xs"
-							ml="xs"
-						>
-							Open
-						</Button>
-					) : null
 					if (item.url) {
 						return (
 							<>
-								<Anchor href={item.url} target="_blank" rel="noreferrer">{item.url}</Anchor>
-								{openBtn}
+								<Anchor
+									href={item.url}
+									target="_blank"
+									rel="noreferrer"
+								>
+									{item.url}
+								</Anchor>
 							</>
 						)
 					}
-					const idStr = typeof item.id === 'string' ? item.id : undefined
+					const idStr = typeof item.id === "string" ? item.id : undefined
 					let isUrl = false
 					if (idStr) {
 						try {
@@ -172,18 +249,22 @@ export function Source() {
 					if (isUrl && idStr) {
 						return (
 							<>
-								<Anchor href={idStr} target="_blank" rel="noreferrer">{item.id}</Anchor>
-								{openBtn}
+								<Anchor href={idStr} target="_blank" rel="noreferrer">
+									{item.id}
+								</Anchor>
 							</>
 						)
 					}
 					return idStr ? (
 						<>
-							<Text size="xs" c="dimmed" truncate>{item.id}</Text>
-							{openBtn}
+							<Text size="xs" c="dimmed" truncate>
+								{item.id}
+							</Text>
 						</>
 					) : (
-						<Text size="xs" c="dimmed">-</Text>
+						<Text size="xs" c="dimmed">
+							-
+						</Text>
 					)
 				},
 			},
@@ -199,7 +280,12 @@ export function Source() {
 						Terug naar configurator
 					</Button>
 				</Group>
-				<Title order={2}>Brondata <i>{data?.raw[0]?.title}</i> <Text span c="dimmed" size="sm">({type})</Text></Title>
+				<Title order={2}>
+					Brondata <i>{data?.raw[0]?.title}</i>{" "}
+					<Text span c="dimmed" size="sm">
+						({type})
+					</Text>
+				</Title>
 				<Group gap="xs">
 					<Popover position="bottom-end" shadow="md" withArrow>
 						<Popover.Target>
@@ -207,12 +293,16 @@ export function Source() {
 						</Popover.Target>
 						<Popover.Dropdown>
 							<Stack gap="xs">
-								<Text fw={500} size="sm">Toon kolommen</Text>
+								<Text fw={500} size="sm">
+									Toon kolommen
+								</Text>
 								<Divider my="xs" />
 								{allColumns.map((id) => (
 									<Checkbox
 										key={id}
-										label={columns.find((c) => c.id === id)?.label ?? id}
+										label={
+											columns.find((c) => c.id === id)?.label ?? id
+										}
 										checked={visibleCols[id]}
 										onChange={() => toggleCol(id)}
 									/>
@@ -245,8 +335,12 @@ export function Source() {
 					}}
 				>
 					<Text size="sm" my="xs">
-						IRI: {" "}
-						<Anchor href={iri.startsWith('http') ? iri : undefined} target="_blank" rel="noreferrer">
+						IRI:{" "}
+						<Anchor
+							href={iri.startsWith("http") ? iri : undefined}
+							target="_blank"
+							rel="noreferrer"
+						>
 							{iri}
 						</Anchor>
 					</Text>
@@ -291,7 +385,10 @@ export function Source() {
 												{columns
 													.filter((c) => visibleCols[c.id])
 													.map((c) => (
-														<Table.Th key={c.id} style={{ width: c.width }}>
+														<Table.Th
+															key={c.id}
+															style={{ width: c.width }}
+														>
 															{c.label}
 														</Table.Th>
 													))}
@@ -303,7 +400,14 @@ export function Source() {
 													{columns
 														.filter((c) => visibleCols[c.id])
 														.map((c) => (
-															<Table.Td key={c.id} style={c.id === 'value' ? { padding: '4px 8px' } : undefined}>
+															<Table.Td
+																key={c.id}
+																style={
+																	c.id === "value"
+																		? { padding: "4px 8px" }
+																		: undefined
+																}
+															>
 																{c.render(item)}
 															</Table.Td>
 														))}
@@ -319,7 +423,11 @@ export function Source() {
 					)}
 				</Stack>
 			</Paper>
-			<JsonModal opened={jsonOpen} onClose={() => setJsonOpen(false)} data={data ?? null} />
+			<JsonModal
+				opened={jsonOpen}
+				onClose={() => setJsonOpen(false)}
+				data={data ?? null}
+			/>
 		</Stack>
 	)
 }
