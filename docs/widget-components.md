@@ -20,7 +20,7 @@ Used in: [Layout](../packages/widget/src/components/Layout/index.tsx)
 ## Pages
 Directory: [pages/](../packages/widget/src/pages/)
 Current pages:
-- About page: [pages/About/index.tsx](../packages/widget/src/pages/About/index.tsx)
+<!-- - About page: [pages/About/index.tsx](../packages/widget/src/pages/About/index.tsx) -->
 - Grid page (main widget view): [pages/Grid/index.tsx](../packages/widget/src/pages/Grid/index.tsx)
 
 ### Grid
