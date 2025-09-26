@@ -29,7 +29,7 @@ export function AboutPage() {
 	)
 }
 
-function PodiumkunstLink() {
+export function PodiumkunstLink() {
 	return (
 		<a
 			className={classes.link}

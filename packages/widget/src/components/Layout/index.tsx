@@ -59,6 +59,7 @@ export function Layout({ children }: { children: ReactNode }) {
 				{children}
 				<Overlay
 					rect={infoFromRect}
+					closeOnClick
 					afterClose={() => {
 						dispatch({
 							type: Actions.SetInfoItem,
@@ -75,6 +76,7 @@ export function Layout({ children }: { children: ReactNode }) {
 								type: Actions.ToggleAboutPage,
 							})
 						}}
+						closeOnClick
 						fade
 						rect={logoRect}
 					>

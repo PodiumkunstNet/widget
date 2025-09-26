@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { createContext, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
 import classes from "./index.module.css"
@@ -6,14 +6,19 @@ import classes from "./index.module.css"
 const DURATION = 400
 const EASING = "cubic-bezier(0.2, 0.8, 0.2, 1)"
 
+type OverlayContextValue = { close: () => void }
+export const OverlayContext = createContext<OverlayContextValue>({ close: () => {} })
+
 export function Overlay(
 	{
 		afterClose,
+		closeOnClick = false,
 		fade = false,
-		rect: infoFromRect,
+		rect,
 		children
 	}: {
 		afterClose: () => void
+		closeOnClick?: boolean
 		fade?: boolean
 		rect?: { top: number; left: number; width: number; height: number }
 		children: React.ReactNode
@@ -24,7 +29,7 @@ export function Overlay(
 
 	// Open animation
 	useEffect(() => {
-		if (!sheetRef.current || !infoFromRect) return
+		if (!sheetRef.current || !rect) return
 
 		sheetRef.current.style.setProperty(
 			"--animation-duration",
@@ -36,10 +41,10 @@ export function Overlay(
 		document.body.style.overflow = "hidden"
 
 		const start = {
-			top: `${infoFromRect.top}px`,
-			left: `${infoFromRect.left}px`,
-			width: `${infoFromRect.width}px`,
-			height: `${infoFromRect.height}px`,
+			top: `${rect.top}px`,
+			left: `${rect.left}px`,
+			width: `${rect.width}px`,
+			height: `${rect.height}px`,
 			borderColor: "rgba(var(--color-current-rgb), 0)",
 			boxShadow: "0 0 0 0 rgba(var(--color-black-rgb), 0)",
 			opacity: fade ? 0 : 1,
@@ -59,10 +64,10 @@ export function Overlay(
 
 		const el = sheetRef.current
 		// Set initial style to avoid flash
-		el.style.top = `${infoFromRect.top}px`
-		el.style.left = `${infoFromRect.left}px`
-		el.style.width = `${infoFromRect.width}px`
-		el.style.height = `${infoFromRect.height}px`
+		el.style.top = `${rect.top}px`
+		el.style.left = `${rect.left}px`
+		el.style.width = `${rect.width}px`
+		el.style.height = `${rect.height}px`
 		el.animate([start, end], {
 			duration: DURATION,
 			easing: EASING,
@@ -72,9 +77,10 @@ export function Overlay(
 		return () => {
 			document.body.style.overflow = prevOverflow
 		}
-	}, [infoFromRect])
+	}, [rect])
 
 	const close = () => {
+		console.log('close overlay', sheetRef.current)
 		if (!sheetRef.current) return afterClose()
 		// 	dispatch({ type: Actions.SetInfoItem, payload: { item: undefined } })
 		// 	return
@@ -92,7 +98,7 @@ export function Overlay(
 			opacity: fade ? 1 : 1,
 		} as Keyframe
 
-		const to = infoFromRect ?? targetRect
+		const to = rect ?? targetRect
 		const end = {
 			top: `${to.top}px`,
 			left: `${to.left}px`,
@@ -112,7 +118,7 @@ export function Overlay(
 		anim?.finished.finally(afterClose)
 	}
 
-	if (!infoFromRect) return null
+	if (!rect) return null
 
 	return createPortal(
 		<div
@@ -122,18 +128,20 @@ export function Overlay(
 			onClick={() => {
 				if (sheetRef.current?.classList.contains(classes.closing)) return
 
-				close()
+				if (closeOnClick) close()
 				sheetRef.current?.classList.add(classes.closing)
 			}}
 		>
-			<div
-				style={{
-					width: "100%",
-					height: "100%",
-				}}
-			>
-				{children}
-			</div>
+			<OverlayContext.Provider value={{ close }}>
+				<div
+					style={{
+						width: "100%",
+						height: "100%",
+					}}
+				>
+					{children}
+				</div>
+			</OverlayContext.Provider>
 		</div>,
 		document.getElementById("root")?.querySelector(".container")!,
 	)

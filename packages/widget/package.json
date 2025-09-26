@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@csstools/postcss-global-data": "^3.1.0",
+    "@mantine/core": "^8.3.2",
+    "@mantine/hooks": "^8.3.2",
     "@tabler/icons-react": "^3.31.0",
     "@tanstack/react-query": "^5.64.1",
     "@tanstack/react-query-devtools": "^5.64.1",

@@ -37,14 +37,19 @@
 		grid-template-rows: fit-content(0) 1fr 1fr;
 		grid-template-columns: 1.5rem fit-content(0) 1fr fit-content(0);
 		grid-template-areas: 
-			"logo logo heading menu"
+			"space logo heading menu"
 			"prev main main main"
 			"next main main main";
+	}
+
+	#logo {
+		padding-left: 0;
 	}
 
 	#main-menu {
 		justify-self: end;
 		align-self: center;
+		align-content: center;
 	}
 
 	#prev {
