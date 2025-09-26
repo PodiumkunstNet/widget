@@ -13,7 +13,7 @@ import headerClasses from "./Header.module.css"
 import classes from "./MainMenu.module.css"
 
 import { Overlay, OverlayContext } from "../Overlay"
-import { AboutPage, PodiumkunstLink } from "../../pages/About"
+import { PodiumkunstLink } from "../../pages/About"
 import { Paragraph } from "../Paragraph"
 
 export function MainMenu() {

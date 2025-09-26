@@ -6,7 +6,8 @@ import {
 } from "../state"
 import { ReactNode, useReducer } from "react"
 import { stateReducer } from "../state/reducer"
-import { useInitAppOptions, useGridData } from "./hooks"
+import { useInitAppOptions } from "../hooks/useInitAppOptions"
+import { useGridData } from "../hooks/useGridData"
 
 export function Providers({ children }: { children: ReactNode }) {
 	const [state, dispatch] = useReducer(stateReducer, initialState)

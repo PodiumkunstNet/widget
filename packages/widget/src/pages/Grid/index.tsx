@@ -12,7 +12,7 @@ import { TileType } from "../../types/grid"
 
 import classes from "./index.module.css"
 
-import { useGridData } from "../../Providers/hooks"
+import { useGridData } from "../../hooks/useGridData"
 
 interface Props {
 	isSubCategoryView: boolean
