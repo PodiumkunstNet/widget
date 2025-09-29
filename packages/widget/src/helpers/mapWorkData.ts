@@ -13,12 +13,13 @@ const keysToExclude = [
 	WorkKey.Choreographername,
 	WorkKey.Collectiveagentname,
 	WorkKey.Authorname,
+	WorkKey.Dedicateename
 ]
 
 /**
  * These keys render 2 tiles: one for the agent, one for works by that agent
  */
-const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent, WorkKey.Author]
+const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent, WorkKey.Author, WorkKey.Dedicatee]
 
 export function mapWorkData(data: WorkData): MappedWidgetType {
 	if (!data || typeof data !== "object") {

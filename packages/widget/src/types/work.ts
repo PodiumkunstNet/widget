@@ -21,6 +21,9 @@ export enum WorkKey {
 	Source = "source",
 	Title = "title",
 	Work = "work",
+	Language = "language",
+	Dedicatee = "dedicatee",
+	Dedicateename = "dedicateename",
 }
 
 const WorkLabels = {
@@ -44,6 +47,9 @@ const WorkLabels = {
 	[WorkKey.Source]: "Externe bron",
 	[WorkKey.Title]: "Titel",
 	[WorkKey.Work]: "Werk",
+	[WorkKey.Language]: "Taal",
+	[WorkKey.Dedicatee]: "Over de toegewijde",
+	[WorkKey.Dedicateename]: "Opgedragen aan",
 } as const satisfies Record<WorkKey, string>
 
 export function getWorkLabel(key: WorkKey) {
