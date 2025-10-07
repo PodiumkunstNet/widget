@@ -12,6 +12,16 @@ WHERE {
 ORDER BY ?predicate
 ```
 
+## List all triples for a specific predicate
+rdaw:P10437 is "has creator person of work"
+```
+prefix rdaw: <http://rdaregistry.info/Elements/w/>
+
+SELECT ?s (rdaw:P10437 AS ?p) ?o WHERE {
+  ?s rdaw:P10437 ?o .
+}
+```
+
 ## Select all triples with `<url>` as subject or object
 ```
 SELECT ?s ?p ?o WHERE {
