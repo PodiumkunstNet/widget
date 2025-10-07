@@ -17,6 +17,7 @@ import { Overlay } from "../../../components/InfoOverlay"
 
 import genericClasses from "./GenericTile.module.css"
 import infoClasses from "./InformationTile.module.css"
+import { IconX } from "@tabler/icons-react"
 
 /**
  * The information tile, is used to display non-interactive text. When the
@@ -70,6 +71,9 @@ export function InformationTileBody({ item }: { item: Props["item"] }) {
 				</div>
 			}
 		>
+
+			{/* TODO Close icon should be part of the Overlay */}
+			<IconX size="16" style={{ position: "absolute", top: '2rem', right: '2rem', cursor: 'pointer' }} />
 			<Paragraph>{item.note}</Paragraph>
 		</Page>
 	)

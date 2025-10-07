@@ -1,10 +1,10 @@
-import { ReactNode, useContext, useEffect, useState } from "react"
+import { ReactNode, useContext } from "react"
 import { useLocation } from "react-router-dom"
 import clsx from "clsx"
 
 import { DispatchContext, GridDataContext, StateContext } from "../../state"
 import { InformationTileBody } from "../../pages/Grid/tiles/InformationTile"
-import { AboutPage } from "../../pages/About"
+// import { AboutPage } from "../../pages/About"
 import { Actions } from "../../state/actions"
 import { Overlay } from "../Overlay"
 
@@ -33,13 +33,13 @@ export function Layout({ children }: { children: ReactNode }) {
 	const isSub = location.pathname.startsWith("/widget/more")
 	const withOverlay = infoItem != null || showAboutPage
 
-	const [logoRect, setRect] = useState<DOMRect | undefined>(undefined)
-	useEffect(() => {
-		const el = document.getElementById("about")
-		if (!el) return undefined
-		const rect = el.getBoundingClientRect()
-		setRect(rect)
-	}, [])
+	// const [logoRect, setRect] = useState<DOMRect | undefined>(undefined)
+	// useEffect(() => {
+	// 	const el = document.getElementById("about")
+	// 	if (!el) return undefined
+	// 	const rect = el.getBoundingClientRect()
+	// 	setRect(rect)
+	// }, [])
 
 	return (
 		<div
@@ -69,7 +69,7 @@ export function Layout({ children }: { children: ReactNode }) {
 				>
 					<InformationTileBody item={infoItem!} />
 				</Overlay>
-				{showAboutPage && (
+				{/* {showAboutPage && (
 					<Overlay
 						afterClose={() => {
 							dispatch({
@@ -82,7 +82,7 @@ export function Layout({ children }: { children: ReactNode }) {
 					>
 						<AboutPage />
 					</Overlay>
-				)}
+				)} */}
 			</main>
 		</div>
 	)
