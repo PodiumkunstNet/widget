@@ -58,6 +58,10 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 				return createExternalLinkTile(key, value)
 			}
 
+			if (key === WorkKey.Duration) {
+				return createStaticTile(key, formatDuration(value))
+			}
+
 			console.warn(`No explicit mapping for work key: ${key}`)
 			return createStaticTile(key, value)
 		})
@@ -176,4 +180,29 @@ function createExternalLinkTile(key: WorkKey, value: string): Tile {
 		sourceKey: key,
 		url: value,
 	}
+}
+
+/**
+ * @example "01:22:00" => "1 uur 22 min"
+ */
+function formatDuration(value: string): string {
+	const parts = value.split(":").map(part => parseInt(part, 10))
+	if (parts.length !== 3) return value
+
+	const [hours, minutes, seconds] = parts
+	const formattedParts = []
+	if (hours > 0) {
+		formattedParts.push(`${hours} uur`)
+	}
+	if (
+		minutes > 0 ||
+		(minutes > 0 && seconds > 0)
+	) {
+		formattedParts.push(`${minutes} min`)
+	}
+	if (seconds > 0) {
+		formattedParts.push(`${seconds} sec`)
+	}
+
+	return formattedParts.join(" ")
 }
