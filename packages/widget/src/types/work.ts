@@ -49,7 +49,7 @@ const WorkLabels = {
 	[WorkKey.Title]: "Titel",
 	[WorkKey.Work]: "Werk",
 	[WorkKey.Language]: "Taal",
-	[WorkKey.Dedicatee]: "Over de toegewijde",
+	[WorkKey.Dedicatee]: "Opgedragen aan",
 	[WorkKey.Dedicateename]: "Opgedragen aan",
 	[WorkKey.Duration]: "Duur",
 } as const satisfies Record<WorkKey, string>
