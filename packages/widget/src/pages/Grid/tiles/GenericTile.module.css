@@ -1,34 +1,36 @@
+.key,
+.value {
+	font-family: var(--font-sans);
+	text-align: center;
+}
+
 .key {
 	color: var(--color-current);
-	font-size: .75rem;
-	line-height: .75rem;
-	text-align: center;
+	font-size: 0.75rem;
+	line-height: 0.75rem;
 	text-transform: uppercase;
 }
 
 :global(.container.small) .key {
-	font-size: .5rem;
+	font-size: 0.5rem;
 }
 
 .value {
 	color: var(--color-black);
-	font-family: var(--font-sans);
 	font-size: 1rem;
 	line-height: 1rem;
-	/* font-weight: bold; */
-	text-align: center;
 
-	width: 100%;
-	text-overflow: ellipsis;
-	-webkit-line-clamp: 3;
-	line-clamp: 3;
 	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 	box-orient: vertical;
-	word-break: break-word;
 	display: -webkit-box;
+	line-clamp: 3;
+	text-overflow: ellipsis;
+	width: 100%;
+	word-break: break-word;
 }
 
 :global(.container.small) .value {
-	font-size: .7rem;
-	line-height: .7rem;
+	font-size: 0.7rem;
+	line-height: 0.7rem;
 }
