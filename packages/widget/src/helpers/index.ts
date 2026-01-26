@@ -84,10 +84,13 @@ export const widgetHelpers = new Map([
 		},
 	],
 	[
-		WidgetType.Category,
+		WidgetType.Agent,
 		{
-			mappingFunction: (data: any[]) => mapCategoryData(data),
-			endpoint: (iri: string) => `/categories/run?category=${iri}`,
+			mappingFunction: (data: any[]) => mapAgentData(data?.[0]),
+			endpoint: async (iri: string) => {
+				const query = await import("../queries/agent.sparql?raw")
+				return query.default.replace("{{iri}}", iri)
+			},
 		},
 	],
 	[
@@ -101,13 +104,10 @@ export const widgetHelpers = new Map([
 		},
 	],
 	[
-		WidgetType.Agent,
+		WidgetType.Category,
 		{
-			mappingFunction: (data: any[]) => mapAgentData(data?.[0]),
-			endpoint: async (iri: string) => {
-				const query = await import("../queries/agent.sparql?raw")
-				return query.default.replace("{{iri}}", iri)
-			},
+			mappingFunction: (data: any[]) => mapCategoryData(data),
+			endpoint: (iri: string) => `/categories/run?category=${iri}`,
 		},
 	],
 	[
