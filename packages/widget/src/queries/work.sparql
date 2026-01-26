@@ -1,0 +1,117 @@
+#+ endpoint_in_url: false
+#+ parameters:
+#+   work:
+#+     required: true
+#+     type: iri
+#+ endpoint: https://api.podiumkunst.triply.cc/datasets/FCL/Cache/services/Cache/sparql
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdaw: <http://rdaregistry.info/Elements/w/>
+prefix rdae: <http://rdaregistry.info/Elements/e/>
+prefix rdam: <http://rdaregistry.info/Elements/m/>
+prefix rdaa: <http://rdaregistry.info/Elements/a/>
+prefix rdat: <http://rdaregistry.info/Elements/t/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix dc: <http://purl.org/dc/elements/1.1/>
+select ?work ?title ?language ?duration ?date ?note ?keywords ?category ?categoryname ?composer ?composername ?librettist ?librettistname ?choreographer ?choreographername ?author ?authorname ?producer ?producername ?director ?directorname ?dedicatee ?dedicateename ?commissioning ?commissioningname ?creator ?creatorname ?collectiveagent ?collectiveagentname ?source 
+where {
+  VALUES ?work { <{{iri}}> }
+
+optional {
+  ?work rdaw:P10223 ?preftitle.
+}
+optional {
+  ?work rdaw:P10088 ?worktitle.
+}
+bind(coalesce ( ?preftitle, ?worktitle ) as ?title)
+optional {
+  ?work rdaw:P10353 ?language.
+}
+optional {
+  ?work rdaw:P10351 ?duration.
+}
+optional {
+  ?work rdaw:P10219 ?date.
+}
+optional {
+  ?work dcterms:description ?note.
+}
+optional {
+  ?work rdaw:P10330 ?keywords.
+}
+optional {
+?work rdaw:P10004 ?category.
+optional {
+?category skos:prefLabel ?label.
+filter(langmatches ( lang ( ?label ), "nl" ))}
+bind(coalesce ( ?label, str ( ?category ) ) as ?categoryname)}
+optional {
+?work rdaw:P10053 ?composer.
+optional {
+  ?composer rdaa:P50385 ?composernamerda.
+}
+optional {
+  ?composer skos:prefLabel ?composernameskos.
+}
+bind(coalesce ( ?composernamerda, ?composernameskos, str ( ?composer ) ) as ?composername)}
+optional {
+?work rdaw:P10205 ?librettist.
+optional {
+  ?librettist rdaa:P50385 ?librettistnamerda.
+}
+bind(coalesce ( ?librettistnamerda, str ( ?librettist ) ) as ?librettistname)}
+optional {
+?work rdaw:P10060 ?choreographer.
+optional {
+  ?choreographer rdaa:P50385 ?choreographernamerda.
+}
+bind(coalesce ( ?choreographernamerda, str ( ?choreographer ) ) as ?choreographername)}
+optional {
+?work rdaw:P10061 ?author.
+optional {
+  ?author rdaa:P50385 ?authornamerda.
+}
+bind(coalesce ( ?authornamerda, str ( ?author ) ) as ?authorname)}
+optional {
+?work rdaw:P10064 ?producer.
+optional {
+  ?producer rdaa:P50385 ?producernamerda.
+}
+bind(coalesce ( ?producernamerda, str ( ?producer ) ) as ?producername)}
+optional {
+?work rdaw:P10066 ?director.
+optional {
+  ?director rdaa:P50385 ?directornamerda.
+}
+bind(coalesce ( ?directornamerda, str ( ?director ) ) as ?directorname)}
+optional {
+?work rdaw:P10069 ?dedicatee.
+optional {
+  ?dedicatee rdaa:P50385 ?dedicateenamerda.
+}
+bind(coalesce ( ?dedicateenamerda, str ( ?dedicatee ) ) as ?dedicateename)}
+optional {
+?work rdaw:P10287 ?commissioning.
+optional {
+  ?commissioning rdaa:P50385 ?commissioningnamerda.
+}
+bind(coalesce ( ?commissioningnamerda, str ( ?commissioning ) ) as ?commissioningname)}
+optional {
+?work rdaw:P10437 ?creator.
+optional {
+  ?creator rdaw:P10437 ?creatornamerda.
+}
+bind(coalesce ( ?creatornamerda, str ( ?creator ) ) as ?creatorname)}
+optional {
+?work rdaw:P10315 ?collectiveagent.
+optional {
+  ?collectiveagent rdaa:P50385 ?collectivenamerda.
+}
+bind(coalesce ( ?collectivenamerda, str ( ?collectiveagent ) ) as ?collectiveagentname)}
+optional {
+  ?work dcterms:source ?source.
+}}
+group by ?work ?title ?language ?duration ?date ?note ?keywords ?category ?categoryname ?composer ?composername ?librettist ?librettistname ?choreographer ?choreographername ?author ?authorname ?producer ?producername ?director ?directorname ?dedicatee ?dedicateename ?commissioning ?commissioningname ?creator ?creatorname ?collectiveagent ?collectiveagentname ?source
+offset 0
+limit 10000

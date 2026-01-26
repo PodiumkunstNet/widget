@@ -10,3 +10,8 @@ export function getTileLabel(type: WidgetType | WidgetType.Agent, key: WorkKey |
 	if (type === WidgetType.Agent) return getAgentLabel(key as AgentKey)
 	return ""
 }
+
+export interface Term<T extends "literal" | "uri" | "bnode" = "literal" | "uri" | "bnode"> {
+	type: T
+	value: string
+}

@@ -1,10 +1,10 @@
 import { TileType, Tile } from "../types/grid"
 import { MappedWidgetType, WidgetType } from "../helpers"
+import { Term } from "../types"
 
 export type WorkForAgentType = {
-	agent: string
-	work: string
-	title: string
+	work: Term<"uri">
+	title: Term<"literal">
 }
 
 export function mapWorkForAgentData(
@@ -21,9 +21,9 @@ export function mapWorkForAgentData(
 	data.forEach((item) => {
 		items.push({
 			key: "",
-			value: item.title,
+			value: item.title.value,
 			type: TileType.More,
-			id: item.work,
+			id: item.work.value,
 			subType: WidgetType.Work,
 			sourceKey: "title",
 		})

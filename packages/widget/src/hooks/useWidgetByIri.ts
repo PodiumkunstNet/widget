@@ -1,24 +1,41 @@
-import axiosClient from "../utils/axios"
 import { useQuery } from "@tanstack/react-query"
 import { widgetHelpers, WidgetType } from "../helpers"
 import { defaultMappedData, GridDataState, State, StateContext } from "../state"
 import { useContext } from "react"
 
+async function fetchSparqlData(query: any) {
+	let data = []
+	try {
+		const response = await fetch("/sparql", {
+			method: "POST",
+			body: query,
+			headers: {
+				"content-type": "application/sparql-query",
+				accept: "application/sparql-results+json",
+			},
+		})
+		 data = await response.json()
+	} catch (error) {
+		console.error("Error executing SPARQL query:", error)
+		return []
+	}
+
+	return data
+}
+
 /**
- * Fetch widget data by IRI and type. Every widget type has its own endpoint. 
+ * Fetch widget data by IRI and type. Every widget type has its own endpoint.
  * Results can be large, so this function only returns raw data.
  */
 export async function queryWidgetByIri(iri: string, type: WidgetType) {
-	const helper = widgetHelpers.get(type)
-	const endpoint = helper?.endpoint(iri)
-	if (!endpoint) return { mappedData: null, error: true }
-	const response = await axiosClient.get(endpoint)
-	return response.data
+	const query = await widgetHelpers.get(type)?.endpoint(iri)
+	const data = await fetchSparqlData(query)
+	return data.results.bindings
 }
 
 export function useWidgetByIri(
 	iri: GridDataState["id"],
-	type: GridDataState["type"]
+	type: GridDataState["type"],
 ) {
 	const { options } = useContext(StateContext)
 
@@ -32,7 +49,7 @@ export function useWidgetByIri(
 export function getUseQueryProps(
 	iri: GridDataState["id"],
 	type: GridDataState["type"],
-	maxTiles: State["options"]["maxTiles"]
+	maxTiles: State["options"]["maxTiles"],
 ) {
 	const queryFn = async () => {
 		if (!iri || !type) return Promise.resolve({ title: "", items: [] })

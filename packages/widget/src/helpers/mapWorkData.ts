@@ -3,6 +3,7 @@ import { TileType, Tile } from "../types/grid"
 import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
 import { getLabelByFieldAndSubType } from "../constants/fieldLabels"
 import { getWorkLabel, WorkData, WorkKey } from "../types/work"
+import { getWorkValue } from "./utils"
 
 const keysToExclude = [
 	WorkKey.Work,
@@ -35,7 +36,7 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 		.filter((key) => data[key] != null && !keysToExclude.includes(key))
 		.flatMap<Tile>((key) => {
 			/** We know the value exists */
-			const value = data[key]!
+			const value = getWorkValue(data, key)
 
 			/** Map the agent data to 2 tiles */
 			if (agentTiles.includes(key)) {
@@ -70,7 +71,8 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 
 	return {
 		mappedData: {
-			title: data.title ?? "",
+			// title: data.title ?? "",
+			title: getWorkValue(data, WorkKey.Title),
 			items: filteredResults,
 		},
 		error: false,
@@ -91,20 +93,20 @@ function createAgentTiles(
 
 	return [
 		{
-			id: data[key] ?? "",
+			id: getWorkValue(data, key),
 			key: getLabelByFieldAndSubType(key, WidgetType.Agent),
 			sourceKey: nameKey,
 			subType: WidgetType.Agent,
 			type: TileType.More,
-			value: data[nameKey]!,
+			value: getWorkValue(data, nameKey),
 		},
 		{
-			id: data[key] ?? "",
+			id: getWorkValue(data, key),
 			key: getLabelByFieldAndSubType(key, WidgetType.WorksForAgent),
 			sourceKey: nameKey,
 			subType: WidgetType.WorksForAgent,
 			type: TileType.More,
-			value: data[nameKey]!,
+			value: getWorkValue(data, nameKey),
 		},
 	]
 }
@@ -143,10 +145,10 @@ function createCategoryTile(
 	const nameKey = `${key}name`
 
 	if (keyExists(nameKey, keys)) {
-		const value = data[nameKey] ?? ""
+		const value = getWorkValue(data, nameKey)
 
 		return {
-			id: data[WorkKey.Category] ?? "",
+			id: getWorkValue(data, WorkKey.Category),
 			key: getWorkLabel(WorkKey.Category),
 			sourceKey: WorkKey.Category,
 			subType: WidgetType.Category,
@@ -162,7 +164,7 @@ function createManifestationTile(data: WorkData): Tile | [] {
 	if (Number(data[WorkKey.Manifestations]) <= 0) return []
 
 	return {
-		id: data[WorkKey.Work] ?? "",
+		id: getWorkValue(data, WorkKey.Work),
 		key: "",
 		sourceKey: WorkKey.Manifestations,
 		subType: WidgetType.Manifestation,

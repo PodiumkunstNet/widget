@@ -2,6 +2,7 @@ import { MappedWidgetType, WidgetType } from "."
 import { getTileLabel } from "../types"
 import { AgentData, AgentKey } from "../types/agent"
 import { TileType, Tile } from "../types/grid"
+import { getAgentValue } from "./utils"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
 
@@ -20,7 +21,8 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 
 	const warnings: Record<string, string | null | undefined> = {}
 
-	const items: Tile[] = Object.entries(data)
+	const items: Tile[] = (Object.keys(data) as AgentKey[])
+		.map((key) => [key, getAgentValue(data, key)] as [AgentKey, string])
 		.filter(([key, value]) => value != null && !keysToExclude.includes(key))
 		.map(([key, value]) => {
 			if (
@@ -45,7 +47,7 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 			) {
 				return {
 					key: getTileLabel(WidgetType.Agent, key),
-					value: formatDutchDate(value as string),
+					value: formatDutchDate(value),
 					type: TileType.Static,
 					sourceKey: key,
 				}
@@ -82,17 +84,17 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 	if (data[AgentKey.Agent]) {
 		items.push({
 			key: "Meer werk van",
-			value: data?.title ?? "",
+			value: getAgentValue(data, AgentKey.Title),
 			type: TileType.More,
 			subType: WidgetType.WorksForAgent,
-			id: data?.agent || "",
+			id: getAgentValue(data, AgentKey.Agent),
 			sourceKey: AgentKey.Agent,
 		})
 	}
 
 	return {
 		mappedData: {
-			title: data.title ?? "",
+			title: getAgentValue(data, AgentKey.Title),
 			items,
 		},
 		error: false,

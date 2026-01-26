@@ -6,3 +6,4 @@ dist
 scripts
 docker
 .restic.txt
+.env

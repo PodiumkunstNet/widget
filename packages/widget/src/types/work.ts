@@ -1,4 +1,6 @@
-export type WorkData = Record<WorkKey, string | null | undefined>
+import type { Term } from "."
+
+export type WorkData = Record<WorkKey, Term>
 
 export enum WorkKey {
 	Alttitle = "alttitle",

@@ -1,4 +1,6 @@
-export type AgentData = Record<AgentKey, string | null | undefined>
+import type { Term } from "."
+
+export type AgentData = Record<AgentKey, Term>
 
 /**
  * TODO - add organisationname

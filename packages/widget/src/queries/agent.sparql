@@ -1,0 +1,29 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdaw: <http://rdaregistry.info/Elements/w/>
+PREFIX rdam: <http://rdaregistry.info/Elements/m/>
+PREFIX rdaa: <http://rdaregistry.info/Elements/a/>
+PREFIX schema: <https://schema.org/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?agent ?title ?role ?datebirth ?placebirth ?dateestablishment ?datedeath ?placedeath ?datetermination ?origin ?periodactivity ?note ?keywords ?sameas ?organisation
+WHERE {
+  VALUES ?agent { <{{iri}}> }
+  ?agent rdaa:P50385 ?title.
+  OPTIONAL { ?agent rdaa:P50104 ?role. }
+  OPTIONAL { ?agent rdaa:P50121 ?datebirth. }
+  OPTIONAL { ?agent rdaa:P50119 ?placebirth. }
+  OPTIONAL { ?agent rdaa:P50037 ?dateestablishment. }
+  OPTIONAL { ?agent rdaa:P50120 ?datedeath. }
+  OPTIONAL { ?agent rdaa:P50118 ?placedeath. }
+  OPTIONAL { ?agent rdaa:P50038 ?datetermination. }
+  OPTIONAL { ?agent schema:countryOfOrigin ?origin. }
+  OPTIONAL { ?agent rdaa:P50380 ?periodactivity. }
+  OPTIONAL { ?agent rdaa:P50113 ?note. }
+  OPTIONAL { ?agent rdaa:P50391 ?keywords. }
+  OPTIONAL { ?agent owl:sameAs ?sameas. }
+  OPTIONAL { ?agent rdaa:P50309 ?organisation. }
+}
+GROUP BY ?agent ?title ?role ?datebirth ?placebirth ?dateestablishment ?datedeath ?placedeath ?datetermination ?origin ?periodactivity ?note ?keywords ?sameas ?organisation
+OFFSET 0
+LIMIT 10000
