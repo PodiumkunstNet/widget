@@ -1,13 +1,9 @@
 import { defineConfig, loadEnv } from "vite"
 import react from "@vitejs/plugin-react"
 import svgr from "vite-plugin-svgr"
-// import postcssGlobalData from '@csstools/postcss-global-data'
-// import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), "")
-	console.log(env.VITE_SPARQL_ENDPOINT)
 
 	return {
 		plugins: [react(), svgr()],
@@ -15,7 +11,7 @@ export default defineConfig(({ mode }) => {
 			port: 3001,
 			proxy: {
 				"/sparql": {
-					target: env.VITE_SPARQL_ENDPOINT,
+					target: env.SPARQL_ENDPOINT,
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/sparql/, ""),
 				},
