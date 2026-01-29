@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import { useQueryClient } from "@tanstack/react-query"
+// import { useQueryClient } from "@tanstack/react-query"
 
-import { getUseQueryProps, useWidgetByIri } from "../hooks/useWidgetByIri"
+import { /*getUseQueryProps,*/ useWidgetByIri } from "../hooks/useWidgetByIri"
 import { Tile } from "../types/grid"
 import { GridDataState, State } from "../state"
 import { Paginator } from "../components/Layout/Paginator"
@@ -13,22 +13,22 @@ export function useGridData(options: State['options']) {
 	const id = params.get("id") ?? undefined
 	const type = (params.get("type") as GridDataState['type']) ?? undefined
 
-	const queryClient = useQueryClient()
+	// const queryClient = useQueryClient()
 	const { data, isLoading, isError } = useWidgetByIri(id, type)
 
 	/** Prefetch data for next grids, but only in production */
-	useEffect(() => {
-		if (!data || import.meta.env.DEV) return
+	// useEffect(() => {
+	// 	if (!data || import.meta.env.DEV) return
 
-		const ps = (data.items ?? []).map(async (tile: Tile) => {
-			if (tile?.id && tile?.subType) {
-				const useQueryProps = getUseQueryProps(tile.id, tile.subType, options.maxTiles)
-				return queryClient?.prefetchQuery(useQueryProps)
-			}
-		})
+	// 	const ps = (data.items ?? []).map(async (tile: Tile) => {
+	// 		if (tile?.id && tile?.subType) {
+	// 			const useQueryProps = getUseQueryProps(tile.id, tile.subType, options.maxTiles)
+	// 			return queryClient?.prefetchQuery(useQueryProps)
+	// 		}
+	// 	})
 
-		Promise.all(ps)
-	}, [data?.items])
+	// 	Promise.all(ps)
+	// }, [data?.items])
 
 	const maxItems = useSetCSSSizeVars(data?.items, options)
 
