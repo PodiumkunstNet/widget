@@ -1,11 +1,12 @@
 import { TileType, Tile } from "../types/grid"
 import { MappedWidgetType, WidgetType } from "../helpers"
+import { Term } from "../types"
 
 export type CategoryType = {
-	category: string
-	title: string
-	work: string
-	worktitle: string
+	// category: Term<"uri">
+	// title: Term<"literal">
+	work: Term<"uri">
+	worktitle: Term<"literal">
 }
 
 export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
@@ -20,10 +21,10 @@ export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
 	data.forEach((item) => {
 		items.push({
 			key: "",
-			value: item.worktitle,
+			value: item.worktitle.value,
 			type: TileType.More,
 			subType: WidgetType.Work,
-			id: item.work,
+			id: item.work.value,
 			sourceKey: "worktitle",
 		})
 	})

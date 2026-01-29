@@ -107,7 +107,11 @@ export const widgetHelpers = new Map([
 		WidgetType.Category,
 		{
 			mappingFunction: (data: any[]) => mapCategoryData(data),
-			endpoint: (iri: string) => `/categories/run?category=${iri}`,
+			// endpoint: (iri: string) => `/categories/run?category=${iri}`,
+			endpoint: async (iri: string) => {
+				const query = await import("../queries/categories.sparql?raw")
+				return query.default.replace("{{iri}}", iri)
+			},
 		},
 	],
 	[

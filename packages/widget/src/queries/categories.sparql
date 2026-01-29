@@ -1,0 +1,12 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdaw: <http://rdaregistry.info/Elements/w/>
+
+SELECT ?work ?worktitle
+WHERE {
+  VALUES ?category { <{{iri}}> }
+  ?work rdaw:P10004 ?category ;
+        rdaw:P10223 ?worktitle .
+  ?category skos:prefLabel ?title .
+  FILTER (lang(?title) = "nl")
+}
+LIMIT 100
