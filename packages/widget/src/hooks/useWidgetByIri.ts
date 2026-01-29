@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
 import { widgetHelpers, WidgetType } from "../helpers"
-import { defaultMappedData, GridDataState, State, StateContext } from "../state"
+import { defaultMappedData, GridDataState, StateContext } from "../state"
 import { useContext } from "react"
+import { Bindings, SparqlResult } from "../types"
 
-async function fetchSparqlData(query: any) {
-	let data = []
+async function fetchSparqlData(
+	query: string,
+): Promise<SparqlResult | undefined> {
 	try {
 		const response = await fetch("/sparql", {
 			method: "POST",
@@ -14,13 +16,15 @@ async function fetchSparqlData(query: any) {
 				accept: "application/sparql-results+json",
 			},
 		})
-		 data = await response.json()
-	} catch (error) {
-		console.error("Error executing SPARQL query:", error)
-		return []
-	}
 
-	return data
+		if (!response.ok) {
+			throw new Error(`SPARQL query failed with status ${response.status}`)
+		}
+
+		return await response.json()
+	} catch (error) {
+		throw new Error("Error executing SPARQL query:" + error)
+	}
 }
 
 /**
@@ -28,9 +32,9 @@ async function fetchSparqlData(query: any) {
  * Results can be large, so this function only returns raw data.
  */
 export async function queryWidgetByIri(iri: string, type: WidgetType) {
-	const query = await widgetHelpers.get(type)?.endpoint(iri)
+	const query = await widgetHelpers.get(type)!.endpoint(iri)
 	const data = await fetchSparqlData(query)
-	return data.results.bindings
+	return data?.results.bindings
 }
 
 export function useWidgetByIri(
@@ -38,33 +42,17 @@ export function useWidgetByIri(
 	type: GridDataState["type"],
 ) {
 	const { options } = useContext(StateContext)
+	const { maxTiles } = options
 
 	return useQuery({
-		...getUseQueryProps(iri, type, options.maxTiles),
-		retry: 5,
-		retryDelay: 1000,
-	})
-}
-
-export function getUseQueryProps(
-	iri: GridDataState["id"],
-	type: GridDataState["type"],
-	maxTiles: State["options"]["maxTiles"],
-) {
-	const queryFn = async () => {
-		if (!iri || !type) return Promise.resolve({ title: "", items: [] })
-
-		const result = await queryWidgetByIri(iri, type)
-		if (result.error) {
-			throw new Error("Error fetching widget data")
-		}
-		return result
-	}
-
-	return {
 		queryKey: ["widget-by-uri", iri, type],
-		queryFn,
-		select: (rawData: any[]) => {
+		queryFn: async () => {
+			if (!iri || !type) return Promise.resolve([])
+			const result = await queryWidgetByIri(iri, type)
+			if (!result) throw new Error("Error fetching widget data")
+			return result
+		},
+		select: (rawData: Bindings) => {
 			if (type == null) return defaultMappedData
 
 			/**
@@ -94,5 +82,7 @@ export function getUseQueryProps(
 			return data.mappedData ?? defaultMappedData
 		},
 		staleTime: 60 * 60 * 24 * 1000, // 1 day
-	}
+		retry: 5,
+		retryDelay: 1000,
+	})
 }

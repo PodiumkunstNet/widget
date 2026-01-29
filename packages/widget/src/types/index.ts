@@ -11,6 +11,19 @@ export function getTileLabel(type: WidgetType | WidgetType.Agent, key: WorkKey |
 	return ""
 }
 
+export interface SparqlResult {
+	head: {
+		vars: string[]
+	}
+	results: {
+		bindings: Bindings
+	}
+}
+
+export type Bindings = {
+	[key: string]: Term
+}[]
+
 export interface Term<T extends "literal" | "uri" | "bnode" = "literal" | "uri" | "bnode"> {
 	type: T
 	value: string

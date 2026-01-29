@@ -12,7 +12,7 @@ export function mapWorkForAgentData(
 ): MappedWidgetType {
 	if (!data) {
 		return {
-			mappedData: null,
+			mappedData: undefined,
 			error: true,
 		}
 	}

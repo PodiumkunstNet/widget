@@ -3,8 +3,6 @@ import { MappedWidgetType, WidgetType } from "../helpers"
 import { Term } from "../types"
 
 export type CategoryType = {
-	// category: Term<"uri">
-	// title: Term<"literal">
 	work: Term<"uri">
 	worktitle: Term<"literal">
 }
@@ -12,7 +10,7 @@ export type CategoryType = {
 export function mapCategoryData(data: CategoryType[]): MappedWidgetType {
 	if (!data) {
 		return {
-			mappedData: null,
+			mappedData: undefined,
 			error: true,
 		}
 	}

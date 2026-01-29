@@ -25,7 +25,7 @@ const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer,
 export function mapWorkData(data: WorkData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
-			mappedData: null,
+			mappedData: undefined,
 			error: true,
 		}
 	}

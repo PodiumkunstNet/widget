@@ -6,7 +6,7 @@ import { mapWorkForAgentData } from "./mapWorksForAgentData"
 import { MappedData } from "../state"
 
 export type MappedWidgetType = {
-	mappedData: MappedData | null
+	mappedData: MappedData | undefined
 	error: boolean
 }
 /**

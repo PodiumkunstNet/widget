@@ -13,7 +13,7 @@ export function mapManifistationData(
 ): MappedWidgetType {
 	if (!data) {
 		return {
-			mappedData: null,
+			mappedData: undefined,
 			error: true,
 		}
 	}

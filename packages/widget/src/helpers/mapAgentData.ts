@@ -14,7 +14,7 @@ const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
 export function mapAgentData(data: AgentData): MappedWidgetType {
 	if (!data || typeof data !== "object") {
 		return {
-			mappedData: null,
+			mappedData: undefined,
 			error: true,
 		}
 	}
