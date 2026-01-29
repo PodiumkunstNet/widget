@@ -24,6 +24,14 @@ import { useEffect, useMemo, useState } from "react"
 import { JsonModal } from "./json-modal"
 import { TilePreview } from "./TilePreview"
 import { State } from "../state"
+import { Term } from "../../../widget/src/types"
+import { MappedData } from "../../../widget/src/state"
+import { Tile } from "../../../widget/src/types/grid"
+
+interface Data {
+	mapped: MappedData,
+	raw: { [key: string]: Term }[]
+}
 
 export function Source({ state }: { state: State }) {
 	/** Set the --color-current var in CSS for the tiles to render with color */
@@ -43,17 +51,20 @@ export function Source({ state }: { state: State }) {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["validate-initial", iri, maxTiles, type],
 		enabled: !!iri,
-		queryFn: async () => {
-			if (!iri) return null
-			const raw = await queryWidgetByIri(iri, type)
-			const sliced = raw.slice(0, maxTiles)
+		queryFn: async (): Promise<Data | undefined> => {
+			if (!iri) return
+			const bindings = await queryWidgetByIri(iri, type)
+			if (!bindings) return
+			const sliced = bindings.slice(0, maxTiles)
 
 			const helper = widgetHelpers.get(type)
 			if (!helper) throw new Error("Unknown widget type")
 			const mapped = helper.mappingFunction(sliced)
-			if (mapped.error) throw new Error("Mapping error")
+			if (mapped.error || !mapped.mappedData) {
+				throw new Error("Mapping error")
+			}
 
-			return { mapped: mapped.mappedData, raw }
+			return { mapped: mapped.mappedData, raw: bindings }
 		},
 	})
 
@@ -62,11 +73,11 @@ export function Source({ state }: { state: State }) {
 	// Column visibility state (persisted in localStorage)
 	const allColumns = [
 		"preview",
-		"sourceKey",
-		"title",
-		"sourceValue",
-		"value",
 		"type",
+		"key",
+		"value",
+		"sourceKey",
+		"sourceValue",
 		"subType",
 		"urlId",
 	] as const
@@ -74,7 +85,7 @@ export function Source({ state }: { state: State }) {
 	const [visibleCols, setVisibleCols] = useState<Record<ColumnId, boolean>>({
 		preview: true,
 		sourceKey: true,
-		title: false,
+		key: false,
 		sourceValue: true,
 		value: false,
 		type: true,
@@ -90,24 +101,17 @@ export function Source({ state }: { state: State }) {
 			{
 				id: "preview" as const,
 				label: "Preview",
-				width: "180px",
+				width: "10%",
 				render: (item: any) => <TilePreview item={item} />,
 			},
 			{
-				id: "sourceKey" as const,
-				label: "Source key",
-				width: "16%",
-				render: (item: any) =>
-					item.sourceKey ? (
-						<code>{item.sourceKey}</code>
-					) : (
-						<Text size="xs" c="dimmed">
-							?
-						</Text>
-					),
+				id: "type" as const,
+				label: "Type",
+				width: "10%",
+				render: (item: any) => item.type,
 			},
 			{
-				id: "title" as const,
+				id: "key" as const,
 				label: "Key",
 				width: "20%",
 				render: (item: any) => {
@@ -118,48 +122,6 @@ export function Source({ state }: { state: State }) {
 						<Text c="red">Titel niet gedefinieerd</Text>
 					) : (
 						<code>{k}</code>
-					)
-				},
-			},
-			{
-				id: "sourceValue" as const,
-				label: "Source value",
-				width: "16%",
-				render: (item: any) => {
-					const first = Array.isArray(data?.raw)
-						? data?.raw?.[0]
-						: undefined
-					const v =
-						item.sourceKey && first && typeof first === "object"
-							? (first as any)[item.sourceKey]
-							: undefined
-					const full =
-						v == null
-							? "-"
-							: typeof v === "string"
-							? v
-							: typeof v === "object"
-							? JSON.stringify(v)
-							: String(v)
-					let display =
-						typeof full === "string"
-							? full.replace(/\s+/g, " ").trim()
-							: String(full)
-					if (display.length > 50) display = display.slice(0, 50) + "…"
-					return (
-						<Tooltip label={full} multiline maw={400} withArrow>
-							<span
-								style={{
-									display: "block",
-									whiteSpace: "nowrap",
-									overflow: "hidden",
-									textOverflow: "ellipsis",
-									maxWidth: "100%",
-								}}
-							>
-								{display}
-							</span>
-						</Tooltip>
 					)
 				},
 			},
@@ -192,10 +154,44 @@ export function Source({ state }: { state: State }) {
 				},
 			},
 			{
-				id: "type" as const,
-				label: "Type",
-				width: "10%",
-				render: (item: any) => item.type,
+				id: "sourceKey" as const,
+				label: "Source key",
+				width: "16%",
+				render: (item: any) =>
+					item.sourceKey ? (
+						<code>{item.sourceKey}</code>
+					) : (
+						<Text size="xs" c="dimmed">
+							?
+						</Text>
+					),
+			},
+			{
+				id: "sourceValue" as const,
+				label: "Source value",
+				width: "16%",
+				render: (item: Tile) => {
+					let originalValue = data?.raw[0][item.sourceKey!]?.value
+					if (originalValue == null) originalValue = ""
+					let value = originalValue
+					if (value.length > 50) value = value.slice(0, 50) + "…"
+
+					return (
+						<Tooltip label={originalValue} multiline maw={400} withArrow>
+							<span
+								style={{
+									display: "block",
+									whiteSpace: "nowrap",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+									maxWidth: "100%",
+								}}
+							>
+								{value}
+							</span>
+						</Tooltip>
+					)
+				},
 			},
 			{
 				id: "subType" as const,
@@ -272,6 +268,8 @@ export function Source({ state }: { state: State }) {
 		[data],
 	)
 
+	if (data == null) return null
+
 	return (
 		<Stack gap="xl">
 			<Group justify="space-between">
@@ -281,7 +279,7 @@ export function Source({ state }: { state: State }) {
 					</Button>
 				</Group>
 				<Title order={2}>
-					Brondata <i>{data?.raw[0]?.title}</i>{" "}
+					Brondata <i>{getRawValue(data, "title")}</i>{" "}
 					<Text span c="dimmed" size="sm">
 						({type})
 					</Text>
@@ -430,4 +428,8 @@ export function Source({ state }: { state: State }) {
 			/>
 		</Stack>
 	)
+}
+
+function getRawValue(data: Data, key: string): string {
+	return data.raw[0][key].value
 }
