@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 // import { useQueryClient } from "@tanstack/react-query"
 
-import { /*getUseQueryProps,*/ useWidgetByIri } from "../hooks/useWidgetByIri"
+import { /*getUseQueryProps,*/ useWidgetByIri } from "./useWidgetByIri"
 import { Tile } from "../types/grid"
 import { GridDataState, State } from "../state"
-import { Paginator } from "../components/Layout/Paginator"
+import { type Paginator } from "../components/Layout/Paginator"
 
 export function useGridData(options: State['options']) {
 	const [params] = useSearchParams()

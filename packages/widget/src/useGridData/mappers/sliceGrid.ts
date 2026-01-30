@@ -1,6 +1,7 @@
 // import { Breakpoint } from '../hooks/useCurrentBreakpoint';
 // import { WIDGET_WIDTHS_PX } from '../constants/widgetSizes';
-import { type Tile } from "../types/grid"
+
+import { type Tile } from "../../types/grid"
 
 export function sliceGrid(items: Tile[]) {
 	//   const showSmallerGrid = breakpoint === 'sm' || breakpoint === 'md';

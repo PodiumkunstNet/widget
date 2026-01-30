@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
-import { widgetHelpers, WidgetType } from "../helpers"
+import { mappers } from "./mappers"
 import { defaultMappedData, GridDataState, StateContext } from "../state"
 import { useContext } from "react"
 import { Bindings, SparqlResult } from "../types"
+import { WidgetType } from "../types/widget"
+import { importQueryMap } from "./queries"
 
+/**
+ * Fetch SPARQL data from the endpoint. 
+ */
 async function fetchSparqlData(
 	query: string,
 ): Promise<SparqlResult | undefined> {
@@ -28,11 +33,14 @@ async function fetchSparqlData(
 }
 
 /**
- * Fetch widget data by IRI and type. Every widget type has its own endpoint.
+ * Fetch widget data by IRI and type. Every widget type has its own query.
  * Results can be large, so this function only returns raw data.
+ * 
+ * Exported because used in configurator as well.
  */
 export async function queryWidgetByIri(iri: string, type: WidgetType) {
-	const query = await widgetHelpers.get(type)!.endpoint(iri)
+	const importQuery = importQueryMap[type]
+	const query = await importQuery(iri)
 	const data = await fetchSparqlData(query)
 	return data?.results.bindings
 }
@@ -73,13 +81,11 @@ export function useWidgetByIri(
 			 */
 			const slicedData = rawData.slice(0, maxTiles)
 
-			const helper = widgetHelpers.get(type)
-			if (!helper) return defaultMappedData
+			const mappingFn = mappers[type]
+			const mappedData = mappingFn(slicedData)
+			if (!mappedData) throw new Error("Error mapping widget data")
 
-			const data = helper.mappingFunction(slicedData)
-			if (data.error) throw new Error("Error mapping widget data")
-
-			return data.mappedData ?? defaultMappedData
+			return mappedData ?? defaultMappedData
 		},
 		staleTime: 60 * 60 * 24 * 1000, // 1 day
 		retry: 5,

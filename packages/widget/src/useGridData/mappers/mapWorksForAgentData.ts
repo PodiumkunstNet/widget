@@ -1,6 +1,7 @@
-import { TileType, Tile } from "../types/grid"
-import { MappedWidgetType, WidgetType } from "../helpers"
-import { Term } from "../types"
+import { Term } from "../../types"
+import { Tile, TileType } from "../../types/grid"
+import { WidgetType } from "../../types/widget"
+import { MappedData } from "../types"
 
 export type WorkForAgentType = {
 	work: Term<"uri">
@@ -9,13 +10,8 @@ export type WorkForAgentType = {
 
 export function mapWorkForAgentData(
 	data: WorkForAgentType[],
-): MappedWidgetType {
-	if (!data) {
-		return {
-			mappedData: undefined,
-			error: true,
-		}
-	}
+): MappedData | undefined {
+	if (!data) return
 
 	const items: Tile[] = []
 	data.forEach((item) => {
@@ -30,10 +26,7 @@ export function mapWorkForAgentData(
 	})
 
 	return {
-		error: false,
-		mappedData: {
-			title: "",
-			items,
-		},
+		title: "",
+		items,
 	}
 }

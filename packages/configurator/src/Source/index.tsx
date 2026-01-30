@@ -1,7 +1,6 @@
 import { useSearchParams, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { queryWidgetByIri } from "@widget/hooks/useWidgetByIri"
-import { widgetHelpers, WidgetType, ensureWidgetType } from "@widget/helpers"
+import { queryWidgetByIri } from "@widget/useGridData/useWidgetByIri"
 import { MissingKeys } from "./MissingKeys"
 import {
 	Anchor,
@@ -24,9 +23,12 @@ import { useEffect, useMemo, useState } from "react"
 import { JsonModal } from "./json-modal"
 import { TilePreview } from "./TilePreview"
 import { State } from "../state"
-import { Term } from "../../../widget/src/types"
-import { MappedData } from "../../../widget/src/state"
-import { Tile } from "../../../widget/src/types/grid"
+
+import { type Term } from "@widget/types"
+import { type Tile } from "@widget/types/grid"
+import { type MappedData } from "@widget/useGridData/types"
+import { WidgetType } from "@widget/types/widget"
+import { mappers } from "@widget/useGridData/mappers"
 
 interface Data {
 	mapped: MappedData,
@@ -57,14 +59,13 @@ export function Source({ state }: { state: State }) {
 			if (!bindings) return
 			const sliced = bindings.slice(0, maxTiles)
 
-			const helper = widgetHelpers.get(type)
-			if (!helper) throw new Error("Unknown widget type")
-			const mapped = helper.mappingFunction(sliced)
-			if (mapped.error || !mapped.mappedData) {
+			const mappingFunction = mappers[type]
+			const mappedData = mappingFunction(sliced)
+			if (!mappedData) {
 				throw new Error("Mapping error")
 			}
 
-			return { mapped: mapped.mappedData, raw: bindings }
+			return { mapped: mappedData, raw: bindings }
 		},
 	})
 
@@ -432,4 +433,17 @@ export function Source({ state }: { state: State }) {
 
 function getRawValue(data: Data, key: string): string {
 	return data.raw[0][key].value
+}
+
+/**
+ * Parse a string into a `WidgetType` (case-insensitive), for example from a query param.
+ */
+function ensureWidgetType(type?: string | null) {
+	type = type?.toLowerCase()
+
+	if (type === "agent") return WidgetType.Agent
+	if (type === "work") return WidgetType.Work
+	if (type === "worksforagent") return WidgetType.WorksForAgent
+	if (type === "category") return WidgetType.Category
+	if (type === "manifestations") return WidgetType.Manifestation
 }

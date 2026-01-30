@@ -1,8 +1,8 @@
-import { MappedWidgetType, WidgetType } from "."
-import { TileType, Tile } from "../types/grid"
-import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter"
-import { getLabelByFieldAndSubType } from "../constants/fieldLabels"
-import { getWorkLabel, WorkData, WorkKey } from "../types/work"
+import { Tile, TileType } from "../../types/grid"
+import { WidgetType } from "../../types/widget"
+import { WorkKey, WorkData, getWorkLabel } from "../../types/work"
+import { capitalizeFirstLetter } from "../../utils"
+import { MappedData } from "../types"
 import { getWorkValue } from "./utils"
 
 const keysToExclude = [
@@ -14,21 +14,23 @@ const keysToExclude = [
 	WorkKey.Choreographername,
 	WorkKey.Collectiveagentname,
 	WorkKey.Authorname,
-	WorkKey.Dedicateename
+	WorkKey.Dedicateename,
 ]
 
 /**
  * These keys render 2 tiles: one for the agent, one for works by that agent
  */
-const agentTiles = [WorkKey.Composer, WorkKey.Librettist, WorkKey.Choreographer, WorkKey.Collectiveagent, WorkKey.Author, WorkKey.Dedicatee]
+const agentTiles = [
+	WorkKey.Composer,
+	WorkKey.Librettist,
+	WorkKey.Choreographer,
+	WorkKey.Collectiveagent,
+	WorkKey.Author,
+	WorkKey.Dedicatee,
+]
 
-export function mapWorkData(data: WorkData): MappedWidgetType {
-	if (!data || typeof data !== "object") {
-		return {
-			mappedData: undefined,
-			error: true,
-		}
-	}
+export function mapWorkData(data: WorkData): MappedData | undefined {
+	if (!data || typeof data !== "object") return
 
 	const keys = Object.keys(data) as WorkKey[]
 
@@ -70,12 +72,8 @@ export function mapWorkData(data: WorkData): MappedWidgetType {
 	const filteredResults = items.filter((item) => item !== null) as Tile[]
 
 	return {
-		mappedData: {
-			// title: data.title ?? "",
-			title: getWorkValue(data, WorkKey.Title),
-			items: filteredResults,
-		},
-		error: false,
+		title: getWorkValue(data, WorkKey.Title),
+		items: filteredResults,
 	}
 }
 
@@ -188,7 +186,7 @@ function createExternalLinkTile(key: WorkKey, value: string): Tile {
  * @example "01:22:00" => "1 uur 22 min"
  */
 function formatDuration(value: string): string {
-	const parts = value.split(":").map(part => parseInt(part, 10))
+	const parts = value.split(":").map((part) => parseInt(part, 10))
 	if (parts.length !== 3) return value
 
 	const [hours, minutes, seconds] = parts
@@ -196,10 +194,7 @@ function formatDuration(value: string): string {
 	if (hours > 0) {
 		formattedParts.push(`${hours} uur`)
 	}
-	if (
-		minutes > 0 ||
-		(minutes > 0 && seconds > 0)
-	) {
+	if (minutes > 0 || (minutes > 0 && seconds > 0)) {
 		formattedParts.push(`${minutes} min`)
 	}
 	if (seconds > 0) {
@@ -207,4 +202,15 @@ function formatDuration(value: string): string {
 	}
 
 	return formattedParts.join(" ")
+}
+
+function getLabelByFieldAndSubType(
+  field: WorkKey,
+  subType: WidgetType
+) {
+	if (subType === WidgetType.WorksForAgent) {
+		return 'Meer werk van'
+	}
+
+	return getWorkLabel(field)
 }

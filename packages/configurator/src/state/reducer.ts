@@ -8,7 +8,7 @@ import {
 	State,
 } from "."
 import { Action, Actions } from "./actions"
-import { WidgetType } from "@widget/helpers"
+import { WidgetType } from "@widget/types/widget"
 
 export function stateReducer(state: State, action: Action): State {
 	if (process.env.NODE_ENV === "development") console.log("[REDUCER]", action)

@@ -1,4 +1,4 @@
-import { WidgetType } from "../helpers";
+import { WidgetType } from "../types/widget";
 import { AgentKey, getAgentLabel } from "./agent";
 import { getWorkLabel, WorkKey } from "./work";
 

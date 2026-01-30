@@ -4,7 +4,7 @@ import clsx from "clsx"
 import { IconCaretLeftFilled, IconCaretRightFilled } from "@tabler/icons-react"
 
 import { State } from "../../../state"
-import { useGridData } from "../../../hooks/useGridData"
+import { type useGridData } from "../../../useGridData"
 
 import classes from "./index.module.css"
 

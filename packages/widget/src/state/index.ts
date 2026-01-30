@@ -1,7 +1,8 @@
 import { createContext, Dispatch } from "react"
 import type { Action } from "./actions"
 import { Tile } from "../types/grid"
-import { WidgetType } from "../helpers"
+import { WidgetType } from "../types/widget"
+import { MappedData } from "../useGridData/types"
 
 // Define the shape of the state
 export interface State {
@@ -46,11 +47,6 @@ export const initialState: State = {
 // Create the state contexts
 export const StateContext = createContext<State>(initialState)
 export const DispatchContext = createContext<Dispatch<Action>>(() => {})
-
-export interface MappedData {
-	title: string
-	items: Tile[]
-}
 
 export const defaultMappedData: MappedData = {
 	title: "",

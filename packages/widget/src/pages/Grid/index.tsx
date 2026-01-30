@@ -12,7 +12,7 @@ import { TileType } from "../../types/grid"
 
 import classes from "./index.module.css"
 
-import { useGridData } from "../../hooks/useGridData"
+import { useGridData } from "../../useGridData"
 import { ExternalLinkTile } from "./tiles/ExternalLinkTile"
 
 interface Props {

@@ -9,7 +9,7 @@ import {
   ActionIcon,
 } from '@mantine/core'
 import { IconCopy, IconCheck } from '@tabler/icons-react'
-import type { MappedData } from '@widget/state'
+import type { MappedData } from '@widget/useGridData/types'
 
 export type JsonModalData = {
   mapped: MappedData | null

@@ -1,4 +1,4 @@
-import { WidgetType } from "../helpers"
+import { WidgetType } from "../types/widget"
 // @ts-ignore
 import { type InformationTile } from "../pages/Grid/tiles/InformationTile"
 // @ts-ignore

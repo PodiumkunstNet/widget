@@ -1,7 +1,8 @@
-import { MappedWidgetType, WidgetType } from "."
-import { getTileLabel } from "../types"
-import { AgentData, AgentKey } from "../types/agent"
-import { TileType, Tile } from "../types/grid"
+import { getTileLabel } from "../../types"
+import { WidgetType } from "../../types/widget"
+import { MappedData } from "../types"
+import { AgentData, AgentKey } from "../../types/agent"
+import { TileType, Tile } from "../../types/grid"
 import { getAgentValue } from "./utils"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
@@ -11,13 +12,8 @@ const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
  * 		but a mapping object saying it is a static/more/information tile and if it has a subType.
  *			There could also be "custom" tiles where the mapping function can be passed in as a prop.
  */
-export function mapAgentData(data: AgentData): MappedWidgetType {
-	if (!data || typeof data !== "object") {
-		return {
-			mappedData: undefined,
-			error: true,
-		}
-	}
+export function mapAgentData(data: AgentData): MappedData | undefined {
+	if (!data || typeof data !== "object") return 
 
 	const warnings: Record<string, string | null | undefined> = {}
 
@@ -93,11 +89,8 @@ export function mapAgentData(data: AgentData): MappedWidgetType {
 	}
 
 	return {
-		mappedData: {
-			title: getAgentValue(data, AgentKey.Title),
-			items,
-		},
-		error: false,
+		title: getAgentValue(data, AgentKey.Title),
+		items,
 	}
 }
 
