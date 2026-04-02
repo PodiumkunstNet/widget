@@ -7,3 +7,4 @@ scripts
 docker
 .restic.txt
 .env
+.idea
