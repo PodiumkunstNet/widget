@@ -55,7 +55,8 @@ export function Source({ state }: { state: State }) {
 		enabled: !!iri,
 		queryFn: async (): Promise<Data | undefined> => {
 			if (!iri) return
-			const bindings = await queryWidgetByIri(iri, type)
+
+			const bindings = await queryWidgetByIri(decodeURI(iri), type)
 			if (!bindings) return
 			const sliced = bindings.slice(0, maxTiles)
 
