@@ -28,6 +28,10 @@
 	--color-secondary-rgb: var(--color-blue-rgb);
 }
 
+body, button {
+	font-family: var(--font-sans);
+}
+
 ul {
 	padding: 0;
 	margin: 0;

@@ -1,6 +1,5 @@
 import cx from "clsx"
 import Loader from "../../components/Loader/Loader"
-import ErrorPreview from "../../components/Preview/ErrorPreview"
 
 import { useContext, useEffect } from "react"
 import { GridDataContext } from "../../state"
@@ -14,6 +13,7 @@ import classes from "./index.module.css"
 
 import { useGridData } from "../../useGridData"
 import { ExternalLinkTile } from "./tiles/ExternalLinkTile"
+import { EmptyState, ErrorPreview } from "../../components/Error"
 
 interface Props {
 	isSubCategoryView: boolean
@@ -33,14 +33,8 @@ export function Grid({ isSubCategoryView }: Props) {
 
 	if (!isSubCategoryView && isLoading) return <Loader />
 
-	if (isError) {
-		return (
-			<ErrorPreview
-				error="Helaas is de widget op dit moment niet beschikbaar."
-				isSubCategoryView={isSubCategoryView}
-			/>
-		)
-	}
+	if (isError) return <ErrorPreview />
+	if (items.length === 0) return <EmptyState />
 
 	return (
 		<ul
