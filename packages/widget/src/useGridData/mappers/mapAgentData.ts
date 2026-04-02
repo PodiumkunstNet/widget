@@ -1,8 +1,8 @@
 import { getTileLabel } from "../../types"
 import { WidgetType } from "../../types/widget"
 import { MappedData } from "../types"
-import { AgentData, AgentKey } from "../../types/agent"
-import { TileType, Tile } from "../../types/grid"
+import { AgentData, AgentKey, getAgentType } from "../../types/agent"
+import { Tile } from "../../types/grid"
 import { getAgentValue } from "./utils"
 
 const keysToExclude = ["manifestation", "work", AgentKey.Agent, AgentKey.Title]
@@ -32,7 +32,7 @@ export function mapAgentData(data: AgentData): MappedData | undefined {
 				return {
 					key: getTileLabel(WidgetType.Agent, key),
 					value,
-					type: TileType.Static,
+					type: getAgentType(key),
 					sourceKey: key,
 				}
 			}
@@ -44,7 +44,7 @@ export function mapAgentData(data: AgentData): MappedData | undefined {
 				return {
 					key: getTileLabel(WidgetType.Agent, key),
 					value: formatDutchDate(value),
-					type: TileType.Static,
+					type: getAgentType(key),
 					sourceKey: key,
 				}
 			}
@@ -53,7 +53,7 @@ export function mapAgentData(data: AgentData): MappedData | undefined {
 				return {
 					key: getTileLabel(WidgetType.Agent, key),
 					value,
-					type: TileType.More,
+					type: getAgentType(key),
 					sourceKey: key,
 					subType: WidgetType.Agent,
 				}
@@ -64,7 +64,7 @@ export function mapAgentData(data: AgentData): MappedData | undefined {
 					key: getTileLabel(WidgetType.Agent, key),
 					value: "Bio",
 					note: value,
-					type: TileType.Information,
+					type: getAgentType(key),
 					sourceKey: key,
 				}
 			}
@@ -81,7 +81,7 @@ export function mapAgentData(data: AgentData): MappedData | undefined {
 		items.push({
 			key: "Meer werk van",
 			value: getAgentValue(data, AgentKey.Title),
-			type: TileType.More,
+			type: getAgentType(AgentKey.Agent),
 			subType: WidgetType.WorksForAgent,
 			id: getAgentValue(data, AgentKey.Agent),
 			sourceKey: AgentKey.Agent,
